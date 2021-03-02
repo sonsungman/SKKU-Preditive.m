@@ -3,7 +3,7 @@ title: "Son sung man"
 image: "손성만-a.jpg"
 links:
   - label: GitHub
-    url: "https://github.com/"
+    url: "https://github.com/sonsungman"
   - label: Email
     url: "mailto:powerllone3@naver.com"
 output:
@@ -11,7 +11,7 @@ output:
 ---
 
 #### Introduction
- 
+
 - Bachelor - Math
 - Being in a master's Course in Actuarial Science
 - Trying to qualify as both FIAK and ASA
