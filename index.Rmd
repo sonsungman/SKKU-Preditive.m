@@ -1,21 +1,18 @@
 ---
-title: "Son sung man"
-image: "손성만-a.jpg"
-links:
-  - label: GitHub
-    url: "https://github.com/sonsungman"
-  - label: Email
-    url: "mailto:powerllone3@naver.com"
-output:
-  postcards::trestles
+title: "Son Sung Man"
+description: |
+  Welcome to the website. I hope you enjoy it!
+site: distill::distill_website
 ---
 
-#### Introduction
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 
-- Bachelor - Math
-- Being in a master's Course in Actuarial Science
-- Trying to qualify as both FIAK and ASA
-- Interest - Stochastic Reserving in P&C insurance , DFA , ALM, and MCEV for Life company.
+# Learn more about creating websites with Distill at:
+# https://rstudio.github.io/distill/website.html
 
-#### Thank you for visiting
- 
+# Learn more about publishing to GitHub Pages at:
+# https://rstudio.github.io/distill/publish_website.html#github-pages
+
+```
+
