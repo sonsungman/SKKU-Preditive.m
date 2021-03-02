@@ -10,12 +10,12 @@ output:
   postcards::trestles
 ---
 
-# Introduction
+#### Introduction
  
 - Bachelor - Math
 - Being in a master's Course in Actuarial Science
 - Trying to qualify as both FIAK and ASA
-- Interest - Stochastic Reserving in P&C insurance , DFA , ALM, and MCEV for Life .
+- Interest - Stochastic Reserving in P&C insurance , DFA , ALM, and MCEV for Life company.
 
-## Thank you for visiting
+#### Thank you for visiting
  
