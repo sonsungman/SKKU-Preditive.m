@@ -1,12 +1,12 @@
 name: "."
 title: "Son Sung Man"
 description: |
-  iyo-distill
+  distill
 output_dir: "docs"
 navbar:
   right:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "Portfolio"
       href: about.html
 output: distill::distill_article
