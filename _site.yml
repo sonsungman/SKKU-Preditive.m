@@ -7,8 +7,6 @@ navbar:
   right:
     - text: "Home_Eng"
       href: index.html
-    - text: "Home_Kor"
-      href: index2.html
     - text: "Portfolio"
       href: about.html
 output: distill::distill_article
