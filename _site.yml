@@ -1,6 +1,6 @@
 name: "."
 title: "Son Sung Man"
-description: |
+description: 
   distill
 output_dir: "docs"
 navbar:

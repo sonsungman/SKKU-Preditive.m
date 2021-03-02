@@ -1,5 +1,5 @@
 ---
-title: "Son Sung Man"
+title: "sungman Son"
 image: 손성만-a.jpg
 links:
 - label: Github
@@ -9,8 +9,8 @@ links:
 output: postcards::trestles
 site: distill::distill_website
 ---
-## Hi
- I'm Son Sung Man. I'm studying to be an actuary.
+## Hi,
+ I'm sungman Son. I'm studying to be an actuary.
  
 ## Education
 
