@@ -2,15 +2,14 @@
   "articles": [
     {
       "path": "about.html",
-      "title": "About this site",
-      "description": "Some additional details about the website",
+      "title": "Who am I",
       "author": [],
-      "contents": "\n\n\n\n",
-      "last_modified": "2021-03-02T09:58:11+00:00"
+      "contents": "\nIntroduction\nHi, I’m Son Sung Man. I’m studying to be an actuary.\nEducation\n2012~2020 Bachelor : Math in Soongsil University\n2020~ Being in the master’s course : Actuarial Science in Sungkyunkwan University\nGoal\nFIAK\nASA\nInterest\nStochastic Reserving in P&C insurance\nRA in IFRS17\nDFA and ALM\nMCEV in Life company\n\n\n\n",
+      "last_modified": "2021-03-02T10:20:06+00:00"
     },
     {
       "path": "index.html",
-      "title": "iyo-distill",
+      "title": "Son Sung Man",
       "description": "Welcome to the website. I hope you enjoy it!\n",
       "author": [],
       "contents": "\n\n\n\n",
