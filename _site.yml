@@ -1,14 +1,13 @@
-name: "."
-title: "Son Sung Man"
+
+name: "Applied Statistics"
+title: "Son's Predictive modelling"
 description: 
-  distill
+  Exploring predictive modelling with the R
 output_dir: "docs"
 navbar:
   right:
     - text: "Home"
-      href: Week2_Report1.html
-    - text: "Portfolio"
-      href: about.html
-    - text: "About"
       href: index.html
+    - text: "About"
+      href: about.html
 output: distill::distill_article
