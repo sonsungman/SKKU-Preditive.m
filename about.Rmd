@@ -2,8 +2,8 @@
 title: "My Portfolio"
 description: |
 ---
-## In preparation
- 
+## Week 1
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
