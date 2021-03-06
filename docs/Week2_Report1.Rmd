@@ -1,0 +1,38 @@
+---
+title: "WEEK_2 Report"
+description: |
+  Exploring data and Visualizing
+author:
+  - name: sungman Son
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: March 8, 2021
+output:
+  distill::distill_article:
+    code_folding: true
+    
+---
+The aim of this report is both data exploring  and visualizing.
+
+First of all, let's see dataset to explore. Dataset's name is AmesHousing.
+
+```{r}
+head(iris)
+```
+
+```{r}
+summary(iris)
+```
+
+```{r}
+str(iris)
+```
+
+데이터셋 아이리스는 총 150개의 관측치를 갖고 5가지의 변수를 갖습니다. 5가지 변수로는 꽂받침의 길이, 꽃받침의 넓이, 꽃잎의 길이, 꽃잎의 넓이, 종이 있습니다. 변수들을 보았는 때에 관측치들은 꽃잎으로 보입니다. 종으로는 3가지가 있고 setona, versicolor, virginica 이며 각각의 종 당 50개의 관측치로 이루어집니다. 데이터의 구조는 data frame 이며 열에 변수들이 정렬 되있고 각 행은 각각의 관측치들이 들어갑니다.
+
+이제 데이터 시각화를 통해서 데이터를 조금 더 구체적으로 알아보도록 하겠습니다.
+
+
+
+
+
+
