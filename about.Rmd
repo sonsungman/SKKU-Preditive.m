@@ -4,6 +4,10 @@ description: |
 ---
 ## Week 1
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> fd8183653dbe59e39909dd0b42cd098a44d53ed7
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```

@@ -9,6 +9,7 @@ date: March 8, 2021
 output:
   distill::distill_article:
     code_folding: true
+<<<<<<< HEAD
     self_contained: false
 ---
 연습용
