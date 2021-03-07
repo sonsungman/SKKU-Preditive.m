@@ -9,11 +9,11 @@
         "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
       }
     ],
-    "date": "2021-03-06",
+    "date": "2021-03-07",
     "categories": [],
-    "contents": "\n사이트 업로드 확인을 위한 연습용 보고서 입니다.\nThe aim of this report is both data exploring and visualizing.\nFirst of all, let’s see dataset to explore. Dataset’s name is AmesHousing.\n\n\nShow code\n\nhead(iris)\n\n\n  Sepal.Length Sepal.Width Petal.Length Petal.Width Species\n1          5.1         3.5          1.4         0.2  setosa\n2          4.9         3.0          1.4         0.2  setosa\n3          4.7         3.2          1.3         0.2  setosa\n4          4.6         3.1          1.5         0.2  setosa\n5          5.0         3.6          1.4         0.2  setosa\n6          5.4         3.9          1.7         0.4  setosa\n\n\n\nShow code\n\nsummary(iris)\n\n\n  Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   \n Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  \n 1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  \n Median :5.800   Median :3.000   Median :4.350   Median :1.300  \n Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  \n 3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  \n Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  \n       Species  \n setosa    :50  \n versicolor:50  \n virginica :50  \n                \n                \n                \n\n\n\nShow code\n\nstr(iris)\n\n\n'data.frame':   150 obs. of  5 variables:\n $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...\n $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...\n $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...\n $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...\n $ Species     : Factor w/ 3 levels \"setosa\",\"versicolor\",..: 1 1 1 1 1 1 1 1 1 1 ...\n\n\n\n\n",
+    "contents": "\nIntroduction\nThe aim of this report is both data exploring and visualizing.\nFirst of all, I will explore given dataset ‘AmesHousing’. Exploring dataset includes to look at the number of observations in the dataset, variables in the data, structure of the data and so on.\nNext, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.\nFinally, with the information on the datasets we have learned from the above analysis, I will introduce some model approaches that are suitable for data analysis and conclude this report.\nExploring Dataset\n\n\n\n",
     "preview": {},
-    "last_modified": "2021-03-06T15:51:05+00:00",
+    "last_modified": "2021-03-07T05:19:38+00:00",
     "input_file": "week2report.utf8.md"
   }
 ]

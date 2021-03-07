@@ -5,30 +5,25 @@ description: |
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
-date: 03-06-2021
+date: 03-07-2021
 output:
   distill::distill_article:
     self_contained: false
     code_folding: true
     draft: true
 ---
+```{r setup, include=FALSE}
+library(AmesHousing) ; library(tidyverse) 
+```
 
-사이트 업로드 확인을 위한 연습용 보고서 입니다.
+### Introduction
 
 The aim of this report is both data exploring  and visualizing.
 
-First of all, let's see dataset to explore. Dataset's name is AmesHousing.
+First of all, I will explore given dataset 'AmesHousing'. Exploring dataset includes to look at the number of observations in the dataset, variables in the data, structure of the data and so on.
 
-```{r}
-head(iris)
-```
+Next, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.
 
-```{r}
-summary(iris)
-```
+Finally, with the information on the datasets that we have learned from the above analysis, I will introduce some model approaches that are suitable for data analysis and conclude this report.
 
-```{r}
-str(iris)
-```
-
-
+### Exploring Dataset
