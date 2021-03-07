@@ -92,8 +92,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2021-03-06"/>
-<meta property="article:created" itemprop="dateCreated" content="2021-03-06"/>
+<meta property="article:published" itemprop="datePublished" content="2021-03-07"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-03-07"/>
 <meta name="article:author" content="sonsungman"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["WEEK_2 Report"]},{"type":"character","attributes":{},"value":["Exploring data and Visualizing"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["sonsungman"]},{"type":"character","attributes":{},"value":["https://sonsungman.github.io/SKKU-Preditive.m/"]}]}]},{"type":"character","attributes":{},"value":["03-06-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","draft"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["WEEK_2 Report"]},{"type":"character","attributes":{},"value":["Exploring data and Visualizing"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["sonsungman"]},{"type":"character","attributes":{},"value":["https://sonsungman.github.io/SKKU-Preditive.m/"]}]}]},{"type":"character","attributes":{},"value":["03-07-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","draft"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2062,7 +2062,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"WEEK_2 Report","description":"Exploring data and Visualizing","authors":[{"author":"sonsungman","authorURL":"https://sonsungman.github.io/SKKU-Preditive.m/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-03-06T00:00:00.000+00:00","citationText":"sonsungman, 2021"}
+{"title":"WEEK_2 Report","description":"Exploring data and Visualizing","authors":[{"author":"sonsungman","authorURL":"https://sonsungman.github.io/SKKU-Preditive.m/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-03-07T00:00:00.000+00:00","citationText":"sonsungman, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2094,74 +2094,17 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="d-byline">
   sonsungman <a href="https://sonsungman.github.io/SKKU-Preditive.m/" class="uri">https://sonsungman.github.io/SKKU-Preditive.m/</a> 
   
-<br/>03-06-2021
+<br/>03-07-2021
 </div>
 
 <div class="d-article">
-<p>사이트 업로드 확인을 위한 연습용 보고서 입니다.</p>
+<h3 id="introduction">Introduction</h3>
 <p>The aim of this report is both data exploring and visualizing.</p>
-<p>First of all, let’s see dataset to explore. Dataset’s name is AmesHousing.</p>
-<div class="layout-chunk" data-layout="l-body">
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
-</code></pre>
-</div>
-</details>
-<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-1          5.1         3.5          1.4         0.2  setosa
-2          4.9         3.0          1.4         0.2  setosa
-3          4.7         3.2          1.3         0.2  setosa
-4          4.6         3.1          1.5         0.2  setosa
-5          5.0         3.6          1.4         0.2  setosa
-6          5.4         3.9          1.7         0.4  setosa</code></pre>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
-</code></pre>
-</div>
-</details>
-<pre><code>  Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
- Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
- 1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
- Median :5.800   Median :3.000   Median :4.350   Median :1.300  
- Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
- 3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
- Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
-       Species  
- setosa    :50  
- versicolor:50  
- virginica :50  
-                
-                
-                </code></pre>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
-</code></pre>
-</div>
-</details>
-<pre><code>&#39;data.frame&#39;:   150 obs. of  5 variables:
- $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
- $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
- $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
- $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
- $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
-</div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>First of all, I will explore given dataset ‘AmesHousing’. Exploring dataset includes to look at the number of observations in the dataset, variables in the data, structure of the data and so on.</p>
+<p>Next, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.</p>
+<p>Finally, with the information on the datasets we have learned from the above analysis, I will introduce some model approaches that are suitable for data analysis and conclude this report.</p>
+<h3 id="exploring-dataset">Exploring Dataset</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
