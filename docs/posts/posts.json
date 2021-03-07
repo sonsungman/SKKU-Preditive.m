@@ -11,9 +11,9 @@
     ],
     "date": "2021-03-07",
     "categories": [],
-    "contents": "\nIntroduction\nThe aim of this report is both data exploring and visualizing.\nFirst of all, I will explore given dataset ‘AmesHousing’. Exploring dataset includes to look at the number of observations in the dataset, variables in the data, structure of the data and so on.\nNext, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.\nFinally, with the information on the datasets that we have learned from the above analysis, I will introduce some model approaches that are suitable for data analysis and conclude this report.\nExploring Dataset\n\n\n\n",
+    "contents": "\nIntroduction\nThe aim of this report is both data exploring and visualizing.\nFirst of all, I will explore given dataset ‘AmesHousing’. Exploring dataset includes to look at the number of observations in the dataset, variables in the data, structure of the data and so on.\nNext, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.\nFinally, with the information that have learned from the above analysis of the datasets, I will introduce some model approaches that are suitable for data analysis and conclude this report.\nExploring Dataset\n\n\n\n",
     "preview": {},
-    "last_modified": "2021-03-07T05:29:31+00:00",
+    "last_modified": "2021-03-07T13:08:50+00:00",
     "input_file": "week2report.utf8.md"
   }
 ]

@@ -12,8 +12,15 @@
       "title": "Lecture : Applied Statistics",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-03-07T05:24:08+00:00"
+      "last_modified": "2021-03-07T13:08:50+00:00"
+    },
+    {
+      "path": "index2.html",
+      "title": "Article",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2021-03-07T13:09:01+00:00"
     }
   ],
-  "collections": ["posts/posts.json"]
+  "collections": ["posts/posts.json", "posts2/posts2.json"]
 }

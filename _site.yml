@@ -6,8 +6,10 @@ description:
 output_dir: "docs"
 navbar:
   right:
-    - text: "Home"
+    - text: "Applied Statistics"
       href: index.html
+    - text: "Article"
+      href: index2.html
     - text: "About"
       href: about.html
 output: distill::distill_article
