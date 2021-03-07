@@ -24,6 +24,8 @@ First of all, I will explore given dataset 'AmesHousing'. Exploring dataset incl
 
 Next, I will use the ggplot function to learn more about a given dataset with a few visualizations. Through this visualization, it can also get some useful insights into the dataset.
 
-Finally, with the information on the datasets that we have learned from the above analysis, I will introduce some model approaches that are suitable for data analysis and conclude this report.
+Finally, with the information  that have learned from the above analysis of the datasets, I will introduce some model approaches that are suitable for data analysis and conclude this report.
 
 ### Exploring Dataset
+
+

@@ -31,6 +31,3 @@ output:
  - RA in IFRS17
  - DFA and ALM
  - MCEV in Life company
-
-
-
