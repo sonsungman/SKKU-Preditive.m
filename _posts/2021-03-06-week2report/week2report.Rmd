@@ -28,4 +28,20 @@ Finally, with the information  that have learned from the above analysis of the 
 
 ### Exploring Dataset
 
+```{r}
+  ames_raw %>%  glimpse() 
+```
 
+The dataset contains information about the sale of individual residential property in Ames, Iowa from 2006 to 2010
+
+It's easy to manipulate, model, and visualize because the dataset have a structure of 'tidy dataset'.
+
+In the dataset, each row represents a single observation, with a total of 2930 such rows. That means there are 2930 housing observations. On the other hand, there are 81 distinct features for a single house, which are shown in each column.
+
+The last 82nd column contains information about the sale price of the house. In this respect, 80 feature variables for housing in this dataset can be appropriately used to generate predictive models of housing prices. This means that the predictive model can be created by designating housing prices as dependent variables and designating several characteristic variables of housing as independent variables.
+
+Now, let's filter some characteristic variables of the house and visualize them with the price of the house, and think about some insights into the data.
+
+### Visualizing Data
+
+First of all,
