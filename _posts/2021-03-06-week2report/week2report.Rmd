@@ -46,7 +46,3 @@ Now, let's filter some characteristic variables of the house and visualize them 
 ### Visualizing Data
 
 First of all,
-=======
-
-### Visualizing Data
->>>>>>> a4d438db4d80915e7fe6abe1a670695abd5ee273
