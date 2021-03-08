@@ -41,7 +41,12 @@ In the dataset, each row represents a single observation, with a total of 2930 s
 The last 82nd column contains information about the sale price of the house. In this respect, 80 feature variables for housing in this dataset can be appropriately used to generate predictive models of housing prices. This means that the predictive model can be created by designating housing prices as dependent variables and designating several characteristic variables of housing as independent variables.
 
 Now, let's filter some characteristic variables of the house and visualize them with the price of the house, and think about some insights into the data.
+<<<<<<< HEAD
 
 ### Visualizing Data
 
 First of all,
+=======
+
+### Visualizing Data
+>>>>>>> a4d438db4d80915e7fe6abe1a670695abd5ee273
