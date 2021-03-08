@@ -1,7 +1,7 @@
 ---
 title: "Hedging"
 description: |
-  헷징에 대하여 
+  Hedging에 대하여 
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m
