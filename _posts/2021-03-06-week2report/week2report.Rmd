@@ -84,7 +84,7 @@ Furthermore of here, let's look at the relationship between the size and price o
 ```
 
 
-Now, let's look at the relationship between the size of the garage in the house and the price of the house in the house data that has been remodeled or built since 1980. I think that the larger the garage, the higher the housing price, the more likely it is to hypothesize that it has a positive relationship between the two variables.
+Now, let's look at the relationship between the size of the garage in the house and the price of the house in the house data that has been remodeled or built since 1980. I think that the larger the garage, the higher the house price, the more likely it is to hypothesize that it has a positive relationship between the two variables.
 
 
 ```{r}
@@ -92,7 +92,7 @@ Now, let's look at the relationship between the size of the garage in the house 
   geom_point()
 ```
 
-Then, let's think about the size of the pool. Let's look at the price information of house with swimming pool after the 1980s.
+Then, let's think about the size of the pool. Look at the price information of house with swimming pool after the 1980s in the graph below.
 
 ```{r}
    preceding_pool<-preceding %>%
