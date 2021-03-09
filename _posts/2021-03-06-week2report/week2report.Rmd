@@ -5,7 +5,7 @@ description: |
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
-date: 03-07-2021
+date: 03-09-2021
 output:
   distill::distill_article:
     self_contained: false
@@ -36,13 +36,95 @@ The dataset contains information about the sale of individual residential proper
 
 It's easy to manipulate, model, and visualize because the dataset have a structure of 'tidy dataset'.
 
-In the dataset, each row represents a single observation, with a total of 2930 such rows. That means there are 2930 housing observations. On the other hand, there are 81 distinct features for a single house, which are shown in each column.
+In the dataset, each row represents a single observation, with a total of 2930 such rows. That means there are 2930 house observations. On the other hand, there are 81 distinct features for a single house, which are shown in each column.
 
-The last 82nd column contains information about the sale price of the house. In this respect, 80 feature variables for housing in this dataset can be appropriately used to generate predictive models of housing prices. This means that the predictive model can be created by designating housing prices as dependent variables and designating several characteristic variables of housing as independent variables.
+
+The last 82nd column contains information about the sale price of the house. In this respect, 80 feature variables for housing in this dataset can be appropriately used to generate predictive models of house prices. This means that the predictive model can be created by designating house prices as dependent variables and designating several characteristic variables of house as independent variables.
 
 Now, let's filter some characteristic variables of the house and visualize them with the price of the house, and think about some insights into the data.
-<<<<<<< HEAD
+
 
 ### Visualizing Data
 
-First of all,
+First of all, I focus on 'Street' column. Because it is categorical variable, it seems appropriate to use a bar chart.
+
+```{r}
+ggplot(data = ames_raw) +
+  geom_bar(mapping = aes(x=Street))
+
+```
+
+According to the chart above, most of the houses are located on Pave type street. Thus, on this dataset, the Street variable does not appear to be able to give significant information.
+
+Then, let's think about the year the house was built. I think the year that house was built would mean a lot and it would have a major impact on house price.
+
+```{r}
+ggplot(data = ames_raw) +
+  geom_bar(mapping = aes(x=`Year Built`))
+```
+
+Since I think that the year of construction and the year of remodeling  have a major impact on the quality of house, I consider only houses that have been built or remodeled since 1980. Without remodeling, the building year would appear in the remodeling year, so I draw  graph with the remodeling year and sales price.
+
+
+```{r}
+  preceding <- ames_raw %>%
+    filter(`Year Remod/Add` > 1980)
+  ggplot(data=preceding, mapping = aes( y= SalePrice , x = `Year Remod/Add`)) +
+    geom_point()
+  
+```
+
+Furthermore of here, let's look at the relationship between the size and price of a house after 1980.
+
+
+```{r}
+  ggplot(data = preceding, mapping = aes(x =`Lot Area`, y = `SalePrice`)) +
+  geom_point()
+
+```
+
+
+Now, let's look at the relationship between the size of the garage in the house and the price of the house in the house data that has been remodeled or built since 1980. I think that the larger the garage, the higher the housing price, the more likely it is to hypothesize that it has a positive relationship between the two variables.
+
+
+```{r}
+  ggplot(data = preceding, mapping = aes(x=`Garage Cars`,y = SalePrice)) +
+  geom_point()
+```
+
+Then, let's think about the size of the pool. Let's look at the price information of house with swimming pool after the 1980s.
+
+```{r}
+   preceding_pool<-preceding %>%
+  filter(`Pool Area`>0)
+  ggplot(data=preceding_pool, mapping = aes(x=`Pool Area`,y=SalePrice)) +
+  geom_point()
+
+```
+According to the graph above, there are many houses without swimming pool and the fact that there are swimming pool does not mean that house price will rise.
+
+Lastly, let's take a look at the overall assessment of house and the year of construction or remodeling of house since 1980.
+
+```{r}
+  ggplot(data = preceding, mapping = aes(y = SalePrice, x = `Overall Qual`)) +
+  geom_point()
+```
+
+### Conclusion
+
+
+I investigated the dataset 'Ames Housing' through data exploration. About the 2930 house observational data, 81 characteristic variables provided information about house. Furthermore, several feature variables from selected observations through certain criteria provide meaningful information by visualizing house price.
+
+In light of the graph shown above,
+
+ 1. The larger the size of the house, of course the higher the price of the house, but the size of the house does not seem to be a decisive factor.
+
+ 2. The capacity of a garage in a house appears to be a variable that affects house price.
+
+ 3. As with previous 'Street' type column, swimming pool is not a big influence on house price in this data because there are many homes without swimming pool.
+
+ 4. "Overall Qual' column (Rates the overall material and finish of the house) is a positive correlation with house price.
+
+Therefore, if I make a model for predicting house price, I will set the size of the house, garage size of the house, Overall Quality, and the year of construction or remodeling as an independent variable and use observations from the 1980s to estimate the model's parameters.
+
+Finally, I think that Multiple regression analyses seem appropriate.
