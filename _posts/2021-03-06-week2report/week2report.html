@@ -1579,7 +1579,7 @@ $ `Sale Type`       &lt;chr&gt; &quot;WD &quot;, &quot;WD &quot;, &quot;WD &quot
 $ `Sale Condition`  &lt;chr&gt; &quot;Normal&quot;, &quot;Normal&quot;, &quot;Normal&quot;, &quot;Normal&quot;, &quot;N…
 $ SalePrice         &lt;int&gt; 215000, 105000, 172000, 244000, 189900, 19…</code></pre>
 </div>
-<p>The dataset contains information about the sale of individual residential property in Ames, Iowa from 2006 to 2010</p>
+<p>The dataset contains information about the sale of individual residential property in Ames, Iowa from 2006 to 2010.</p>
 <p>It’s easy to manipulate, model, and visualize because the dataset have a structure of ‘tidy dataset’.</p>
 <p>In the dataset, each row represents a single observation, with a total of 2930 such rows. That means there are 2930 house observations. On the other hand, there are 81 distinct features for a single house, which are shown in each column.</p>
 <p>The last 82nd column contains information about the sale price of the house. In this respect, 80 feature variables for housing in this dataset can be appropriately used to generate predictive models of house prices. This means that the predictive model can be created by designating house prices as dependent variables and designating several characteristic variables of house as independent variables.</p>
@@ -1696,10 +1696,10 @@ Show code
 <li><p>The larger the size of the house, of course the higher the price of the house, but the size of the house does not seem to be a decisive factor.</p></li>
 <li><p>The capacity of a garage in a house appears to be a variable that affects house price.</p></li>
 <li><p>As with previous ‘Street’ type column, swimming pool is not a big influence on house price in this data because there are many homes without swimming pool.</p></li>
-<li><p>"Overall Qual’ column (Rates the overall material and finish of the house) is a positive correlation with house price.</p></li>
+<li><p>‘Overall Qual’ column (Rates the overall material and finish of the house) is a positive correlation with house price.</p></li>
 </ol>
 <p>Therefore, if I make a model for predicting house price, I will set the size of the house, garage size of the house, Overall Quality, and the year of construction or remodeling as an independent variable and use observations from the 1980s to estimate the model’s parameters.</p>
-<p>Finally, I think that Multiple regression analyses seem appropriate.</p>
+<p>Finally, I think that multiple regression analyses seem appropriate.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

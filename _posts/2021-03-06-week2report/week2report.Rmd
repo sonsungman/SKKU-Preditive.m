@@ -123,7 +123,7 @@ In light of the graph shown above,
 
  3. As with previous 'Street' type column, swimming pool is not a big influence on house price in this data because there are many homes without swimming pool.
 
- 4. "Overall Qual' column (Rates the overall material and finish of the house) is a positive correlation with house price.
+ 4. 'Overall Qual' column (Rates the overall material and finish of the house) is a positive correlation with house price.
 
 Therefore, if I make a model for predicting house price, I will set the size of the house, garage size of the house, Overall Quality, and the year of construction or remodeling as an independent variable and use observations from the 1980s to estimate the model's parameters.
 
