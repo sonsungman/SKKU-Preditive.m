@@ -12,14 +12,22 @@
       "title": "Lecture : Applied Statistics",
       "author": [],
       "contents": "\n\n\n\n",
+<<<<<<< HEAD
       "last_modified": "2021-03-09T07:51:36+00:00"
+=======
+      "last_modified": "2021-03-09T07:47:20+00:00"
+>>>>>>> 75efcfa72542b939e9e561594aca43ab53636cbe
     },
     {
       "path": "index2.html",
       "title": "Article",
       "author": [],
       "contents": "\n\n\n\n",
+<<<<<<< HEAD
       "last_modified": "2021-03-09T07:51:54+00:00"
+=======
+      "last_modified": "2021-03-09T07:47:33+00:00"
+>>>>>>> 75efcfa72542b939e9e561594aca43ab53636cbe
     }
   ],
   "collections": ["posts/posts.json", "posts2/posts2.json"]
