@@ -32,7 +32,7 @@ Finally, with the information  that have learned from the above analysis of the 
   ames_raw %>%  glimpse() 
 ```
 
-The dataset contains information about the sale of individual residential property in Ames, Iowa from 2006 to 2010
+The dataset contains information about the sale of individual residential property in Ames, Iowa from 2006 to 2010.
 
 It's easy to manipulate, model, and visualize because the dataset have a structure of 'tidy dataset'.
 
@@ -127,4 +127,4 @@ In light of the graph shown above,
 
 Therefore, if I make a model for predicting house price, I will set the size of the house, garage size of the house, Overall Quality, and the year of construction or remodeling as an independent variable and use observations from the 1980s to estimate the model's parameters.
 
-Finally, I think that Multiple regression analyses seem appropriate.
+Finally, I think that multiple regression analyses seem appropriate.
