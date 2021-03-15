@@ -1,11 +1,6 @@
 # SKKU-Preditive.m
 
-#git config --global user.email "you@example.com"
-#git config --global user.name "Your Name"
+This is coding for writing my homepage.
+The report and article you have created will be published
 
-install.packages(c("usethis", "remotes"))
-remotes::install_github("rstudio/rmarkdown")
-
-library(postcards)
-create_postcard()
-
+Thank you~!

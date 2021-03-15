@@ -1,0 +1,76 @@
+---
+title: "WEEK_3 Report"
+description: |
+  First try to predict sale price with AmesHousing data
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 03-15-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+library(AmesHousing) ; library(tidyverse) 
+```
+
+
+### Introduction
+
+
+The aim of this report is regression modeling for sales price forecasting.
+
+
+Last week, I explored and visualized Ames Housing data to find independent variables appropriate for home sales price prediction modeling.
+
+
+Among the three problem (regression problem, classification problems, and clustering problem) presented in ISL, sales price prediction corresponds to regression problem.
+
+
+So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I visualize data that can support previous discussions. Finally, I build a multi-regression model to predict the sales price based on the previous results.
+
+
+### Review of previous Report
+
+
+In the last report, I was able to identify some variables that could affect house prices and fact through data exploration and visualization.
+
+
+ - The presence of swimming pools and pavement conditions on the streets are insufficient to affect housing prices.
+ 
+ 
+ - 'Overall Qual' column (Rates the overall material and finish of the house) is a positive correlation with house price.
+ 
+ 
+ - The larger the size of the house, of course the higher the price of the house, but the size of the house does not seem to be a decisive factor.
+ 
+ 
+ - The capacity of a garage in a house appears to be a variable that affects house price.
+ 
+ 
+ - The timing of housing construction or remodeling will affect house prices.
+ 
+ 
+### Peer review and feedback from the Professor Lee
+
+
+ - There is no reason not to use house data built or remodeled before 1980 for modeling. Therefore, there may be a way to combine pre-1980 data into the 1980.
+ 
+ 
+ - The variable regarding the capacity of the garage may be correlated with the Lot Area variable. Therefore, it is necessary to rethink the consideration of both variables in modeling.
+ 
+ 
+ - The neighborhood around the house affects the price.
+ 
+
+### Visualization about previous discussions
+
+
+
+
+
+### Building a multi-regression model
+
+
