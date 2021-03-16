@@ -12,15 +12,22 @@
       "title": "Lecture : Applied Statistics",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-03-15T14:21:01+00:00"
+      "last_modified": "2021-03-16T05:10:00+00:00"
     },
     {
       "path": "index2.html",
       "title": "Article",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-03-15T14:20:41+00:00"
+      "last_modified": "2021-03-16T05:10:28+00:00"
+    },
+    {
+      "path": "index3.html",
+      "title": "Project BDA with RStan",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2021-03-16T05:09:38+00:00"
     }
   ],
-  "collections": ["posts/posts.json", "posts2/posts2.json"]
+  "collections": ["posts/posts.json", "posts2/posts2.json", "posts3/posts3.json"]
 }
