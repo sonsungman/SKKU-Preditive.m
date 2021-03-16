@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "path": "posts3/2021-03-16-Simple example for RStan/",
+    "title": "Simple example for RStan",
+    "description": "First try with RStan",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-03-16",
+    "categories": [],
+    "contents": "\nIntroduction\nRStan에 친숙해지기 위해서 간단한 예제를 탐색해 보고자 한다.\n이 예제는 이항분포 예제이다.\nRStan의 경우 데이터를 list로 받는다.\n\n\nShow code\n\nN <- 18\ny <- c(rep(1,12), rep(0,6)) # 12 S, 6 F\nstan_data <- list (N = N,y = y )\nstan_data\n\n\n$N\n[1] 18\n\n$y\n [1] 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0\n\n\n\n\n",
+    "preview": {},
+    "last_modified": "2021-03-16T05:29:53+00:00",
+    "input_file": "2021-03-16-Simple-example-for-RStan.utf8.md"
+  }
+]
