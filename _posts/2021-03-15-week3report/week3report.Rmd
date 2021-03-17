@@ -13,7 +13,7 @@ output:
     draft: true
 ---
 ```{r setup, include=FALSE}
-library(AmesHousing) ; library(tidyverse) 
+library(AmesHousing) ; library(tidyverse) ;library(purrr) ; library(magrittr)
 ```
 
 
@@ -50,7 +50,7 @@ In the last report, I was able to identify some variables that could affect hous
  - The capacity of a garage in a house appears to be a variable that affects house price.
  
  
- - The timing of housing construction or remodeling will affect house prices.
+ - The timing of house construction or remodeling will affect house prices.
  
  
 ### Peer review and feedback from the Professor Lee
@@ -65,12 +65,38 @@ In the last report, I was able to identify some variables that could affect hous
  - The neighborhood around the house affects the price.
  
 
-### Visualization about previous discussions
-
-
-
-
-
 ### Building a multi-regression model
 
+Based on the year of architecture or remodeling, data is divided before and after 1980 and analyzed using multiple regression analyses, respectively.
+
+
+```{r}
+
+  data1<- ames_raw %>%
+    filter(`Year Remod/Add` <= 1980)
+
+  data2<- ames_raw %>%
+    filter(`Year Remod/Add` > 1980)
+  
+  head(data1)
+
+```
+
+As an independent variable of the model, I use `Lot Area`, `Overall Qual`,and `Garage Cars`. It was modeled by dividing the housing according to the area in which it was located.
+
+```{r}
+  
+
+  nested_df<-data1 %>% 
+    group_by(Neighborhood) %>%
+    nest() %>% ungroup(Neighborhood)
+    
+  nested_df %>%
+   mutate(model = map(data, ~lm(SalePrice ~ `Lot Area` + `Overall Qual` + `Garage Cars` , data=.))) %>%
+    transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
+
+  
+```
+
+After multiple regression analyses based on the three independent variables mentioned above with house data prior to 1980, the estimated parameters were presented by neighborhood.
 

@@ -1482,7 +1482,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>The aim of this report is regression modeling for sales price forecasting.</p>
 <p>Last week, I explored and visualized Ames Housing data to find independent variables appropriate for home sales price prediction modeling.</p>
 <p>Among the three problem (regression problem, classification problems, and clustering problem) presented in ISL, sales price prediction corresponds to regression problem.</p>
-<p>So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Finally, I build a multi-regression model to predict the sales price based on the previous results.</p>
+<p>So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I visualize data that can support previous discussions. Finally, I build a multi-regression model to predict the sales price based on the previous results.</p>
 <h3 id="review-of-previous-report">Review of previous Report</h3>
 <p>In the last report, I was able to identify some variables that could affect house prices and fact through data exploration and visualization.</p>
 <ul>
@@ -1490,7 +1490,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>‘Overall Qual’ column (Rates the overall material and finish of the house) is a positive correlation with house price.</p></li>
 <li><p>The larger the size of the house, of course the higher the price of the house, but the size of the house does not seem to be a decisive factor.</p></li>
 <li><p>The capacity of a garage in a house appears to be a variable that affects house price.</p></li>
-<li><p>The timing of housing construction or remodeling will affect house prices.</p></li>
+<li><p>The timing of house construction or remodeling will affect house prices.</p></li>
 </ul>
 <h3 id="peer-review-and-feedback-from-the-professor-lee">Peer review and feedback from the Professor Lee</h3>
 <ul>
@@ -1498,8 +1498,98 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>The variable regarding the capacity of the garage may be correlated with the Lot Area variable. Therefore, it is necessary to rethink the consideration of both variables in modeling.</p></li>
 <li><p>The neighborhood around the house affects the price.</p></li>
 </ul>
-<h3 id="building-a-multi-regression-model">building a multi-regression model</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h3 id="building-a-multi-regression-model">Building a multi-regression model</h3>
+<p>Based on the year of architecture or remodeling, data is divided before and after 1980 and analyzed using multiple regression analyses, respectively.</p>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>data1</span><span class='op'>&lt;-</span> <span class='va'>ames_raw</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&lt;=</span> <span class='fl'>1980</span><span class='op'>)</span> 
+
+  <span class='va'>data2</span><span class='op'>&lt;-</span> <span class='va'>ames_raw</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span>  
+  
+  <span class='va'>data1</span>
+</code></pre>
+</div>
+</details>
+<pre><code># A tibble: 1,232 x 82
+   Order PID       `MS SubClass` `MS Zoning` `Lot Frontage` `Lot Area`
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;                &lt;int&gt;      &lt;int&gt;
+ 1     1 05263011… 020           RL                     141      31770
+ 2     2 05263500… 020           RH                      80      11622
+ 3     3 05263510… 020           RL                      81      14267
+ 4     4 05263530… 020           RL                      93      11160
+ 5    19 05272761… 020           RL                     140      19138
+ 6    21 05273581… 020           RL                     105      11751
+ 7    22 05273582… 085           RL                      85      10625
+ 8    24 05274022… 020           RL                      NA      11241
+ 9    26 05274030… 020           RL                      65       8450
+10    27 05274041… 020           RL                      70       8400
+# … with 1,222 more rows, and 76 more variables: Street &lt;chr&gt;,
+#   Alley &lt;chr&gt;, Lot Shape &lt;chr&gt;, Land Contour &lt;chr&gt;,
+#   Utilities &lt;chr&gt;, Lot Config &lt;chr&gt;, Land Slope &lt;chr&gt;,
+#   Neighborhood &lt;chr&gt;, Condition 1 &lt;chr&gt;, Condition 2 &lt;chr&gt;,
+#   Bldg Type &lt;chr&gt;, House Style &lt;chr&gt;, Overall Qual &lt;int&gt;,
+#   Overall Cond &lt;int&gt;, Year Built &lt;int&gt;, Year Remod/Add &lt;int&gt;,
+#   Roof Style &lt;chr&gt;, Roof Matl &lt;chr&gt;, Exterior 1st &lt;chr&gt;,
+#   Exterior 2nd &lt;chr&gt;, Mas Vnr Type &lt;chr&gt;, Mas Vnr Area &lt;int&gt;,
+#   Exter Qual &lt;chr&gt;, Exter Cond &lt;chr&gt;, Foundation &lt;chr&gt;,
+#   Bsmt Qual &lt;chr&gt;, Bsmt Cond &lt;chr&gt;, Bsmt Exposure &lt;chr&gt;,
+#   BsmtFin Type 1 &lt;chr&gt;, BsmtFin SF 1 &lt;int&gt;, BsmtFin Type 2 &lt;chr&gt;,
+#   BsmtFin SF 2 &lt;int&gt;, Bsmt Unf SF &lt;int&gt;, Total Bsmt SF &lt;int&gt;,
+#   Heating &lt;chr&gt;, Heating QC &lt;chr&gt;, Central Air &lt;chr&gt;,
+#   Electrical &lt;chr&gt;, 1st Flr SF &lt;int&gt;, 2nd Flr SF &lt;int&gt;,
+#   Low Qual Fin SF &lt;int&gt;, Gr Liv Area &lt;int&gt;, Bsmt Full Bath &lt;int&gt;,
+#   Bsmt Half Bath &lt;int&gt;, Full Bath &lt;int&gt;, Half Bath &lt;int&gt;,
+#   Bedroom AbvGr &lt;int&gt;, Kitchen AbvGr &lt;int&gt;, Kitchen Qual &lt;chr&gt;,
+#   TotRms AbvGrd &lt;int&gt;, Functional &lt;chr&gt;, Fireplaces &lt;int&gt;,
+#   Fireplace Qu &lt;chr&gt;, Garage Type &lt;chr&gt;, Garage Yr Blt &lt;int&gt;,
+#   Garage Finish &lt;chr&gt;, Garage Cars &lt;int&gt;, Garage Area &lt;int&gt;,
+#   Garage Qual &lt;chr&gt;, Garage Cond &lt;chr&gt;, Paved Drive &lt;chr&gt;,
+#   Wood Deck SF &lt;int&gt;, Open Porch SF &lt;int&gt;, Enclosed Porch &lt;int&gt;,
+#   3Ssn Porch &lt;int&gt;, Screen Porch &lt;int&gt;, Pool Area &lt;int&gt;,
+#   Pool QC &lt;chr&gt;, Fence &lt;chr&gt;, Misc Feature &lt;chr&gt;, Misc Val &lt;int&gt;,
+#   Mo Sold &lt;int&gt;, Yr Sold &lt;int&gt;, Sale Type &lt;chr&gt;,
+#   Sale Condition &lt;chr&gt;, SalePrice &lt;int&gt;</code></pre>
+</div>
+<p>As an independent variable of the model, I use <code>Lot Area</code>, <code>Overall Qual</code>,and <code>Garage Cars</code>. It was modeled by dividing the housing according to the area in which it was located.</p>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>nested_df</span><span class='op'>&lt;-</span><span class='va'>data1</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>nest</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>ungroup</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span>
+    
+  <span class='va'>nested_df</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>SalePrice</span> <span class='op'>~</span> <span class='va'>`Lot Area`</span> <span class='op'>+</span> <span class='va'>`Overall Qual`</span> <span class='op'>+</span> <span class='va'>`Garage Cars`</span> , data<span class='op'>=</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>transmute</span><span class='op'>(</span><span class='va'>Neighborhood</span>, <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span><span class='op'>(</span><span class='va'>model</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>$</span><span class='va'>coefficients</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code># A tibble: 21 x 5
+   Neighborhood `(Intercept)` `\`Lot Area\`` `\`Overall Qual\``
+   &lt;chr&gt;                &lt;dbl&gt;          &lt;dbl&gt;              &lt;dbl&gt;
+ 1 NAmes                8410.           2.64             17871.
+ 2 Gilbert            184658.          -1.27              -679.
+ 3 NWAmes             -24896.           3.78              8823.
+ 4 BrDale             157231.          13.5             -13583.
+ 5 NPkVill            203369.          -3.86             -9548.
+ 6 SawyerW            162228.         -11.7               8045.
+ 7 Sawyer               9677.           2.03             17886.
+ 8 Greens             413043.         -57.8                 NA 
+ 9 BrkSide              2206.           3.65             16478.
+10 OldTown             -4018.           2.70             15994.
+# … with 11 more rows, and 1 more variable: `Garage Cars` &lt;dbl&gt;</code></pre>
+</div>
+<p>After multiple regression analyses based on the three independent variables mentioned above with house data prior to 1980, the estimated parameters were presented by neighborhood.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
