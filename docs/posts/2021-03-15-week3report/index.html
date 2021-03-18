@@ -2129,54 +2129,49 @@ Show code
 </summary>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>data1</span><span class='op'>&lt;-</span> <span class='va'>ames_raw</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&lt;=</span> <span class='fl'>1980</span><span class='op'>)</span> 
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&lt;=</span> <span class='fl'>1980</span><span class='op'>)</span>
 
   <span class='va'>data2</span><span class='op'>&lt;-</span> <span class='va'>ames_raw</span> <span class='op'>%&gt;%</span>
-    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span>  
+    <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>`Year Remod/Add`</span> <span class='op'>&gt;</span> <span class='fl'>1980</span><span class='op'>)</span>
   
-  <span class='va'>data1</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data1</span><span class='op'>)</span>
 </code></pre>
 </div>
 </details>
-<pre><code># A tibble: 1,232 x 82
-   Order PID       `MS SubClass` `MS Zoning` `Lot Frontage` `Lot Area`
-   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;                &lt;int&gt;      &lt;int&gt;
- 1     1 05263011… 020           RL                     141      31770
- 2     2 05263500… 020           RH                      80      11622
- 3     3 05263510… 020           RL                      81      14267
- 4     4 05263530… 020           RL                      93      11160
- 5    19 05272761… 020           RL                     140      19138
- 6    21 05273581… 020           RL                     105      11751
- 7    22 05273582… 085           RL                      85      10625
- 8    24 05274022… 020           RL                      NA      11241
- 9    26 05274030… 020           RL                      65       8450
-10    27 05274041… 020           RL                      70       8400
-# … with 1,222 more rows, and 76 more variables: Street &lt;chr&gt;,
-#   Alley &lt;chr&gt;, Lot Shape &lt;chr&gt;, Land Contour &lt;chr&gt;,
-#   Utilities &lt;chr&gt;, Lot Config &lt;chr&gt;, Land Slope &lt;chr&gt;,
-#   Neighborhood &lt;chr&gt;, Condition 1 &lt;chr&gt;, Condition 2 &lt;chr&gt;,
-#   Bldg Type &lt;chr&gt;, House Style &lt;chr&gt;, Overall Qual &lt;int&gt;,
-#   Overall Cond &lt;int&gt;, Year Built &lt;int&gt;, Year Remod/Add &lt;int&gt;,
-#   Roof Style &lt;chr&gt;, Roof Matl &lt;chr&gt;, Exterior 1st &lt;chr&gt;,
-#   Exterior 2nd &lt;chr&gt;, Mas Vnr Type &lt;chr&gt;, Mas Vnr Area &lt;int&gt;,
-#   Exter Qual &lt;chr&gt;, Exter Cond &lt;chr&gt;, Foundation &lt;chr&gt;,
-#   Bsmt Qual &lt;chr&gt;, Bsmt Cond &lt;chr&gt;, Bsmt Exposure &lt;chr&gt;,
-#   BsmtFin Type 1 &lt;chr&gt;, BsmtFin SF 1 &lt;int&gt;, BsmtFin Type 2 &lt;chr&gt;,
-#   BsmtFin SF 2 &lt;int&gt;, Bsmt Unf SF &lt;int&gt;, Total Bsmt SF &lt;int&gt;,
-#   Heating &lt;chr&gt;, Heating QC &lt;chr&gt;, Central Air &lt;chr&gt;,
-#   Electrical &lt;chr&gt;, 1st Flr SF &lt;int&gt;, 2nd Flr SF &lt;int&gt;,
-#   Low Qual Fin SF &lt;int&gt;, Gr Liv Area &lt;int&gt;, Bsmt Full Bath &lt;int&gt;,
-#   Bsmt Half Bath &lt;int&gt;, Full Bath &lt;int&gt;, Half Bath &lt;int&gt;,
-#   Bedroom AbvGr &lt;int&gt;, Kitchen AbvGr &lt;int&gt;, Kitchen Qual &lt;chr&gt;,
-#   TotRms AbvGrd &lt;int&gt;, Functional &lt;chr&gt;, Fireplaces &lt;int&gt;,
-#   Fireplace Qu &lt;chr&gt;, Garage Type &lt;chr&gt;, Garage Yr Blt &lt;int&gt;,
-#   Garage Finish &lt;chr&gt;, Garage Cars &lt;int&gt;, Garage Area &lt;int&gt;,
-#   Garage Qual &lt;chr&gt;, Garage Cond &lt;chr&gt;, Paved Drive &lt;chr&gt;,
-#   Wood Deck SF &lt;int&gt;, Open Porch SF &lt;int&gt;, Enclosed Porch &lt;int&gt;,
-#   3Ssn Porch &lt;int&gt;, Screen Porch &lt;int&gt;, Pool Area &lt;int&gt;,
-#   Pool QC &lt;chr&gt;, Fence &lt;chr&gt;, Misc Feature &lt;chr&gt;, Misc Val &lt;int&gt;,
-#   Mo Sold &lt;int&gt;, Yr Sold &lt;int&gt;, Sale Type &lt;chr&gt;,
-#   Sale Condition &lt;chr&gt;, SalePrice &lt;int&gt;</code></pre>
+<pre><code># A tibble: 6 x 82
+  Order PID        `MS SubClass` `MS Zoning` `Lot Frontage` `Lot Area`
+  &lt;int&gt; &lt;chr&gt;      &lt;chr&gt;         &lt;chr&gt;                &lt;int&gt;      &lt;int&gt;
+1     1 0526301100 020           RL                     141      31770
+2     2 0526350040 020           RH                      80      11622
+3     3 0526351010 020           RL                      81      14267
+4     4 0526353030 020           RL                      93      11160
+5    19 0527276150 020           RL                     140      19138
+6    21 0527358140 020           RL                     105      11751
+# … with 76 more variables: Street &lt;chr&gt;, Alley &lt;chr&gt;,
+#   Lot Shape &lt;chr&gt;, Land Contour &lt;chr&gt;, Utilities &lt;chr&gt;,
+#   Lot Config &lt;chr&gt;, Land Slope &lt;chr&gt;, Neighborhood &lt;chr&gt;,
+#   Condition 1 &lt;chr&gt;, Condition 2 &lt;chr&gt;, Bldg Type &lt;chr&gt;,
+#   House Style &lt;chr&gt;, Overall Qual &lt;int&gt;, Overall Cond &lt;int&gt;,
+#   Year Built &lt;int&gt;, Year Remod/Add &lt;int&gt;, Roof Style &lt;chr&gt;,
+#   Roof Matl &lt;chr&gt;, Exterior 1st &lt;chr&gt;, Exterior 2nd &lt;chr&gt;,
+#   Mas Vnr Type &lt;chr&gt;, Mas Vnr Area &lt;int&gt;, Exter Qual &lt;chr&gt;,
+#   Exter Cond &lt;chr&gt;, Foundation &lt;chr&gt;, Bsmt Qual &lt;chr&gt;,
+#   Bsmt Cond &lt;chr&gt;, Bsmt Exposure &lt;chr&gt;, BsmtFin Type 1 &lt;chr&gt;,
+#   BsmtFin SF 1 &lt;int&gt;, BsmtFin Type 2 &lt;chr&gt;, BsmtFin SF 2 &lt;int&gt;,
+#   Bsmt Unf SF &lt;int&gt;, Total Bsmt SF &lt;int&gt;, Heating &lt;chr&gt;,
+#   Heating QC &lt;chr&gt;, Central Air &lt;chr&gt;, Electrical &lt;chr&gt;,
+#   1st Flr SF &lt;int&gt;, 2nd Flr SF &lt;int&gt;, Low Qual Fin SF &lt;int&gt;,
+#   Gr Liv Area &lt;int&gt;, Bsmt Full Bath &lt;int&gt;, Bsmt Half Bath &lt;int&gt;,
+#   Full Bath &lt;int&gt;, Half Bath &lt;int&gt;, Bedroom AbvGr &lt;int&gt;,
+#   Kitchen AbvGr &lt;int&gt;, Kitchen Qual &lt;chr&gt;, TotRms AbvGrd &lt;int&gt;,
+#   Functional &lt;chr&gt;, Fireplaces &lt;int&gt;, Fireplace Qu &lt;chr&gt;,
+#   Garage Type &lt;chr&gt;, Garage Yr Blt &lt;int&gt;, Garage Finish &lt;chr&gt;,
+#   Garage Cars &lt;int&gt;, Garage Area &lt;int&gt;, Garage Qual &lt;chr&gt;,
+#   Garage Cond &lt;chr&gt;, Paved Drive &lt;chr&gt;, Wood Deck SF &lt;int&gt;,
+#   Open Porch SF &lt;int&gt;, Enclosed Porch &lt;int&gt;, 3Ssn Porch &lt;int&gt;,
+#   Screen Porch &lt;int&gt;, Pool Area &lt;int&gt;, Pool QC &lt;chr&gt;, Fence &lt;chr&gt;,
+#   Misc Feature &lt;chr&gt;, Misc Val &lt;int&gt;, Mo Sold &lt;int&gt;, Yr Sold &lt;int&gt;,
+#   Sale Type &lt;chr&gt;, Sale Condition &lt;chr&gt;, SalePrice &lt;int&gt;</code></pre>
 </div>
 <p>As an independent variable of the model, I use <code>Lot Area</code>, <code>Overall Qual</code>,and <code>Garage Cars</code>. It was modeled by dividing the housing according to the area in which it was located.</p>
 <div class="layout-chunk" data-layout="l-body">

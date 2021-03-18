@@ -71,6 +71,7 @@ Based on the year of architecture or remodeling, data is divided before and afte
 
 
 ```{r}
+## Data divided
 
   data1<- ames_raw %>%
     filter(`Year Remod/Add` <= 1980)
@@ -78,14 +79,22 @@ Based on the year of architecture or remodeling, data is divided before and afte
   data2<- ames_raw %>%
     filter(`Year Remod/Add` > 1980)
   
-  head(data1)
-
 ```
+
 
 As an independent variable of the model, I use `Lot Area`, `Overall Qual`,and `Garage Cars`. It was modeled by dividing the housing according to the area in which it was located.
 
+
 ```{r}
-  
+  nrow(data1)
+
+  data1 %>% 
+      group_by(Neighborhood) %>%
+      summarize(count = n())  
+```
+
+```{r}
+
 
   nested_df<-data1 %>% 
     group_by(Neighborhood) %>%
@@ -98,5 +107,27 @@ As an independent variable of the model, I use `Lot Area`, `Overall Qual`,and `G
   
 ```
 
+
 After multiple regression analyses based on the three independent variables mentioned above with house data prior to 1980, the estimated parameters were presented by neighborhood.
 
+
+```{r}
+  nrow(data2)
+
+  data2 %>% 
+      group_by(Neighborhood) %>%
+      summarize(count = n())  
+```
+
+
+```{r}
+
+  nested_df2<-data2 %>% 
+    group_by(Neighborhood) %>%
+    nest() %>% ungroup(Neighborhood)
+
+nested_df2 %>%
+   mutate(model = map(data, ~lm(SalePrice ~ `Lot Area` + `Overall Qual` + `Garage Cars` , data=.))) ## %>%
+  ## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
+
+```
