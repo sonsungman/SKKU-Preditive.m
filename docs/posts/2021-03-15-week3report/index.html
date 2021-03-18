@@ -117,7 +117,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["week3report_files/anchor-4.2.2/anchor.min.js","week3report_files/bowser-1.9.3/bowser.min.js","week3report_files/distill-2.2.21/template.v2.js","week3report_files/header-attrs-2.7.2/header-attrs.js","week3report_files/jquery-1.11.3/jquery.min.js","week3report_files/popper-2.6.0/popper.min.js","week3report_files/tippy-6.2.7/tippy-bundle.umd.min.js","week3report_files/tippy-6.2.7/tippy-light-border.css","week3report_files/tippy-6.2.7/tippy.css","week3report_files/tippy-6.2.7/tippy.umd.min.js","week3report_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["sample_submission.csv","test.csv","train.csv","week3report_files/anchor-4.2.2/anchor.min.js","week3report_files/bowser-1.9.3/bowser.min.js","week3report_files/distill-2.2.21/template.v2.js","week3report_files/header-attrs-2.7.2/header-attrs.js","week3report_files/jquery-1.11.3/jquery.min.js","week3report_files/popper-2.6.0/popper.min.js","week3report_files/tippy-6.2.7/tippy-bundle.umd.min.js","week3report_files/tippy-6.2.7/tippy-light-border.css","week3report_files/tippy-6.2.7/tippy.css","week3report_files/tippy-6.2.7/tippy.umd.min.js","week3report_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2101,10 +2101,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div class="d-article">
 <h3 id="introduction">Introduction</h3>
-<p>The aim of this report is regression modeling for sales price forecasting.</p>
+<p>The aim of this report is linear regression modeling for sales price forecasting.</p>
 <p>Last week, I explored and visualized Ames Housing data to find independent variables appropriate for home sales price prediction modeling.</p>
 <p>Among the three problem (regression problem, classification problems, and clustering problem) presented in ISL, sales price prediction corresponds to regression problem.</p>
-<p>So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I visualize data that can support previous discussions. Finally, I build a multi-regression model to predict the sales price based on the previous results.</p>
+<p>Meanwhile, this report did not address the issue of VIF or the concept of <span class="math inline">\(R^{2}\)</span> or data pre-processing and so on. I will address these concepts in further report later.</p>
+<p>So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I build a multi-regression model to predict the sales price based on the previous results. Finally, I use train data to build prediction model and make prediction with test data.</p>
 <h3 id="review-of-previous-report">Review of previous Report</h3>
 <p>In the last report, I was able to identify some variables that could affect house prices and fact through data exploration and visualization.</p>
 <ul>
@@ -2290,7 +2291,144 @@ Show code
 </div>
 </details>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h3 id="section-2">3</h3>
+<p>Now, I apply the train data to the model above. Above, the number of data was sufficient, so the data were modeled in two groups based on the 1980 remodeling year. However, since train data is half of the data above, I make a multi-linear regression model by adding remodeling year as an independent variable.</p>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>train_data</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"train.csv"</span><span class='op'>)</span> ;
+
+  <span class='va'>test_data</span>  <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"test.csv"</span><span class='op'>)</span> ;
+  
+  <span class='va'>train_data</span>
+</code></pre>
+</div>
+</details>
+<pre><code># A tibble: 1,460 x 81
+      Id MSSubClass MSZoning LotFrontage LotArea Street Alley LotShape
+   &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   
+ 1     1         60 RL                65    8450 Pave   &lt;NA&gt;  Reg     
+ 2     2         20 RL                80    9600 Pave   &lt;NA&gt;  Reg     
+ 3     3         60 RL                68   11250 Pave   &lt;NA&gt;  IR1     
+ 4     4         70 RL                60    9550 Pave   &lt;NA&gt;  IR1     
+ 5     5         60 RL                84   14260 Pave   &lt;NA&gt;  IR1     
+ 6     6         50 RL                85   14115 Pave   &lt;NA&gt;  IR1     
+ 7     7         20 RL                75   10084 Pave   &lt;NA&gt;  Reg     
+ 8     8         60 RL                NA   10382 Pave   &lt;NA&gt;  IR1     
+ 9     9         50 RM                51    6120 Pave   &lt;NA&gt;  Reg     
+10    10        190 RL                50    7420 Pave   &lt;NA&gt;  Reg     
+# … with 1,450 more rows, and 73 more variables: LandContour &lt;chr&gt;,
+#   Utilities &lt;chr&gt;, LotConfig &lt;chr&gt;, LandSlope &lt;chr&gt;,
+#   Neighborhood &lt;chr&gt;, Condition1 &lt;chr&gt;, Condition2 &lt;chr&gt;,
+#   BldgType &lt;chr&gt;, HouseStyle &lt;chr&gt;, OverallQual &lt;dbl&gt;,
+#   OverallCond &lt;dbl&gt;, YearBuilt &lt;dbl&gt;, YearRemodAdd &lt;dbl&gt;,
+#   RoofStyle &lt;chr&gt;, RoofMatl &lt;chr&gt;, Exterior1st &lt;chr&gt;,
+#   Exterior2nd &lt;chr&gt;, MasVnrType &lt;chr&gt;, MasVnrArea &lt;dbl&gt;,
+#   ExterQual &lt;chr&gt;, ExterCond &lt;chr&gt;, Foundation &lt;chr&gt;,
+#   BsmtQual &lt;chr&gt;, BsmtCond &lt;chr&gt;, BsmtExposure &lt;chr&gt;,
+#   BsmtFinType1 &lt;chr&gt;, BsmtFinSF1 &lt;dbl&gt;, BsmtFinType2 &lt;chr&gt;,
+#   BsmtFinSF2 &lt;dbl&gt;, BsmtUnfSF &lt;dbl&gt;, TotalBsmtSF &lt;dbl&gt;,
+#   Heating &lt;chr&gt;, HeatingQC &lt;chr&gt;, CentralAir &lt;chr&gt;,
+#   Electrical &lt;chr&gt;, 1stFlrSF &lt;dbl&gt;, 2ndFlrSF &lt;dbl&gt;,
+#   LowQualFinSF &lt;dbl&gt;, GrLivArea &lt;dbl&gt;, BsmtFullBath &lt;dbl&gt;,
+#   BsmtHalfBath &lt;dbl&gt;, FullBath &lt;dbl&gt;, HalfBath &lt;dbl&gt;,
+#   BedroomAbvGr &lt;dbl&gt;, KitchenAbvGr &lt;dbl&gt;, KitchenQual &lt;chr&gt;,
+#   TotRmsAbvGrd &lt;dbl&gt;, Functional &lt;chr&gt;, Fireplaces &lt;dbl&gt;,
+#   FireplaceQu &lt;chr&gt;, GarageType &lt;chr&gt;, GarageYrBlt &lt;dbl&gt;,
+#   GarageFinish &lt;chr&gt;, GarageCars &lt;dbl&gt;, GarageArea &lt;dbl&gt;,
+#   GarageQual &lt;chr&gt;, GarageCond &lt;chr&gt;, PavedDrive &lt;chr&gt;,
+#   WoodDeckSF &lt;dbl&gt;, OpenPorchSF &lt;dbl&gt;, EnclosedPorch &lt;dbl&gt;,
+#   3SsnPorch &lt;dbl&gt;, ScreenPorch &lt;dbl&gt;, PoolArea &lt;dbl&gt;, PoolQC &lt;chr&gt;,
+#   Fence &lt;chr&gt;, MiscFeature &lt;chr&gt;, MiscVal &lt;dbl&gt;, MoSold &lt;dbl&gt;,
+#   YrSold &lt;dbl&gt;, SaleType &lt;chr&gt;, SaleCondition &lt;chr&gt;,
+#   SalePrice &lt;dbl&gt;</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>nested_traindf</span><span class='op'>&lt;-</span><span class='va'>train_data</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>nest</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>ungroup</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span>
+    
+  <span class='va'>nested_traindf</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>SalePrice</span> <span class='op'>~</span> <span class='va'>`LotArea`</span> <span class='op'>+</span> <span class='va'>`OverallQual`</span> <span class='op'>+</span> <span class='va'>`GarageCars`</span> <span class='op'>+</span> <span class='va'>`YearRemodAdd`</span> , data<span class='op'>=</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>transmute</span><span class='op'>(</span><span class='va'>Neighborhood</span>, <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_df</a></span><span class='op'>(</span><span class='va'>model</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>$</span><span class='va'>coefficients</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code># A tibble: 25 x 6
+   Neighborhood `(Intercept)` LotArea OverallQual GarageCars
+   &lt;chr&gt;                &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+ 1 CollgCr           -380285.   3.74       28605.     23507.
+ 2 Veenker          -4234083.   3.62       28014.    -40419.
+ 3 Crawfor          -1377257.   2.70       40293.     21346.
+ 4 NoRidge          12830093.   3.25      104888.     34615.
+ 5 Mitchel           -492222.   0.786      25991.     13663.
+ 6 Somerst           2600060.   8.43       25059.      4374.
+ 7 NWAmes           -2071085.   2.63       18578.     15621.
+ 8 OldTown           -660833.   6.16       19870.     12201.
+ 9 BrkSide           -288858.   6.06       14105.     13292.
+10 Sawyer            -227972.   1.74        8385.     10337.
+# … with 15 more rows, and 1 more variable: YearRemodAdd &lt;dbl&gt;</code></pre>
+</div>
+<p>The above graph shows the estimated parameters of each region’s regression model.</p>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>nested_testdf</span><span class='op'>&lt;-</span><span class='va'>test_data</span> <span class='op'>%&gt;%</span> 
+    <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>nest</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>ungroup</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span>
+  
+
+  <span class='va'>nested_traindf</span> <span class='op'>%&lt;&gt;%</span> 
+    <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>SalePrice</span> <span class='op'>~</span> <span class='va'>`LotArea`</span> <span class='op'>+</span> <span class='va'>`OverallQual`</span> <span class='op'>+</span> <span class='va'>`GarageCars`</span> <span class='op'>+</span> <span class='va'>`YearRemodAdd`</span>, data<span class='op'>=</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  
+  
+  <span class='va'>nested_traindf</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>mutate</span><span class='op'>(</span>Prediction <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map2.html'>map2</a></span><span class='op'>(</span><span class='va'>model</span>, <span class='va'>data</span> , <span class='va'>predict</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code># A tibble: 25 x 4
+   Neighborhood data                model  Prediction 
+   &lt;chr&gt;        &lt;list&gt;              &lt;list&gt; &lt;list&gt;     
+ 1 CollgCr      &lt;tibble [150 × 80]&gt; &lt;lm&gt;   &lt;dbl [150]&gt;
+ 2 Veenker      &lt;tibble [11 × 80]&gt;  &lt;lm&gt;   &lt;dbl [11]&gt; 
+ 3 Crawfor      &lt;tibble [51 × 80]&gt;  &lt;lm&gt;   &lt;dbl [51]&gt; 
+ 4 NoRidge      &lt;tibble [41 × 80]&gt;  &lt;lm&gt;   &lt;dbl [41]&gt; 
+ 5 Mitchel      &lt;tibble [49 × 80]&gt;  &lt;lm&gt;   &lt;dbl [49]&gt; 
+ 6 Somerst      &lt;tibble [86 × 80]&gt;  &lt;lm&gt;   &lt;dbl [86]&gt; 
+ 7 NWAmes       &lt;tibble [73 × 80]&gt;  &lt;lm&gt;   &lt;dbl [73]&gt; 
+ 8 OldTown      &lt;tibble [113 × 80]&gt; &lt;lm&gt;   &lt;dbl [113]&gt;
+ 9 BrkSide      &lt;tibble [58 × 80]&gt;  &lt;lm&gt;   &lt;dbl [58]&gt; 
+10 Sawyer       &lt;tibble [74 × 80]&gt;  &lt;lm&gt;   &lt;dbl [74]&gt; 
+# … with 15 more rows</code></pre>
+<details>
+<summary>
+Show code
+</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>## 질문 사항 - &gt; </span>
+  
+<span class='co'>##  nested_traindf의 model 열과 nested_testdf의 data 열을</span>
+  
+<span class='co'>## 각각의 Neighborhood를 참조하여 동일한 것을 매치한 후 </span>
+  
+<span class='co'>## 하나로 Prediction 하여 mutate 하는 코딩은 어떻게? </span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -2298,6 +2436,15 @@ Show code
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->

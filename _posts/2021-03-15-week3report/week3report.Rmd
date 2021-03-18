@@ -20,16 +20,25 @@ library(AmesHousing) ; library(tidyverse) ;library(purrr) ; library(magrittr)
 ### Introduction
 
 
-The aim of this report is regression modeling for sales price forecasting.
+
+The aim of this report is linear regression modeling for sales price forecasting.
+
 
 
 Last week, I explored and visualized Ames Housing data to find independent variables appropriate for home sales price prediction modeling.
 
 
-Among the three problem (regression problem, classification problems, and clustering problem) presented in ISL, sales price prediction corresponds to regression problem.
+
+Among the three problem (regression problem, classification problems, and clustering problem) presented in ISL, sales price prediction corresponds to regression problem. 
 
 
-So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I visualize data that can support previous discussions. Finally, I build a multi-regression model to predict the sales price based on the previous results.
+
+Meanwhile, this report did not address the issue of VIF or the concept of $R^{2}$ or data pre-processing and so on. I will address these concepts in further report later.
+
+
+
+So first, I review the contents of the previous report again. Second, I rethink feedback and peer reviews on my data analysis report and consider some new facts. Third, I build a multi-regression model to predict the sales price based on the previous results. Finally, I use train data to build prediction model and make prediction with test data.
+
 
 
 ### Review of previous Report
@@ -53,7 +62,9 @@ In the last report, I was able to identify some variables that could affect hous
  - The timing of house construction or remodeling will affect house prices.
  
  
+ 
 ### Peer review and feedback from the Professor Lee
+
 
 
  - There is no reason not to use house data built or remodeled before 1980 for modeling. Therefore, there may be a way to combine pre-1980 data into the 1980.
@@ -65,9 +76,12 @@ In the last report, I was able to identify some variables that could affect hous
  - The neighborhood around the house affects the price.
  
 
+
 ### Building a multi-regression model
 
+
 Based on the year of architecture or remodeling, data is divided before and after 1980 and analyzed using multiple regression analyses, respectively.
+
 
 
 ```{r}
@@ -141,3 +155,67 @@ nested_df2 %>%
 ## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
 
 ```
+
+
+
+### 3
+
+
+
+Now, I apply the train data to the model above. Above, the number of data was sufficient, so the data were modeled in two groups based on the 1980 remodeling year. However, since train data is half of the data above, I make a multi-linear regression model by adding remodeling year as an independent variable.
+
+
+
+```{r}
+  
+  train_data <- read_csv("train.csv") ;
+
+  test_data  <- read_csv("test.csv") ;
+  
+  train_data
+  
+```
+
+
+```{r}
+
+  nested_traindf<-train_data %>% 
+    group_by(Neighborhood) %>%
+    nest() %>% ungroup(Neighborhood)
+    
+  nested_traindf %>%
+   mutate(model = map(data, ~lm(SalePrice ~ `LotArea` + `OverallQual` + `GarageCars` + `YearRemodAdd` , data=.))) %>%
+    transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
+
+```
+
+
+The above graph shows the estimated parameters of each region's regression model.
+
+
+```{r}
+
+  nested_testdf<-test_data %>% 
+    group_by(Neighborhood) %>%
+    nest() %>% ungroup(Neighborhood)
+  
+
+  nested_traindf %<>% 
+    mutate(model = map(data, ~lm(SalePrice ~ `LotArea` + `OverallQual` + `GarageCars` + `YearRemodAdd`, data=.)))
+  
+  
+  nested_traindf %>%
+    mutate(Prediction = map2(model, data , predict))
+
+
+## 질문 사항 - > 
+  
+##  nested_traindf의 model 열과 nested_testdf의 data 열을
+  
+## 각각의 Neighborhood를 참조하여 동일한 것을 매치한 후 
+  
+## 하나로 Prediction 하여 mutate 하는 코딩은 어떻게? 
+  
+```
+
+
