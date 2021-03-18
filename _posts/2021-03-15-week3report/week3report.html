@@ -1518,6 +1518,7 @@ Show code
 </details>
 </div>
 <p>As an independent variable of the model, I use <code>Lot Area</code>, <code>Overall Qual</code>,and <code>Garage Cars</code>. It was modeled by dividing the housing according to the area in which it was located.</p>
+<h3 id="section">1</h3>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -1587,6 +1588,8 @@ Show code
 # … with 11 more rows, and 1 more variable: `Garage Cars` &lt;dbl&gt;</code></pre>
 </div>
 <p>After multiple regression analyses based on the three independent variables mentioned above with house data prior to 1980, the estimated parameters were presented by neighborhood.</p>
+<h3 id="section-1">2</h3>
+<p>The following is a multi-regression analysis model of houses by region using data from 1980 onwards.</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -1635,7 +1638,7 @@ Show code
     <span class='fu'>nest</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>ungroup</span><span class='op'>(</span><span class='va'>Neighborhood</span><span class='op'>)</span>
 
 <span class='va'>nested_df2</span> <span class='op'>%&gt;%</span>
-   <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>SalePrice</span> <span class='op'>~</span> <span class='va'>`Lot Area`</span> <span class='op'>+</span> <span class='va'>`Overall Qual`</span> <span class='op'>+</span> <span class='va'>`Garage Cars`</span> , data<span class='op'>=</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='co'>## %&gt;%</span>
+   <span class='fu'>mutate</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>data</span>, <span class='op'>~</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>SalePrice</span> <span class='op'>~</span> <span class='va'>`Lot Area`</span> <span class='op'>+</span> <span class='va'>`Overall Qual`</span> <span class='op'>+</span> <span class='va'>`Garage Cars`</span> , data<span class='op'>=</span><span class='va'>.</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> 
 </code></pre>
 </div>
 </details>
@@ -1658,7 +1661,9 @@ Show code
 Show code
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r">  <span class='co'>## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>## %&gt;%</span>
+  
+<span class='co'>## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))</span>
 </code></pre>
 </div>
 </details>

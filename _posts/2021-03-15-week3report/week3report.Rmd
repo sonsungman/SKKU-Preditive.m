@@ -85,6 +85,9 @@ Based on the year of architecture or remodeling, data is divided before and afte
 As an independent variable of the model, I use `Lot Area`, `Overall Qual`,and `Garage Cars`. It was modeled by dividing the housing according to the area in which it was located.
 
 
+### 1
+
+
 ```{r}
   nrow(data1)
 
@@ -111,6 +114,10 @@ As an independent variable of the model, I use `Lot Area`, `Overall Qual`,and `G
 After multiple regression analyses based on the three independent variables mentioned above with house data prior to 1980, the estimated parameters were presented by neighborhood.
 
 
+### 2
+
+The following is a multi-regression analysis model of houses by region using data from 1980 onwards.
+
 ```{r}
   nrow(data2)
 
@@ -127,7 +134,10 @@ After multiple regression analyses based on the three independent variables ment
     nest() %>% ungroup(Neighborhood)
 
 nested_df2 %>%
-   mutate(model = map(data, ~lm(SalePrice ~ `Lot Area` + `Overall Qual` + `Garage Cars` , data=.))) ## %>%
-  ## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
+   mutate(model = map(data, ~lm(SalePrice ~ `Lot Area` + `Overall Qual` + `Garage Cars` , data=.))) 
+
+## %>%
+  
+## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
 
 ```
