@@ -1657,17 +1657,6 @@ Show code
  9 SawyerW      &lt;tibble [107 × 81]&gt; &lt;lm&gt;  
 10 Sawyer       &lt;tibble [47 × 81]&gt;  &lt;lm&gt;  
 # … with 17 more rows</code></pre>
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>## %&gt;%</span>
-  
-<span class='co'>## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))</span>
-</code></pre>
-</div>
-</details>
 </div>
 <h3 id="section-2">3</h3>
 <p>Now, I apply the train data to the model above. Above, the number of data was sufficient, so the data were modeled in two groups based on the 1980 remodeling year. However, since train data is half of the data above, I make a multi-linear regression model by adding remodeling year as an independent variable.</p>
@@ -1790,21 +1779,6 @@ Show code
  9 BrkSide      &lt;tibble [58 × 80]&gt;  &lt;lm&gt;   &lt;dbl [58]&gt; 
 10 Sawyer       &lt;tibble [74 × 80]&gt;  &lt;lm&gt;   &lt;dbl [74]&gt; 
 # … with 15 more rows</code></pre>
-<details>
-<summary>
-Show code
-</summary>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>## 질문 사항 - &gt; </span>
-  
-<span class='co'>##  nested_traindf의 model 열과 nested_testdf의 data 열을</span>
-  
-<span class='co'>## 각각의 Neighborhood를 참조하여 동일한 것을 매치한 후 </span>
-  
-<span class='co'>## 하나로 Prediction 하여 mutate 하는 코딩은 어떻게? </span>
-</code></pre>
-</div>
-</details>
 </div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

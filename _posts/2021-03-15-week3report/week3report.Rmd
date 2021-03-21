@@ -150,10 +150,6 @@ The following is a multi-regression analysis model of houses by region using dat
 nested_df2 %>%
    mutate(model = map(data, ~lm(SalePrice ~ `Lot Area` + `Overall Qual` + `Garage Cars` , data=.))) 
 
-## %>%
-  
-## 오류 발생  transmute(Neighborhood, map_df(model, ~summary(.)$coefficients[,1]))
-
 ```
 
 
@@ -208,14 +204,7 @@ The above graph shows the estimated parameters of each region's regression model
     mutate(Prediction = map2(model, data , predict))
 
 
-## 질문 사항 - > 
-  
-##  nested_traindf의 model 열과 nested_testdf의 data 열을
-  
-## 각각의 Neighborhood를 참조하여 동일한 것을 매치한 후 
-  
-## 하나로 Prediction 하여 mutate 하는 코딩은 어떻게? 
-  
+
 ```
 
 

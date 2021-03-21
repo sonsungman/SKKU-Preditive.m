@@ -1,0 +1,69 @@
+---
+title: "WEEK_4 Report"
+description: |
+  Second try to predict sale price with linear regression
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 03-20-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+library(AmesHousing) ; library(tidyverse) ;library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+
+
+# Introduction
+
+
+
+The aim of this report is to build  multiple linear regression model that were covered in the previous report. In the previous report, there was a problem in coding the regression and I found that the omission of the data preprocessing was the cause through the course.
+
+
+
+So, first I talk about data analysis process. Second, I look at data preprocessing. Third, I deal with the situations encountered in the multiple linear regression modeling process. Finally I start with data exploration, train multiple regression models, and use test data to produce forecasts for final sale prices.
+
+
+
+***
+
+A list of the books I have referenced to produce this report is shown below.
+
+> -  Feature Engineering and Selection_ A Practical Approach for Predictive Models, Max Kuhn, Kjell Johnson(2019)
+> -  An Introduction to Statistical Learning with Applications in R , Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013)
+> -  Applied Predictive Modeling, Max Kuhn, Kjell Johnson (2013)
+> -  R for Data Science_ Import, Tidy, Transform,  Visualize, and Model Data , Hadley Wickham, Garrett  Grolemund (2017)
+> - Study Manual Exam PA, Ambrose Lo (2020 Spring)
+
+***
+
+
+# Process
+
+The procedure was briefly summarized into concepts.
+
+ 1. Defining problem, EDA with visualization
+
+ 2. Data preprocessing : Data transformation, Handing missing value, Encoding categorical predictors
+ 
+ 3. Data splict, Estimating model parameters, Feature selection, Evaluating model performance, Choosing between models.
+
+
+# Data preprocessing
+
+# Consideration when modeling multiple-regression
+
+ - Non-linearity of the response-predictor relationships
+ - Correlation of error terms
+ - Non-constant variance of error terms
+ - Outliers
+ - High-leverage points
+ - Collinearity
+
+# Example with Lecture
+
