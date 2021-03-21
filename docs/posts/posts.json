@@ -13,8 +13,8 @@
     "categories": [],
     "contents": "\nIntroduction\nThe aim of this report is to build multiple linear regression model that were covered in the previous report. In the previous report, there was a problem in coding the regression and I found that the omission of the data preprocessing was the cause through the course.\nSo, first I talk about data analysis process. Second, I look at data preprocessing. Third, I deal with the situations encountered in the multiple linear regression modeling process. Finally I start with data exploration, train multiple regression models, and use test data to produce forecasts for final sale prices.\nA list of the books I have referenced to produce this report is shown below.\n\nFeature Engineering and Selection_ A Practical Approach for Predictive Models, Max Kuhn, Kjell Johnson(2019)\nAn Introduction to Statistical Learning with Applications in R , Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013)\nApplied Predictive Modeling, Max Kuhn, Kjell Johnson (2013)\nR for Data Science_ Import, Tidy, Transform, Visualize, and Model Data , Hadley Wickham, Garrett Grolemund (2017)\nStudy Manual Exam PA, Ambrose Lo (2020 Spring)\n\nProcess\nThe procedure was briefly summarized into concepts.\nDefining problem, EDA with visualization\nData preprocessing : Data transformation, Handing missing value, Encoding categorical predictors\nData splict, Estimating model parameters, Feature selection, Evaluating model performance, Choosing between models.\nData preprocessing\nConsideration when modeling multiple-regression\nNon-linearity of the response-predictor relationships\nCorrelation of error terms\nNon-constant variance of error terms\nOutliers\nHigh-leverage points\nCollinearity\nExample with Lecture\n\n\n\n",
     "preview": {},
-    "last_modified": "2021-03-21T09:17:29+00:00",
-    "input_file": {}
+    "last_modified": "2021-03-21T09:24:46+00:00",
+    "input_file": "2021-03-20-week4report.utf8.md"
   },
   {
     "path": "posts/2021-03-15-week3report/",
