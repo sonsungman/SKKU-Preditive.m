@@ -8,8 +8,6 @@ navbar:
   right:
     - text: "Applied Statistics"
       href: index.html
-    - text: "Project BDA with RStan"
-      href: index3.html
     - text: "Article"
       href: index2.html
     - text: "About"
