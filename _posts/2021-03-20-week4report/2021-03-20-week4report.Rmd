@@ -9,14 +9,28 @@ date: 03-20-2021
 output:
   distill::distill_article:
     self_contained: false
-    code_folding: true
+    code_folding: show
     draft: true
+    number_sections: true
+    fig_caption: true
+    toc: true
+    theme: cosmo
+    highlight: tango
 ---
 ```{r setup, include=FALSE}
-library(AmesHousing) ; library(tidyverse) ;library(purrr) ; library(magrittr) ; library(MASS)
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
 ```
 
-
+```{r load_lib, message=FALSE, warning=FALSE, results='hide'}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+theme_set(theme_bw())
+```
 
 # Introduction
 
@@ -26,7 +40,7 @@ The aim of this report is to build  multiple linear regression model that were c
 
 
 
-So, first I talk about data analysis process. Second, I look at data preprocessing. Third, I deal with the situations encountered in the multiple linear regression modeling process. Finally I start with data exploration, train multiple regression models, and use test data to produce forecasts for final sale prices.
+So, first I talk about data analysis process. Second, I look at data preprocessing. Third, I deal with the situations encountered in the multiple linear regression modeling process. Finally I start with data exploration, train multiple regression models, and use test data to produce forecasts for final sale prices. The example used the modeling code that Professor lee conducted in the last texture and I point out some points to add to the data analysis through this multi-regression model and add that part.
 
 
 
@@ -49,14 +63,24 @@ The procedure was briefly summarized into concepts.
 
  1. Defining problem, EDA with visualization
 
- 2. Data preprocessing : Data transformation, Handing missing value, Encoding categorical predictors
+ 2. Data preprocessing : Data transformation, Handling missing value, Encoding categorical predictors
  
  3. Data splict, Estimating model parameters, Feature selection, Evaluating model performance, Choosing between models.
 
 
 # Data preprocessing
 
+
+  - Data pre-processing techniques generally refer to the addition, deletion, or transformation of training set data.
+  
+  - The need for data pre-processing is determined by the type of model being used.
+  
+  For example, Some procedures, such as tree-based models, are notably insensitive to the characteristics of the predictor data. Others, like linear regression, are
+not.
+
+
 # Consideration when modeling multiple-regression
+
 
  - Non-linearity of the response-predictor relationships
  - Correlation of error terms
@@ -65,5 +89,220 @@ The procedure was briefly summarized into concepts.
  - High-leverage points
  - Collinearity
 
-# Example with Lecture
+
+##### Non-linearity of the response-predictor relationships
+
+
+The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, $e_i = y_i − \hat{y}_i$, versus the predictor $x_i$.
+
+If the residual plot indicates that there are non-linear associations in the data, then a simple approach is to use non-linear transformations of the predictors
+
+
+##### Correlation of error terms
+
+
+An important assumption of the linear regression model is that the error $\epsilon_{1} + \epsilon_{2} + \cdots + \epsilon_{n}$ terms,  are uncorrelated. In general, the assumption of uncorrelated errors is extremely important for linear regression as well as for other statistical methods, and good experimental design is crucial in order to mitigate the risk of such correlations. we can plot the residuals from our model as a function of time. If the errors are uncorrelated, then there should be no discernible pattern. On the other hand, if the error terms are positively correlated, then we may see tracking in the residuals — that is, adjacent residuals may have similar values.
+
+
+##### Non-constant variance of error terms
+
+
+Another important assumption of the linear regression model is that the error terms have a constant variance, $Var(\epsilon_i) = \sigma^2$. One can identify non-constant variances in the errors, or heteroscedasticity, from the presence of a funnel shape in the residual plot. When faced with this problem, one possible solution is to transform the response Y using a concave function such as log Y
+
+
+##### Outliers
+
+
+An outlier is a point for which $y_i$ is far from the value predicted by the model. Outliers can arise for a variety of reasons, such as incorrect recording of an observation during data collection. One solution is to simply remove the observation. However, care should be taken, since an outlier may instead indicate a deficiency with the model, such as a missing predictor.
+
+
+##### High-leverage points
+
+
+We just saw that outliers are observations for which the response $y_i$ is unusual given the predictor $x_i$. In contrast, observations with high leverage high leverage have an unusual value for $x_i$. In order to quantify an observation’s leverage, we compute the leverage statistic. In fact, high leverage observations tend to have a sizable impact on the estimated regression line. It is cause for concern if the least squares line is heavily affected by just a couple of observations, because any problems with these points may invalidate the entire fit. For this reason, it is important to identify high leverage observations. 
+
+
+##### Collinearity
+
+
+Collinearity refers to the situation in which two or more predictor variables are closely related to one another. Since collinearity reduces the accuracy of the estimates of the regression coefficients, it causes the standard error for $\hat{β}_j$ to grow. Instead of inspecting the correlation matrix, a better way to assess multicollinearity is to compute the variance inflation factor (VIF). The VIF for each variable can be computed using the formula $VIF(\hat{β}_j) =1/(1-R^2_{X_j|X_{-j}})$ where $R^2_{X_j|X_{-j}}$ is the $R^2$ from a regression of $X_j$ onto all of the other predictors.
+
+
+
+# Example from Lecture
+
+
+
+## Preparations (준비작업) {.tabset .tabset-fade}
+
+### Data load
+
+
+```{r, message=FALSE}
+train <- read_csv(file= "/cloud/project/_posts/2021-03-20-week4report/train.csv")
+test <- read_csv("/cloud/project/_posts/2021-03-20-week4report/test.csv")
+```
+
+
+### Data overview (데이터 기본정보) {.tabset .tabset-fade}
+
+### Basic info.
+
+Here is the basic information about `train` and `test`. We have approximately the same sample size for the train and test set. The number of columns in the train is 81 and the one in the test is 80.
+
+```{r}
+dim(train)
+dim(test)
+```
+
+We can see train doesn't have the target variable `SalePrice`.
+
+```{r}
+"SalePrice" %in% names(test)
+```
+
+
+### Detailed info. `train`
+
+```{r}
+skim(train)
+```
+
+### Detailed info. `test`
+
+```{r}
+skim(test)
+```
+
+## EDA with visualization (탐색적 데이터 분석) {.tabset .tabset-fade}
+
+### Distribution of `sale_price`
+
+If we check out the distribution of the house price, it is little bit skewed to the right.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = SalePrice)) +
+  geom_histogram()
+```
+Since we want to build a linear regression assume that the noise follows the normal distribution, let us take a log to `SalePrice` variable.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = log(SalePrice))) +
+  geom_histogram()
+```
+
+### `NA`s
+
+There is a nice package for checking out `NA`s. Let's see how many variables we have which contains `NA`s.
+
+```{r message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+library(naniar)
+train %>% 
+  # select_if(~sum(is.na(.)) > 0) %>% # alternative way
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_var()
+```
+
+We can do more analysis about `NA`s with `upset()` function, which shows that most of the observations with `NA`s in the data set have `NA`s at the `PoolQC`, `MiscFeature`, `Alley`, `Fence` at the same time.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_upset()
+```
+
+From the above, we can have some insights that if a house doesn't have Pool, it is likely that it doesn't have Alley, Fence, and Fireplace too.
+
+### Preprecessing with `recipe`
+
+First, I would like to clean the variable names with `janitor` package so that we have consistent varible names.
+
+### `all_data` combine and name cleaning with `janitor`
+
+```{r}
+all_data <- bind_rows(train, test) %>% 
+  janitor::clean_names()
+names(all_data)[1:10]
+```
+
+### Make recipe
+
+Note that we will use mode imputation for nominal variables for the baseline, and the mean imputation for the numerical variables. However, this should be changed to build a more sensitive model because we have checked that the `NA` in the nominal variables indicates that cases where the house doesn't have the corresponding attributes.
+
+```{r}
+housing_recipe <- all_data %>% 
+  recipe(sale_price ~ .) %>%
+  step_rm(id) %>% 
+  step_log(sale_price) %>% 
+  step_modeimpute(all_nominal()) %>% 
+  step_dummy(all_nominal()) %>% 
+  step_meanimpute(all_predictors()) %>%
+  step_normalize(all_predictors()) %>% 
+  prep(training = all_data)
+
+print(housing_recipe)
+```
+
+### `juice` the all_data2 and split
+
+```{r}
+all_data2 <- juice(housing_recipe)
+```
+
+We are done for preprocessing. Let's split the data set.
+
+```{r}
+train_index <- seq_len(nrow(train))
+train2 <- all_data2[train_index,]
+test2 <- all_data2[-train_index,]
+```
+
+
+```{r}
+train2 %>% 
+  head() %>% 
+  kable()
+```
+
+## Set linear regression model and fitting 
+
+```{r}
+lm_model <- 
+    linear_reg() %>% 
+    set_engine("lm")
+
+lm_form_fit <- 
+    lm_model %>% 
+    fit(sale_price ~ ., data = train2)
+
+options(max.print = 10)
+print(lm_form_fit)
+```
+
+## Prediction and submit
+
+```{r warning=FALSE}
+result <- predict(lm_form_fit, test2)
+result %>% head()
+```
+
+
+# Points to Consider
+  
+  
+
+ - Outlier
+ 
+ - Feature selection and method to use for it (step_wise enough?)
+ 
+ - Validation for multiple regression model
+ 
+ - Collinearity
+
+
+# Conclusion
+
+
 
