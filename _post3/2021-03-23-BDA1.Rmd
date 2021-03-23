@@ -1,0 +1,56 @@
+---
+title: "First try with RStan"
+description: |
+   Using MCMC
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 03-23-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+library(rstan) ; library(tidyverse)  
+```
+
+MCMC방법을 이용한 간단한 예제를 만들어 보았다.
+
+```{r}
+ #  Head of the coin : 0
+ #  Tail of the coin : 1
+ 
+ #  N : Number of trials
+ #  y : Observation
+
+ N <- 10
+ y <- c(0,1,0,0,0,1,1,0,0,0)
+ data1 <- list(N,y)  
+
+```
+
+
+모델을 구성해 보았다.
+
+```{r}
+    model_test <-
+  '
+  data{
+    int N ;
+    int<lower = 0, upper = 1> y[N];
+  }
+    
+  parameters{
+    real<lower = 0, upper = 1> p;
+  }
+  model{
+    for (n in 1:N)
+    y[n] ~ bernoulli(p) ; // likelihood 
+    p ~ beta(1,1) ; // prior
+  }
+  '
+
+```
+
