@@ -2074,6 +2074,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <div class="nav-right">
 <a href="../../index.html">Applied Statistics</a>
+<a href="../../index3.html">Project BDA with RStan</a>
 <a href="../../index2.html">Article</a>
 <a href="../../about.html">About</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
@@ -2108,40 +2109,28 @@ document.addEventListener('DOMContentLoaded', function() {
 <li><a href="#consideration-when-modeling-multiple-regression">Consideration when modeling multiple-regression</a></li>
 <li><a href="#example-from-lecture">Example from Lecture</a>
 <ul>
-<li><a href="#preparations-준비작업">Preparations (준비작업)</a>
+<li><a href="#preparations">Preparations</a>
 <ul>
 <li><a href="#data-load">Data load</a></li>
-<li><a href="#data-overview-데이터-기본정보">Data overview (데이터 기본정보)</a></li>
+<li><a href="#data-overview">Data overview</a></li>
 <li><a href="#basic-info.">Basic info.</a></li>
 <li><a href="#detailed-info.-train">Detailed info. <code>train</code></a></li>
 <li><a href="#detailed-info.-test">Detailed info. <code>test</code></a></li>
 </ul></li>
-<li><a href="#eda-with-visualization-탐색적-데이터-분석">EDA with visualization (탐색적 데이터 분석)</a>
+<li><a href="#eda-with-visualization">EDA with visualization</a>
 <ul>
 <li><a href="#distribution-of-sale_price">Distribution of <code>sale_price</code></a></li>
 <li><a href="#nas"><code>NA</code>s</a></li>
-<<<<<<< HEAD
 <li><a href="#preprecessing-with-recipe">Preprecessing with <code>recipe</code></a></li>
-=======
-</ul></li>
-<li><a href="#preprecessing-with-recipe-전처리-레시피-만들기">Preprecessing with <code>recipe</code> (전처리 레시피 만들기)</a>
-<ul>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <li><a href="#all_data-combine-and-name-cleaning-with-janitor"><code>all_data</code> combine and name cleaning with <code>janitor</code></a></li>
 <li><a href="#make-recipe">Make recipe</a></li>
 <li><a href="#juice-the-all_data2-and-split"><code>juice</code> the all_data2 and split</a></li>
 </ul></li>
-<<<<<<< HEAD
 <li><a href="#set-linear-regression-model-and-fitting">Set linear regression model and fitting</a></li>
 <li><a href="#prediction-and-submit">Prediction and submit</a></li>
 </ul></li>
 <li><a href="#points-to-consider">Points to Consider</a></li>
 <li><a href="#conclusion">Conclusion</a></li>
-=======
-<li><a href="#set-linear-regression-model-and-fitting-모델-설정-및-학습">Set linear regression model and fitting (모델 설정 및 학습)</a></li>
-<li><a href="#prediction-and-submit-예측-및-평가">Prediction and submit (예측 및 평가)</a></li>
-</ul></li>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 </ul>
 </nav>
 </div>
@@ -2199,12 +2188,7 @@ show
 <li>Collinearity</li>
 </ul>
 <h5 id="non-linearity-of-the-response-predictor-relationships">Non-linearity of the response-predictor relationships</h5>
-<<<<<<< HEAD
-<p>The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, <span class="math inline">\(e_i = y_i − \hat{y}_i\)</span>, versus the predictor <span class="math inline">\(x_i\)</span>.</p>
-=======
-<p>The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, $e_i = y_i − _i $, versus the predictor <span class="math inline">\(x_i\)</span>.</p>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
-<p>If the residual plot indicates that there are non-linear associations in the data, then a simple approach is to use non-linear transformations of the predictors</p>
+<p>The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, <span class="math inline">\(e_i = y_i − \hat{y}_i\)</span>, versus the predictor <span class="math inline">\(x_i\)</span>. If the residual plot indicates that there are non-linear associations in the data, then a simple approach is to use non-linear transformations of the predictors</p>
 <h5 id="correlation-of-error-terms">Correlation of error terms</h5>
 <p>An important assumption of the linear regression model is that the error <span class="math inline">\(\epsilon_{1} + \epsilon_{2} + \cdots + \epsilon_{n}\)</span> terms, are uncorrelated. In general, the assumption of uncorrelated errors is extremely important for linear regression as well as for other statistical methods, and good experimental design is crucial in order to mitigate the risk of such correlations. we can plot the residuals from our model as a function of time. If the errors are uncorrelated, then there should be no discernible pattern. On the other hand, if the error terms are positively correlated, then we may see tracking in the residuals — that is, adjacent residuals may have similar values.</p>
 <h5 id="non-constant-variance-of-error-terms">Non-constant variance of error terms</h5>
@@ -2216,7 +2200,7 @@ show
 <h5 id="collinearity">Collinearity</h5>
 <p>Collinearity refers to the situation in which two or more predictor variables are closely related to one another. Since collinearity reduces the accuracy of the estimates of the regression coefficients, it causes the standard error for <span class="math inline">\(\hat{β}_j\)</span> to grow. Instead of inspecting the correlation matrix, a better way to assess multicollinearity is to compute the variance inflation factor (VIF). The VIF for each variable can be computed using the formula <span class="math inline">\(VIF(\hat{β}_j) =1/(1-R^2_{X_j|X_{-j}})\)</span> where <span class="math inline">\(R^2_{X_j|X_{-j}}\)</span> is the <span class="math inline">\(R^2\)</span> from a regression of <span class="math inline">\(X_j\)</span> onto all of the other predictors.</p>
 <h1 id="example-from-lecture">Example from Lecture</h1>
-<h2 class="tabset tabset-fade" id="preparations-준비작업">Preparations (준비작업)</h2>
+<h2 class="tabset tabset-fade" id="preparations">Preparations</h2>
 <h3 id="data-load">Data load</h3>
 <div class="layout-chunk" data-layout="l-body">
 <details>
@@ -2230,7 +2214,7 @@ show
 </div>
 </details>
 </div>
-<h3 class="tabset tabset-fade" id="data-overview-데이터-기본정보">Data overview (데이터 기본정보)</h3>
+<h3 class="tabset tabset-fade" id="data-overview">Data overview</h3>
 <h3 id="basic-info.">Basic info.</h3>
 <p>Here is the basic information about <code>train</code> and <code>test</code>. We have approximately the same sample size for the train and test set. The number of columns in the train is 81 and the one in the test is 80.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -4296,7 +4280,7 @@ show
 </tbody>
 </table>
 </div>
-<h2 class="tabset tabset-fade" id="eda-with-visualization-탐색적-데이터-분석">EDA with visualization (탐색적 데이터 분석)</h2>
+<h2 class="tabset tabset-fade" id="eda-with-visualization">EDA with visualization</h2>
 <h3 id="distribution-of-sale_price">Distribution of <code>sale_price</code></h3>
 <p>If we check out the distribution of the house price, it is little bit skewed to the right.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -4362,11 +4346,7 @@ show
 <p><img src="2021-03-20-week4report_files/figure-html5/unnamed-chunk-9-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
 <p>From the above, we can have some insights that if a house doesn’t have Pool, it is likely that it doesn’t have Alley, Fence, and Fireplace too.</p>
-<<<<<<< HEAD
 <h3 id="preprecessing-with-recipe">Preprecessing with <code>recipe</code></h3>
-=======
-<h2 id="preprecessing-with-recipe-전처리-레시피-만들기">Preprecessing with <code>recipe</code> (전처리 레시피 만들기)</h2>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <p>First, I would like to clean the variable names with <code>janitor</code> package so that we have consistent varible names.</p>
 <h3 id="all_data-combine-and-name-cleaning-with-janitor"><code>all_data</code> combine and name cleaning with <code>janitor</code></h3>
 <div class="layout-chunk" data-layout="l-body">
@@ -5191,11 +5171,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -5443,11 +5419,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -5695,11 +5667,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -5947,11 +5915,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -6199,11 +6163,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -6451,11 +6411,7 @@ show
 <td style="text-align: right;">-0.1472876</td>
 <td style="text-align: right;">0.3243873</td>
 <td style="text-align: right;">-0.0261802</td>
-<<<<<<< HEAD
-<td style="text-align: right;">0.0453765</td>
-=======
 <td style="text-align: right;">-0.037037</td>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <td style="text-align: right;">-0.1997162</td>
 <td style="text-align: right;">0.3006139</td>
 <td style="text-align: right;">-0.0642383</td>
@@ -6479,11 +6435,7 @@ show
 </tbody>
 </table>
 </div>
-<<<<<<< HEAD
 <h2 id="set-linear-regression-model-and-fitting">Set linear regression model and fitting</h2>
-=======
-<h2 id="set-linear-regression-model-and-fitting-모델-설정-및-학습">Set linear regression model and fitting (모델 설정 및 학습)</h2>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -6505,27 +6457,13 @@ show
 </details>
 <pre><code>parsnip model object
 
-<<<<<<< HEAD
-Fit time:  103ms 
-=======
 Fit time:  106ms 
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 
 Call:
 stats::lm(formula = sale_price ~ ., data = data)
 
 Coefficients:
    (Intercept)    ms_sub_class    lot_frontage        lot_area  
-<<<<<<< HEAD
-     1.202e+01      -1.678e-02       7.467e-03       2.277e-02  
-  overall_qual    overall_cond      year_built  year_remod_add  
-     5.782e-02       4.003e-02       5.540e-02       1.741e-02  
-  mas_vnr_area    bsmt_fin_sf1  
-     1.238e-03       6.106e-02  
- [ reached getOption(&quot;max.print&quot;) -- omitted 236 entries ]</code></pre>
-</div>
-<h2 id="prediction-and-submit">Prediction and submit</h2>
-=======
      1.202e+01      -1.672e-02       7.243e-03       2.283e-02  
   overall_qual    overall_cond      year_built  year_remod_add  
      5.772e-02       4.010e-02       5.549e-02       1.721e-02  
@@ -6533,8 +6471,7 @@ Coefficients:
      1.339e-03       6.081e-02  
  [ reached getOption(&quot;max.print&quot;) -- omitted 236 entries ]</code></pre>
 </div>
-<h2 id="prediction-and-submit-예측-및-평가">Prediction and submit (예측 및 평가)</h2>
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
+<h2 id="prediction-and-submit">Prediction and submit</h2>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -6556,7 +6493,6 @@ show
 5  12.2
 6  12.1</code></pre>
 </div>
-<<<<<<< HEAD
 <h1 id="points-to-consider">Points to Consider</h1>
 <ul>
 <li><p>Outlier</p></li>
@@ -6565,8 +6501,6 @@ show
 <li><p>Collinearity</p></li>
 </ul>
 <h1 id="conclusion">Conclusion</h1>
-=======
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 <div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

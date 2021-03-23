@@ -93,13 +93,8 @@ not.
 ##### Non-linearity of the response-predictor relationships
 
 
-<<<<<<< HEAD
-The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, $e_i = y_i − \hat{y}_i$, versus the predictor $x_i$.
-=======
-The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, $e_i = y_i − \hat{y}_i $, versus the predictor $x_i$.
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 
-If the residual plot indicates that there are non-linear associations in the data, then a simple approach is to use non-linear transformations of the predictors
+The linear regression model assumes that there is a straight-line relationship between the predictors and the response. Residual plots are a useful graphical tool for identifying non-linearity. we can plot the residuals, $e_i = y_i − \hat{y}_i$, versus the predictor $x_i$. If the residual plot indicates that there are non-linear associations in the data, then a simple approach is to use non-linear transformations of the predictors
 
 
 ##### Correlation of error terms
@@ -137,11 +132,8 @@ Collinearity refers to the situation in which two or more predictor variables ar
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
-## Preparations (준비작업) {.tabset .tabset-fade}
+## Preparations {.tabset .tabset-fade}
 
 ### Data load
 
@@ -152,7 +144,7 @@ test <- read_csv("/cloud/project/_posts/2021-03-20-week4report/test.csv")
 ```
 
 
-### Data overview (데이터 기본정보) {.tabset .tabset-fade}
+### Data overview {.tabset .tabset-fade}
 
 ### Basic info.
 
@@ -182,7 +174,7 @@ skim(train)
 skim(test)
 ```
 
-## EDA with visualization (탐색적 데이터 분석) {.tabset .tabset-fade}
+## EDA with visualization {.tabset .tabset-fade}
 
 ### Distribution of `sale_price`
 
@@ -223,11 +215,8 @@ train %>%
 
 From the above, we can have some insights that if a house doesn't have Pool, it is likely that it doesn't have Alley, Fence, and Fireplace too.
 
-<<<<<<< HEAD
+
 ### Preprecessing with `recipe`
-=======
-## Preprecessing with `recipe` (전처리 레시피 만들기)
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
 
 First, I would like to clean the variable names with `janitor` package so that we have consistent varible names.
 
@@ -278,11 +267,9 @@ train2 %>%
   kable()
 ```
 
-<<<<<<< HEAD
+
 ## Set linear regression model and fitting 
-=======
-## Set linear regression model and fitting (모델 설정 및 학습)
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
+
 
 ```{r}
 lm_model <- 
@@ -297,11 +284,9 @@ options(max.print = 10)
 print(lm_form_fit)
 ```
 
-<<<<<<< HEAD
+
 ## Prediction and submit
-=======
-## Prediction and submit (예측 및 평가)
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
+
 
 ```{r warning=FALSE}
 result <- predict(lm_form_fit, test2)
@@ -309,7 +294,7 @@ result %>% head()
 ```
 
 
-<<<<<<< HEAD
+
 # Points to Consider
   
   
@@ -324,8 +309,3 @@ result %>% head()
 
 
 # Conclusion
-
-
-=======
->>>>>>> 75faf6d2d9768259a31d0063452f68c31958f957
-
