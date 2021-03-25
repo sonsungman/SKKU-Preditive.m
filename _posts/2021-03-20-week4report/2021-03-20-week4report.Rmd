@@ -307,5 +307,3 @@ result %>% head()
  
  - Collinearity
 
-
-# Conclusion
