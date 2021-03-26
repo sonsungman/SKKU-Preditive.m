@@ -1,0 +1,25 @@
+---
+title: "WEEK_5 Report"
+description: |
+  Third try to predict sale price with Multiple regression and Lasso
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 03-27-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+
+# Introduction
+
+
+There are two ways to solve the overfitting problem. The first is feature selection and the second is regularization.
+
+
+The aim of this report is to compare performance with multiple regression models and lasso regression models applying regularization to improve understanding of the overfitting problem. Another approach to solving the overfitting problem, feature selection, is viewed using genetic algorithms rather than conventional step_wise. Additionally, adding several steps further from the previous report to the data preprocessing process is also covered.
+
+
