@@ -1,0 +1,5 @@
+---
+title: "BDA Project with RStan"
+site: distill::distill_website
+listing: posts3
+---

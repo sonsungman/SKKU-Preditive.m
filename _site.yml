@@ -8,6 +8,8 @@ navbar:
   right:
     - text: "Applied Statistics"
       href: index.html
+    - text: "BDA Project"
+      href: index3.html
     - text: "Article"
       href: index2.html
     - text: "About"

@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "path": "posts3/2021-03-29 BDA Project with RStan/",
+    "title": "BDA Project with RStan",
+    "description": "BDA with Rstan",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-03-29",
+    "categories": [],
+    "contents": "\r\n\r\nShow code\r\nlibrary(tidymodels)\r\nlibrary(tidyverse)\r\nlibrary(magrittr)\r\nlibrary(skimr)\r\nlibrary(knitr)\r\ntheme_set(theme_bw())\r\n\r\n\r\n\r\nIntroduction\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-03-29T13:17:22+09:00",
+    "input_file": "2021-03-29-BDA-Project-with-RStan.utf8.md"
+  }
+]
