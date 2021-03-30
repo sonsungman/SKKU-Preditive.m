@@ -140,8 +140,8 @@ Collinearity refers to the situation in which two or more predictor variables ar
 
 
 ```{r, message=FALSE}
-train <- read_csv(file= "/cloud/project/_posts/2021-03-20-week4report/train.csv")
-test <- read_csv("/cloud/project/_posts/2021-03-20-week4report/test.csv")
+train <- read_csv(file= "train.csv")
+test <- read_csv("test.csv")
 ```
 
 

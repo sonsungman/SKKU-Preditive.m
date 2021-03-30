@@ -31,7 +31,8 @@ theme_set(theme_bw())
 # Introduction
 
 
-There are two ways to solve the overfitting problem. The first is feature selection and the second is regularization.
+
+Feature selection plays an important role in solving overfitting problems. Feature selection approaches can be categorized into three broad classes: the filter methods, the wrapper methods, and embedded methods. The filter method has advantages as it can be performed independently of the model in the data preprocessing process, while the wrpper method has the potential for forward selection. Examples of embedded methods include regularization methods.
 
 
 The aim of this report is to compare performance with multiple regression models and lasso regression models applying regularization to improve understanding of the overfitting problem. Another approach to solving the overfitting problem, feature selection, is viewed using genetic algorithms rather than conventional Forward, Backward, and Stepwise. Additionally, adding several steps further from the previous report to the data preprocessing process is also covered.
@@ -68,10 +69,6 @@ test <- read_csv("test.csv")
 
 ### Data overview {.tabset .tabset-fade}
 
-### Basic info.
-
-Here is the basic information about `train` and `test`. We have approximately the same sample size for the train and test set. The number of columns in the train is 81 and the one in the test is 80.
-
 ```{r}
 dim(train)
 dim(test)
@@ -96,18 +93,12 @@ skim(train)
 skim(test)
 ```
 
-## EDA with visualization {.tabset .tabset-fade}
-
-### Distribution of `sale_price`
-
-If we check out the distribution of the house price, it is little bit skewed to the right.
 
 ```{r message=FALSE, class.source = 'fold-hide'}
 train %>% 
   ggplot(aes(x = SalePrice)) +
   geom_histogram()
 ```
-Since we want to build a linear regression assume that the noise follows the normal distribution, let us take a log to `SalePrice` variable.
 
 ```{r message=FALSE, class.source = 'fold-hide'}
 train %>% 
@@ -117,8 +108,6 @@ train %>%
 
 ### `NA`s
 
-There is a nice package for checking out `NA`s. Let's see how many variables we have which contains `NA`s.
-
 ```{r message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 library(naniar)
 train %>% 
@@ -127,7 +116,6 @@ train %>%
   gg_miss_var()
 ```
 
-We can do more analysis about `NA`s with `upset()` function, which shows that most of the observations with `NA`s in the data set have `NA`s at the `PoolQC`, `MiscFeature`, `Alley`, `Fence` at the same time.
 
 ```{r message=FALSE, class.source = 'fold-hide'}
 train %>% 
@@ -135,12 +123,7 @@ train %>%
   gg_miss_upset()
 ```
 
-From the above, we can have some insights that if a house doesn't have Pool, it is likely that it doesn't have Alley, Fence, and Fireplace too.
-
-
 ### Preprecessing with `recipe`
-
-First, I would like to clean the variable names with `janitor` package so that we have consistent varible names.
 
 ### `all_data` combine and name cleaning with `janitor`
 
@@ -152,14 +135,12 @@ names(all_data)[1:10]
 
 ### Make recipe
 
-Note that we will use mode imputation for nominal variables for the baseline, and the mean imputation for the numerical variables. However, this should be changed to build a more sensitive model because we have checked that the `NA` in the nominal variables indicates that cases where the house doesn't have the corresponding attributes.
-
 ```{r}
 housing_recipe <- all_data %>% 
   recipe(sale_price ~ .) %>%
   step_rm(id) %>% 
   step_log(sale_price) %>% 
-  step_modeimpute(all_nominal()) %>% 
+  step_knnimpute(all_nominal()) %>% 
   step_dummy(all_nominal()) %>% 
   step_meanimpute(all_predictors()) %>%
   step_normalize(all_predictors()) %>% 
@@ -190,28 +171,90 @@ train2 %>%
 ```
 
 
-## Set linear regression model and fitting 
+## Set lasso regression model and fitting 
 
 
 ```{r}
-lm_model <- 
-    linear_reg() %>% 
-    set_engine("lm")
+  library(MASS) 
 
-lm_form_fit <- 
-    lm_model %>% 
+lasso_model <- 
+    linear_reg(penalty = 0.01, mixture = 1) %>% # lasso: 1, ridge: 0
+    set_engine("glmnet")
+
+lasso_fit <- 
+    lasso_model %>% 
     fit(sale_price ~ ., data = train2)
 
 options(max.print = 10)
-print(lm_form_fit)
+lasso_fit %>% 
+    tidy() %>% 
+    filter(estimate > 0.001)
+
 ```
+
+### Ridge model
+
+```{r}
+
+  ridge_model <- 
+    linear_reg(penalty = 0.01, mixture = 0) %>% # lasso: 1, ridge: 0
+    set_engine("glmnet")
+
+ridge_fit <- 
+    ridge_model %>% 
+    fit(sale_price ~ ., data = train2)
+
+```
+
+
+### Forward vs lasso vs ridge
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+
+
+    lm_model1<-lm(sale_price ~ ., data = train2)
+    null_reg <-lm(sale_price ~ 1, data = train2)
+    
+   step_model <- null_reg %>% 
+  stats::step(direction="forward", scope=list(lower=null_reg, upper=lm_model1))
+    
+    
+```  
+ 
+```{r}  
+  AIC(lasso_fit2, k=log(nrow(train2))) ; AIC(step_model, k=log(nrow(train2)))
+  
+``` 
+
+
 
 
 ## Prediction
 
 
-```{r warning=FALSE}
-result <- predict(lm_form_fit, test2)
-result %>% head()
+```{r}
+result_forward <- as.tibble(predict(step_model, test2))
+result_lasso <- predict(lasso_fit, test2)
+result_ridge <- predict(ridge_fit, test2)
+
+result_forward %>% head()
 ```
+
+```{r}
+submission <- read_csv("sample_submission.csv")
+submission$SalePrice <- exp(result_forward$value)
+write.csv(submission, row.names = FALSE,
+          "forward_fit.csv")
+
+submission <- read_csv("sample_submission.csv")
+submission$SalePrice <- exp(result_lasso$.pred)
+write.csv(submission, row.names = FALSE,
+          "lasso_fit.csv")
+
+submission <- read_csv("sample_submission.csv")
+submission$SalePrice <- exp(result_ridge$.pred)
+write.csv(submission, row.names = FALSE,
+          "ridge_fit.csv")
+```
+
 
