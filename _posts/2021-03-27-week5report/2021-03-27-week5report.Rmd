@@ -31,7 +31,6 @@ theme_set(theme_bw())
 # Introduction
 
 
-
 Feature selection plays an important role in solving overfitting problems. Feature selection approaches can be categorized into three broad classes: the filter methods, the wrapper methods, and embedded methods. The filter method has advantages as it can be performed independently of the model in the data preprocessing process, while the wrpper method has the potential for forward selection. Examples of embedded methods include regularization methods.
 
 
@@ -221,12 +220,6 @@ ridge_fit <-
     
 ```  
  
-```{r}  
-  AIC(lasso_fit2, k=log(nrow(train2))) ; AIC(step_model, k=log(nrow(train2)))
-  
-``` 
-
-
 
 
 ## Prediction
