@@ -12,6 +12,20 @@ output:
     code_folding: true
     draft: true
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, message=FALSE, warning=FALSE, results='hide'}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+theme_set(theme_bw())
+```
 
 
 # Introduction
@@ -20,6 +34,184 @@ output:
 There are two ways to solve the overfitting problem. The first is feature selection and the second is regularization.
 
 
-The aim of this report is to compare performance with multiple regression models and lasso regression models applying regularization to improve understanding of the overfitting problem. Another approach to solving the overfitting problem, feature selection, is viewed using genetic algorithms rather than conventional step_wise. Additionally, adding several steps further from the previous report to the data preprocessing process is also covered.
+The aim of this report is to compare performance with multiple regression models and lasso regression models applying regularization to improve understanding of the overfitting problem. Another approach to solving the overfitting problem, feature selection, is viewed using genetic algorithms rather than conventional Forward, Backward, and Stepwise. Additionally, adding several steps further from the previous report to the data preprocessing process is also covered.
 
+
+
+***
+
+A list of the books I have referenced to produce this report is shown below.
+
+> -  Feature Engineering and Selection_ A Practical Approach for Predictive Models, Max Kuhn, Kjell Johnson(2019)
+> -  An Introduction to Statistical Learning with Applications in R , Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013)
+> -  Applied Predictive Modeling, Max Kuhn, Kjell Johnson (2013)
+> -  R for Data Science_ Import, Tidy, Transform,  Visualize, and Model Data , Hadley Wickham, Garrett  Grolemund (2017)
+> - Study Manual Exam PA, Ambrose Lo (2020 Spring)
+
+***
+
+
+
+# Example with Lecture
+
+
+## Preparations {.tabset .tabset-fade}
+
+### Data load
+
+
+```{r, message=FALSE}
+train <- read_csv(file= "train.csv")
+test <- read_csv("test.csv")
+```
+
+
+### Data overview {.tabset .tabset-fade}
+
+### Basic info.
+
+Here is the basic information about `train` and `test`. We have approximately the same sample size for the train and test set. The number of columns in the train is 81 and the one in the test is 80.
+
+```{r}
+dim(train)
+dim(test)
+```
+
+We can see train doesn't have the target variable `SalePrice`.
+
+```{r}
+"SalePrice" %in% names(test)
+```
+
+
+### Detailed info. `train`
+
+```{r}
+skim(train)
+```
+
+### Detailed info. `test`
+
+```{r}
+skim(test)
+```
+
+## EDA with visualization {.tabset .tabset-fade}
+
+### Distribution of `sale_price`
+
+If we check out the distribution of the house price, it is little bit skewed to the right.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = SalePrice)) +
+  geom_histogram()
+```
+Since we want to build a linear regression assume that the noise follows the normal distribution, let us take a log to `SalePrice` variable.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = log(SalePrice))) +
+  geom_histogram()
+```
+
+### `NA`s
+
+There is a nice package for checking out `NA`s. Let's see how many variables we have which contains `NA`s.
+
+```{r message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+library(naniar)
+train %>% 
+  # select_if(~sum(is.na(.)) > 0) %>% # alternative way
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_var()
+```
+
+We can do more analysis about `NA`s with `upset()` function, which shows that most of the observations with `NA`s in the data set have `NA`s at the `PoolQC`, `MiscFeature`, `Alley`, `Fence` at the same time.
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_upset()
+```
+
+From the above, we can have some insights that if a house doesn't have Pool, it is likely that it doesn't have Alley, Fence, and Fireplace too.
+
+
+### Preprecessing with `recipe`
+
+First, I would like to clean the variable names with `janitor` package so that we have consistent varible names.
+
+### `all_data` combine and name cleaning with `janitor`
+
+```{r}
+all_data <- bind_rows(train, test) %>% 
+  janitor::clean_names()
+names(all_data)[1:10]
+```
+
+### Make recipe
+
+Note that we will use mode imputation for nominal variables for the baseline, and the mean imputation for the numerical variables. However, this should be changed to build a more sensitive model because we have checked that the `NA` in the nominal variables indicates that cases where the house doesn't have the corresponding attributes.
+
+```{r}
+housing_recipe <- all_data %>% 
+  recipe(sale_price ~ .) %>%
+  step_rm(id) %>% 
+  step_log(sale_price) %>% 
+  step_modeimpute(all_nominal()) %>% 
+  step_dummy(all_nominal()) %>% 
+  step_meanimpute(all_predictors()) %>%
+  step_normalize(all_predictors()) %>% 
+  prep(training = all_data)
+
+print(housing_recipe)
+```
+
+### `juice` the all_data2 and split
+
+```{r}
+all_data2 <- juice(housing_recipe)
+```
+
+We are done for preprocessing. Let's split the data set.
+
+```{r}
+train_index <- seq_len(nrow(train))
+train2 <- all_data2[train_index,]
+test2 <- all_data2[-train_index,]
+```
+
+
+```{r}
+train2 %>% 
+  head() %>% 
+  kable()
+```
+
+
+## Set linear regression model and fitting 
+
+
+```{r}
+lm_model <- 
+    linear_reg() %>% 
+    set_engine("lm")
+
+lm_form_fit <- 
+    lm_model %>% 
+    fit(sale_price ~ ., data = train2)
+
+options(max.print = 10)
+print(lm_form_fit)
+```
+
+
+## Prediction
+
+
+```{r warning=FALSE}
+result <- predict(lm_form_fit, test2)
+result %>% head()
+```
 
