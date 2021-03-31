@@ -139,7 +139,6 @@ housing_recipe <- all_data %>%
   recipe(sale_price ~ .) %>%
   step_rm(id) %>% 
   step_log(sale_price) %>% 
-  step_knnimpute(all_nominal()) %>% 
   step_dummy(all_nominal()) %>% 
   step_meanimpute(all_predictors()) %>%
   step_normalize(all_predictors()) %>% 
@@ -207,6 +206,7 @@ ridge_fit <-
 
 
 ### Forward vs lasso vs ridge
+
 
 ```{r, message=FALSE, warning=FALSE, results='hide'}
 
