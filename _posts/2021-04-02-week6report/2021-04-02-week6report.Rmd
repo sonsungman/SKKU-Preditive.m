@@ -1,0 +1,168 @@
+---
+title: "WEEK_6 Report"
+description: |
+  Lasso, Ridge, and Elrastic Net with hyperparameter tuning
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 04-02-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, message=FALSE, warning=FALSE, results='hide'}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+theme_set(theme_bw())
+```
+
+
+# Introduction
+
+
+The Rasso and Ridge models impose penalties when estimating the coefficients of multiple linear regression models. This penalty imposition reduces the estimated coefficient value, thus solving the overfitting problem. In the case of Ridge, the multicollinearity problem can be solved because no variable selection is made, but the estimated coefficient value with less impact is close to zero. On the other hand, in the case of Lasso, the choice of variables is naturally made through penalty imposition. The model that uses both Lasso and Ridge's penalty charging method is the Elastic Net model.
+
+The purpose of this report is to conduct tuning of hyperparameters corresponding to lambda and alpha in the Elastic Net model using cross-validation, to check the cross-validation error, to learn the Elastic Net model and to get the results. Also, I check out the Outlier and remove it.
+
+
+
+***
+
+A list of the books I have referenced to produce this report is shown below.
+
+> -  Feature Engineering and Selection_ A Practical Approach for Predictive Models, Max Kuhn, Kjell Johnson(2019)
+> -  An Introduction to Statistical Learning with Applications in R , Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani (2013)
+> -  Applied Predictive Modeling, Max Kuhn, Kjell Johnson (2013)
+> -  R for Data Science_ Import, Tidy, Transform,  Visualize, and Model Data , Hadley Wickham, Garrett  Grolemund (2017)
+> - Study Manual Exam PA, Ambrose Lo (2020 Spring)
+
+***
+
+
+
+# Example with Lecture
+
+
+## Preparations {.tabset .tabset-fade}
+
+### Data load
+
+
+```{r, message=FALSE}
+train <- read_csv(file= "train.csv")
+test <- read_csv("test.csv")
+```
+
+
+### Data overview {.tabset .tabset-fade}
+
+```{r}
+dim(train)
+dim(test)
+```
+
+We can see train doesn't have the target variable `SalePrice`.
+
+```{r}
+"SalePrice" %in% names(test)
+```
+
+
+### Detailed info. `train`
+
+```{r}
+skim(train)
+```
+
+### Detailed info. `test`
+
+```{r}
+skim(test)
+```
+
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = SalePrice)) +
+  geom_histogram()
+```
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  ggplot(aes(x = log(SalePrice))) +
+  geom_histogram()
+```
+
+### `NA`s
+
+```{r message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+library(naniar)
+train %>% 
+  # select_if(~sum(is.na(.)) > 0) %>% # alternative way
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_var()
+```
+
+
+```{r message=FALSE, class.source = 'fold-hide'}
+train %>% 
+  select(where(~sum(is.na(.)) > 0)) %>% 
+  gg_miss_upset()
+```
+
+### Preprecessing with `recipe`
+
+### `all_data` combine and name cleaning with `janitor`
+
+```{r}
+all_data <- bind_rows(train, test) %>% 
+  janitor::clean_names()
+names(all_data)[1:10]
+```
+
+### Make recipe
+
+```{r}
+housing_recipe <- all_data %>% 
+  recipe(sale_price ~ .) %>%
+  step_rm(id) %>% 
+  step_log(sale_price) %>% 
+  step_dummy(all_nominal()) %>% 
+  step_meanimpute(all_predictors()) %>%
+  step_normalize(all_predictors()) %>% 
+  prep(training = all_data)
+
+print(housing_recipe)
+```
+
+### `juice` the all_data2 and split
+
+```{r}
+all_data2 <- juice(housing_recipe)
+```
+
+We are done for preprocessing. Let's split the data set.
+
+```{r}
+  train_index <- seq_len(nrow(train))
+  train2 <- all_data2[train_index,]
+  test2 <- all_data2[-train_index,]
+```
+
+
+```{r}
+train2 %>% 
+  head() %>% 
+  kable()
+```
