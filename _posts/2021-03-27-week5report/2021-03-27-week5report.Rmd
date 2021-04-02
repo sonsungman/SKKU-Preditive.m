@@ -156,9 +156,9 @@ all_data2 <- juice(housing_recipe)
 We are done for preprocessing. Let's split the data set.
 
 ```{r}
-train_index <- seq_len(nrow(train))
-train2 <- all_data2[train_index,]
-test2 <- all_data2[-train_index,]
+  train_index <- seq_len(nrow(train))
+  train2 <- all_data2[train_index,]
+  test2 <- all_data2[-train_index,]
 ```
 
 
@@ -175,16 +175,16 @@ train2 %>%
 ```{r}
   library(MASS) 
 
-lasso_model <- 
+  lasso_model <- 
     linear_reg(penalty = 0.01, mixture = 1) %>% # lasso: 1, ridge: 0
     set_engine("glmnet")
 
-lasso_fit <- 
+  lasso_fit <- 
     lasso_model %>% 
     fit(sale_price ~ ., data = train2)
 
-options(max.print = 10)
-lasso_fit %>% 
+  options(max.print = 10)
+    lasso_fit %>% 
     tidy() %>% 
     filter(estimate > 0.001)
 
@@ -198,7 +198,7 @@ lasso_fit %>%
     linear_reg(penalty = 0.01, mixture = 0) %>% # lasso: 1, ridge: 0
     set_engine("glmnet")
 
-ridge_fit <- 
+  ridge_fit <- 
     ridge_model %>% 
     fit(sale_price ~ ., data = train2)
 
