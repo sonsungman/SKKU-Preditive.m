@@ -29,6 +29,7 @@ output:
 ## Interest
 
  - Stochastic Reserving in P&C insurance
- - RA in IFRS17
+ - Financial report in Insurance company
  - DFA and ALM
  - MCEV in Life company
+ - Investment in Life and Non-Life company
