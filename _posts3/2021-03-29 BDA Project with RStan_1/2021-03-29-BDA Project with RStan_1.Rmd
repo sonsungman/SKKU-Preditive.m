@@ -1,0 +1,54 @@
+---
+title: "BDA Project with RStan_1"
+description: |
+  Introduction
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 03-29-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS) ; library(rstan) ; 
+```
+
+
+```{r load_lib, message=FALSE, warning=FALSE, results='hide'}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+theme_set(theme_bw())
+```
+
+## Understanding Background
+
+
+베이지안 통계에 대해서 들어보았나? 베이지안 통계의 아이디어는 전통적인 통계학과 다른 관점을 취하고 있다. 빈도주의적(전통적) 통계학의 경우 모수를 MLE를 사용하여 단 하나의 값으로 추정한다. 즉, 모수는 고정된 특정한 값이다. 모집단으로 부터 나온 표본들을 사용하여 
+우도 함수$L(x|\theta) = \prod_{i = 1}^{n}f(x_i|\theta)$가 최대가 되게하는 $\theta$를 찾는 것이다.
+
+
+$$
+          \hat{\theta} = \underset{\theta}{\operatorname{argmax}}L(x|\theta)
+$$
+
+반면에 베이지안 통계학은 모수를 하나의 확률변수로 파악한다. 즉, 모수 또한 확률분포를 갖는다. 매커니즘은 간단하다. 베이지안 추론의 요점은 데이터가 주어졌을때에 즉, 관찰치나 표본이라고 할수 있는 값들을 사용해서 우리가 갖는 모수에 관한 사전적 믿음을 업데이트 해나가는 과정이라고 볼 수 있다. 
+
+Prior : $\pi(\theta)$
+
+Likehood : $f(D|\theta)$
+
+Evidence : $f(D) = \int \pi(\theta)f(D|\theta) d\theta$
+
+Posterior : $f(\theta|D) = \displaystyle \frac{\pi(\theta)f(D|\theta)}{f(D)}$
+
+
+데이터를 조건으로 모수의 사후분포를 어떻게 추론할 것인가가 베이지안 추론의 요체이다. 위 식에서 좌변식 분모를 계산하는 적분은 사전분포와 사후 분포의 공액관계가 있지않다면 계산이 불가능하다. 그렇기에 우리는 일반적으로 사후분포가 우도함수와 사전분포의 곱에 비례한다는 사실만 알고 있다. 이 사후분포의 특정을 위해서 저 적분을 풀어 상수 값을 구해서 사후분포를 결정해야하는데 저 적분이 불가능 하니 우리가 알고있는 사실, 사전분포와 우도함수의 곱에 비례함을 바탕으로 사후분포를 수치적으로 근사해야 한다. 이 때에 등장하는 방법이 곧 MCMC이다.
+
