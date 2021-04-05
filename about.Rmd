@@ -7,7 +7,6 @@ links:
 - label: Email
   url: 'malito : powerllone3@naver.com'
 output:
-  pdf_document: default
   postcards::trestles: default
 ---
 
