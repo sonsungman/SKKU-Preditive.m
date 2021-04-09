@@ -1,7 +1,7 @@
 ---
 title: "WEEK_6 Report"
 description: |
-  Lasso, Ridge, and Elrastic Net with hyperparameter tuning
+  Lasso, Ridge, and Elastic Net with hyperparameter tuning
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
@@ -31,7 +31,7 @@ theme_set(theme_bw())
 # Introduction
 
 
-The Rasso and Ridge models impose penalties when estimating the coefficients of multiple linear regression models. This penalty imposition reduces the estimated coefficient value, thus solving the overfitting problem. In the case of Ridge, the multicollinearity problem can be solved because no variable selection is made, but the estimated coefficient value with less impact is close to zero. On the other hand, in the case of Lasso, the choice of variables is naturally made through penalty imposition. The model that uses both Lasso and Ridge's penalty charging method is the Elastic Net model.
+The Lasso and Ridge models impose penalties when estimating the coefficients of multiple linear regression models. This penalty imposition reduces the estimated coefficient value, thus solving the overfitting problem. In the case of Ridge, the multicollinearity problem can be solved because no variable selection is made, but the estimated coefficient value with less impact is close to zero. On the other hand, in the case of Lasso, the choice of variables is naturally made through penalty imposition. The model that uses both Lasso and Ridge's penalty charging method is the Elastic Net model.
 
 The purpose of this report is to conduct tuning of hyperparameters corresponding to lambda and alpha in the Elastic Net model using cross-validation, to check the cross-validation error, to learn the Elastic Net model and to get the results. Also, I check out the Outlier and remove it.
 
@@ -165,4 +165,112 @@ We are done for preprocessing. Let's split the data set.
 train2 %>% 
   head() %>% 
   kable()
+```
+
+
+Using cross-validation, we now want to determine the optimal hyperparameters. There are alpha and lambda in the hyperparameters. The expressions below are called hyperparameters because $\alpha$ and $\lambda$ are established prior to determining the coefficients through model learning. $\lambda$ is concerned with the degree of penalty and $\alpha$ is concerned with the proportion of penalty in Lasso and Ridge respectively.
+
+$$\underset{\beta}{min}\left(y-X\beta\right)^{T}\left(y-X\beta\right)+\frac{\lambda}{2}\left(\alpha\left\Vert \beta\right\Vert _{1}+\left(1-\alpha\right)\left\Vert \beta\right\Vert _{2}^{2}\right)$$
+
+# Split the train into validation and train
+
+```{r}
+set.seed(2021)
+
+# validation_split <- validation_split(train2, prop = 0.7)
+validation_split <- vfold_cv(train2, v = 10, strata = sale_price)
+
+```
+
+# Set the tuning spec of Elastic Net
+
+
+```{r}
+tune_spec <- linear_reg(penalty = tune(),
+                        mixture = tune()) %>% #ridge
+  set_engine("glmnet")
+
+grid_regular(penalty(), levels = 100)
+
+param_grid <- grid_regular(penalty(),
+                           mixture(),
+                           levels = list(penalty = 100,
+                                         mixture = 5))
+```
+
+# Set workflow()
+
+```{r}
+workflow <- workflow() %>%
+  add_model(tune_spec) %>% 
+  add_formula(sale_price ~ .)
+```
+
+```{r}
+library(tictoc)
+doParallel::registerDoParallel()
+
+tic()
+tune_result <- workflow %>% 
+  tune_grid(validation_split,
+            grid = param_grid,
+            metrics = metric_set(rmse))
+toc()
+```
+
+```{r}
+tune_result %>% 
+  collect_metrics()
+```
+
+# Visualization of the tunning result
+
+```{r}
+tune_best <- tune_result %>% select_best(metric = "rmse")
+tune_best$penalty
+tune_best$mixture
+```
+
+```{r message=FALSE}
+tune_result %>%
+  collect_metrics() %>%
+  filter(mixture == tune_best$mixture) %>% 
+  ggplot(aes(penalty, mean, color = .metric)) +
+  geom_line(size = 1.5) +
+  scale_x_log10() +
+  theme(legend.position = "none") +
+  labs(title = "RMSE")
+```
+
+```{r}
+tune_result %>% show_best()
+```
+
+
+# Set Elastic net regression model and fitting
+
+`mixture` parameter determines the proportion of Lasso regression in the Elastic net.
+
+```{r message=FALSE, warning=FALSE}
+elastic_model <- 
+    linear_reg(penalty = tune_best$penalty,
+               mixture = tune_best$mixture) %>%
+    set_engine("glmnet")
+
+elastic_fit <- 
+    elastic_model %>% 
+    fit(sale_price ~ ., data = train2)
+
+options(max.print = 10)
+elastic_fit %>% 
+    tidy() %>% 
+    filter(estimate > 0.001)
+```
+
+# Prediction
+
+```{r warning=FALSE}
+result <- predict(elastic_fit, test2)
+result$.pred <- exp(result$.pred)
+result %>% head()
 ```
