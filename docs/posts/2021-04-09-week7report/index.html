@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2021-04-09-week7report_files/figure-html5/unnamed-chunk-1-1.png"]}
+  {"type":"character","attributes":{},"value":["2021-04-09-week7report_files/anchor-4.2.2/anchor.min.js","2021-04-09-week7report_files/bowser-1.9.3/bowser.min.js","2021-04-09-week7report_files/distill-2.2.21/template.v2.js","2021-04-09-week7report_files/figure-html5/unnamed-chunk-1-1.png","2021-04-09-week7report_files/jquery-1.11.3/jquery.min.js","2021-04-09-week7report_files/popper-2.6.0/popper.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-bundle.umd.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-light-border.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.umd.min.js","2021-04-09-week7report_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2102,7 +2102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Let <span class="math inline">\(X = U \Sigma V^{T}\)</span>. Under the conditions given in the problem, <span class="math inline">\(V^{T}V = I\)</span> and <span class="math inline">\(U^{T}U =I\)</span>.</p>
 <p><span class="math display">\[
 \begin{aligned}
- (X^{T}X + \lambda I) X^{T}  
+ (X^{T}X + \lambda I)^{-1} X^{T}  
     &amp;=  [(U \Sigma V^{T})^{T} U \Sigma V^{T} + \lambda I]^{-1}(U \Sigma V^{T})^{T} \\
     &amp;=  [V\Sigma U^{T} U\Sigma V^{T} + \lambda I]^{-1}V\Sigma^{T}U^{T} \\
     &amp;= [V\Sigma^{T}\Sigma V^{T} + \lambda I]^{-1}V\Sigma U^{T} \\
@@ -2116,14 +2116,14 @@ document.addEventListener('DOMContentLoaded', function() {
 <p>Then,</p>
 <p><span class="math display">\[
   \begin{aligned}
-  (X^{T}X + \lambda I) X^{T} 
+  (X^{T}X + \lambda I)^{-1} X^{T} 
    &amp;= V \Sigma^{*} U^{T}
   \end{aligned}
 \]</span></p>
 <h3 id="section-1">2)</h3>
 <p><span class="math display">\[
   \begin{aligned}
-    \hat{\beta}_{Ridge} &amp;= (X^{T}X + \lambda I) X^{T}y \\
+    \hat{\beta}_{Ridge} &amp;= (X^{T}X + \lambda I)^{-1} X^{T}y \\
     &amp;= V \Sigma^{*} U^{T}y
   \end{aligned}
 \]</span></p>

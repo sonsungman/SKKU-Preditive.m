@@ -38,7 +38,7 @@ Let $X = U \Sigma V^{T}$. Under the conditions given in the problem, $V^{T}V = I
   
 $$
 \begin{aligned}
- (X^{T}X + \lambda I) X^{T}  
+ (X^{T}X + \lambda I)^{-1} X^{T}  
     &=  [(U \Sigma V^{T})^{T} U \Sigma V^{T} + \lambda I]^{-1}(U \Sigma V^{T})^{T} \\
     &=  [V\Sigma U^{T} U\Sigma V^{T} + \lambda I]^{-1}V\Sigma^{T}U^{T} \\
     &= [V\Sigma^{T}\Sigma V^{T} + \lambda I]^{-1}V\Sigma U^{T} \\
@@ -56,7 +56,7 @@ Then,
 
 $$
   \begin{aligned}
-  (X^{T}X + \lambda I) X^{T} 
+  (X^{T}X + \lambda I)^{-1} X^{T} 
    &= V \Sigma^{*} U^{T}
   \end{aligned}
 $$
@@ -67,7 +67,7 @@ $$
 
 $$
   \begin{aligned}
-    \hat{\beta}_{Ridge} &= (X^{T}X + \lambda I) X^{T}y \\
+    \hat{\beta}_{Ridge} &= (X^{T}X + \lambda I)^{-1} X^{T}y \\
     &= V \Sigma^{*} U^{T}y
   \end{aligned}
 $$
