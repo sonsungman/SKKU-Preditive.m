@@ -1,0 +1,126 @@
+---
+title: "WEEK_7 Report"
+description: |
+  Middle HW
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 04-09-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(glmnet)
+theme_set(theme_bw())
+```
+
+## 1. Ridge regression solution
+
+### 1) 
+
+Let $X = U \Sigma V^{T}$. Under the conditions given in the problem, $V^{T}V = I$ and $U^{T}U =I$.
+
+  
+$$
+\begin{aligned}
+ (X^{T}X + \lambda I) X^{T}  
+    &=  [(U \Sigma V^{T})^{T} U \Sigma V^{T} + \lambda I]^{-1}(U \Sigma V^{T})^{T} \\
+    &=  [V\Sigma U^{T} U\Sigma V^{T} + \lambda I]^{-1}V\Sigma^{T}U^{T} \\
+    &= [V\Sigma^{T}\Sigma V^{T} + \lambda I]^{-1}V\Sigma U^{T} \\
+    &=[V \Sigma^{2} V^{T} + \lambda VV^{T} ]^{-1}V\Sigma U^{T} \\
+    &=[V(\Sigma ^{2} + \lambda I)V^{T}]^{-1}V\Sigma U^{T} \\
+    &=(V^{T})^{-1}(\Sigma ^{2} + \lambda I)^{-1}\Sigma U^{T} 
+\end{aligned}
+$$
+
+$(\Sigma ^{2} + \lambda I)^{-1}\Sigma$ is a diagonal matrix with elements $\frac{\sigma_{i}}{\sigma^{2}_{i}+\lambda}$ $i = 1, ... ,d$ 
+
+Let's call this matrix as $\Sigma^{*}$
+
+Then,
+
+$$
+  \begin{aligned}
+  (X^{T}X + \lambda I) X^{T} 
+   &= V \Sigma^{*} U^{T}
+  \end{aligned}
+$$
+
+
+### 2)
+
+
+$$
+  \begin{aligned}
+    \hat{\beta}_{Ridge} &= (X^{T}X + \lambda I) X^{T}y \\
+    &= V \Sigma^{*} U^{T}y
+  \end{aligned}
+$$
+
+
+$$
+  \begin{aligned}
+  0 \le\|\hat{\beta}_{Ridge}\|_{2} &= \|V \Sigma^{*} U^{T}y\|_{2} \\
+  &= \|V \Sigma^{*} U^{T}\|_{F}\|y\|_{2} \\
+  &= \sqrt{tr(\Sigma^{*})}\|y\|_{2} \\
+  &= \sqrt{\sum_{i = 1}^{d} (\frac{\sigma_{i}}{\sigma^{2}_{i}+\lambda})^{2}}\|y\|_{2}
+  \end{aligned}
+$$
+
+$\|\centerdot\|_{F}$ means Frobenious norm
+
+
+$$
+  0\le\|\hat{\beta}_{Ridge}\|_{2}\le\min(\sqrt{\sum_{i = 1}^{d} (\frac{\sigma_{i}}{\sigma^{2}_{i}+\lambda})^{2}}\|y\|_{2},\|\hat{\beta}_{OLS}\|_{2})
+$$
+
+As the $\lambda$ grows, the upper bound of $\|\hat{\beta}_{Ridge}\|_{2}$ becomes smaller, so the value of $\|\hat{\beta}_{Ridge}\|_{2}$ becomes smaller.
+
+
+## 2. Example from HW
+
+### 2) Plot the coefficients vs. the specified penalty values
+
+This is example from HW pdf
+
+```{r}
+  Boston=na.omit(Boston)
+x=model.matrix(crim~.,Boston)[,-1]
+y=as.matrix(Boston$crim)
+lasso.mod =glmnet(x,y, alpha =1)
+beta=coef(lasso.mod)
+
+tmp <- as.data.frame(as.matrix(beta))
+tmp$coef <- row.names(tmp)
+tmp <- reshape::melt(tmp, id = "coef")
+tmp$variable <- as.numeric(gsub("s", "", tmp$variable))
+tmp$lambda <- lasso.mod$lambda[tmp$variable+1] # extract the lambda values
+tmp$norm <- apply(abs(beta[-1,]), 2, sum)[tmp$variable+1] # compute L1 norm
+
+
+# x11(width = 13/2.54, height = 9/2.54)
+ggplot(tmp[tmp$coef != "(Intercept)",], aes(lambda, value, color = coef, linetype = coef)) + 
+    geom_line() + 
+    scale_x_log10() + 
+    xlab("Lambda (log scale)") + 
+    guides(color = guide_legend(title = ""), 
+           linetype = guide_legend(title = "")) +
+    theme_bw() + 
+    theme(legend.key.width = unit(3,"lines"))
+
+```
