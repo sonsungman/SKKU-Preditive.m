@@ -1,0 +1,311 @@
+---
+title: "WEEK_8 Report"
+description: |
+  Using Random forest
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 04-16-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(glmnet)
+theme_set(theme_bw())
+```
+
+## Introduction
+
+Random Forest is a combination of two ideas. First, through bootstrapping, samples are drawn from training data to make various decision trees(Bagging), and predictors are also randomly drawn and used when making split of each tree.
+
+## Example from Lecture
+
+
+```{r}
+train <- read_csv("train.csv") %>% 
+  janitor::clean_names()
+test <- read_csv( "test.csv") %>%
+  janitor::clean_names()
+```
+
+
+
+```{r}
+train %>% 
+  head() %>% 
+  kable() %>% 
+  kableExtra::kable_styling("striped") %>% 
+  kableExtra::scroll_box(width = "100%")
+```
+
+
+
+```{r}
+dim(train)
+```
+
+```{r}
+dim(test)
+```
+
+
+```{r}
+names(train)
+```
+
+```{r}
+names(test)
+```
+
+
+```{r}
+skim(train)
+```
+
+
+```{r}
+skim(test)
+```
+
+
+
+```{r}
+train %>%
+  ggplot(aes(x = factor(credit), y = income_total)) +
+  geom_boxplot() +
+  facet_grid(. ~ income_type)
+```
+
+
+```{r}
+options(max.print = 50)
+train %>% 
+  select_if(is.numeric) %>% 
+  drop_na() %>% 
+  cor() %>% as.data.frame() %>% 
+  rownames_to_column(var = "variables") %>% 
+  select(variables, credit) %>% 
+  arrange(desc(abs(credit))) %>% kable()
+```
+
+
+```{r}
+train %>% ggplot(aes(x = -(days_birth/356))) +
+  geom_histogram() +
+  labs(x = "yrs")
+```
+
+
+
+```{r}
+all_data <- bind_rows(train, test)
+all_data %>% dim()
+```
+
+
+```{r}
+all_data %<>%
+  mutate_if(is.character, as.factor) %>% 
+  mutate(credit = factor(credit))
+
+# all_data %>%
+#   mutate(yrs_birth = -ceiling(days_birth/365),
+#         yrs5_employed = -ceiling(days_employed/(356*5))) %>%
+#   mutate(occyp_type = fct_explicit_na(occyp_type, na_level = "(Missing)")) %>% 
+#   group_by(yrs5_employed, occyp_type)
+# 
+# train %>% 
+#   select(credit) %>%
+#   mutate(level = case_when(
+#     credit == 0 ~ "poor",
+#     credit == 1 ~ "medium",
+#     credit == 2 ~ "high")) %>% 
+#   mutate(n = 1) %>% 
+#   pivot_wider(level,
+#     names_from = level,
+#     values_from = n)
+#   janitor::tabyl(credit, level, show_na = F)
+# all_data$occyp_type %>% unique()
+```
+
+
+
+```{r}
+credit_recipe <- all_data %>% 
+  recipe(credit ~ .) %>% 
+  step_mutate(yrs_birth = -ceiling(days_birth/365),
+              yrs_employed = -ceiling(days_employed/356),
+              perincome = income_total / family_size,
+              adult_income = (family_size - child_num) * income_total,
+              phone_plus_email = phone + email,
+              begin_month = -begin_month) %>% 
+  step_rm(index, days_birth, days_employed) %>%
+  step_unknown(occyp_type) %>% 
+  step_integer(all_nominal(), -all_outcomes()) %>% 
+  step_center(all_predictors(), -all_outcomes()) %>% 
+  prep(training = all_data)
+
+print(credit_recipe)
+```
+
+
+
+```{r}
+all_data2 <- juice(credit_recipe)
+head(all_data2)
+```
+
+
+
+```{r}
+all_data2 %>%
+map_df(~sum(is.na(.))) %>%
+  pivot_longer(cols = everything(),
+       names_to = "variable",
+       values_to = "na_count") %>% 
+  filter(na_count > 0)
+```
+
+
+```{r}
+train_index <- seq_len(nrow(train))
+train2 <- all_data2[train_index,]
+test2 <- all_data2[-train_index,]
+```
+
+
+
+```{r}
+set.seed(2021)
+
+# validation_split <- validation_split(train2, prop = 0.7,
+#                                      strata = credit)
+validation_split <- vfold_cv(train2, v = 5, strata = credit)
+```
+
+
+
+```{r }
+tune_spec <- rand_forest(mtry = tune(),
+                         min_n = tune(),
+                         trees = 1000) %>% 
+    set_engine("ranger", importance = "impurity") %>%
+    set_mode("classification")
+
+#param_grid <- grid_latin_hypercube(finalize(mtry(), x = train2[,-1]),
+#                                   min_n(), size = 100)
+
+param_grid <- tibble(mtry = 3, min_n = 5)
+
+```
+
+
+```{r }
+workflow <- workflow() %>%
+  add_model(tune_spec) %>% 
+  add_formula(credit ~ .)
+```
+
+# Tuning trees
+
+```{r tune-grid, message=FALSE}
+library(doParallel)
+Cluster <- makeCluster(detectCores() - 1)
+registerDoParallel(Cluster)
+
+library(tictoc)
+tic()
+tune_result <- workflow %>% 
+  tune_grid(validation_split,
+            grid = param_grid,
+            control = control_grid(save_pred = TRUE),
+            metrics = metric_set(mn_log_loss))
+toc()
+```
+
+```{r eval=TRUE}
+# tune_result$.notes
+tune_result %>% 
+  collect_metrics()
+```
+
+
+```{r message=FALSE, eval=TRUE}
+tune_result %>%
+  collect_metrics() %>%
+  filter(.metric == "mn_log_loss") %>% 
+  ggplot(aes(mtry, mean, color = .metric)) +
+  geom_line(size = 1.5) +
+  scale_x_log10() +
+  theme(legend.position = "none") +
+  labs(title = "Mean Log loss")
+```
+
+```{r eval=TRUE}
+# v1 best 0.7109706
+# v5 best 0.7022781
+tune_result %>% show_best()
+```
+
+```{r eval=TRUE}
+tune_best <- tune_result %>% select_best(metric = "mn_log_loss")
+tune_best$mtry
+tune_best$min_n
+```
+
+
+```{r trainrf, message=FALSE, warning=FALSE}
+cores <- parallel::detectCores() -1
+cores
+
+rf_model <- 
+  rand_forest(mtry = tune_best$mtry,
+              min_n = tune_best$min_n,
+              trees = 1000) %>% 
+    set_engine("ranger", seed = 2021, num.threads = cores) %>% 
+    set_mode("classification")
+
+tictoc::tic()
+rf_fit <- 
+    rf_model %>% 
+    fit(credit ~ ., data = train2)
+tictoc::toc()
+
+options(max.print = 10)
+rf_fit
+# Ranger result
+# 
+# Type:                             Probability estimation 
+# Number of trees:                  1000 
+# Sample size:                      26457 
+# Number of independent variables:  18 
+# Mtry:                             3 
+# Target node size:                 5 
+# Variable importance mode:         none 
+# Splitrule:                        gini 
+# OOB prediction error (Brier s.):  0.2308023 
+```
+
+
+```{r warning=FALSE}
+result <- predict(rf_fit, test2, type = "prob")
+result %>% head()
+`````
+
+
+
