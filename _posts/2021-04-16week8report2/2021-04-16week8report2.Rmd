@@ -1,0 +1,176 @@
+---
+title: "WEEK_8 Report2"
+description: |
+  Using knn, NB, MLR
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 04-16-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(caret)
+library(e1071)
+library(nnet)
+theme_set(theme_bw())
+```
+
+```{r}
+train <- read_csv("train.csv") %>% 
+  janitor::clean_names()
+test <- read_csv( "test.csv") %>%
+  janitor::clean_names()
+```
+
+
+```{r}
+all_data <- bind_rows(train, test)
+all_data %>% dim()
+```
+
+
+```{r}
+all_data %<>%
+  mutate_if(is.character, as.factor) %>% 
+  mutate(credit = factor(credit))
+
+ all_data %>%
+  mutate(yrs_birth = -ceiling(days_birth/365),
+        yrs5_employed = -ceiling(days_employed/(356*5))) %>%
+  mutate(occyp_type = fct_explicit_na(occyp_type, na_level = "(Missing)")) %>%      group_by(yrs5_employed, occyp_type)
+# 
+# train %>% 
+#   select(credit) %>%
+#   mutate(level = case_when(
+#     credit == 0 ~ "poor",
+#     credit == 1 ~ "medium",
+#     credit == 2 ~ "high")) %>% 
+#   mutate(n = 1) %>% 
+#   pivot_wider(level,
+#     names_from = level,
+#     values_from = n)
+#   janitor::tabyl(credit, level, show_na = F)
+# all_data$occyp_type %>% unique()
+```
+
+
+
+```{r}
+credit_recipe <- all_data %>% 
+  recipe(credit ~ .) %>% 
+  step_mutate(yrs_birth = -ceiling(days_birth/365),
+              yrs_employed = -ceiling(days_employed/356),
+              perincome = income_total / family_size,
+              adult_income = (family_size - child_num) * income_total,
+              begin_month = -begin_month) %>% 
+  step_rm(index, days_birth, work_phone, phone, email) %>%
+  step_unknown(occyp_type) %>% 
+  step_integer(all_nominal(), -all_outcomes()) %>% 
+  step_center(all_predictors(), -all_outcomes()) %>% 
+  prep(training = all_data)
+
+print(credit_recipe)
+```
+
+
+
+```{r}
+all_data2 <- juice(credit_recipe)
+head(all_data2)
+```
+
+
+
+```{r}
+all_data2 %>%
+map_df(~sum(is.na(.))) %>%
+  pivot_longer(cols = everything(),
+       names_to = "variable",
+       values_to = "na_count") %>% 
+  filter(na_count > 0)
+```
+
+
+```{r}
+train_index <- seq_len(nrow(train))
+train2 <- all_data2[train_index,]
+test2 <- all_data2[-train_index,]
+
+```
+
+```{r}
+set.seed(2021)
+
+tune <- caret::trainControl(method = "cv", number = 5, p = 0.75)
+
+model_knn <- caret::train(credit~ ., data = train2,
+                          method = "knn",
+                          trControl = tune,
+                          tuneGrid = expand.grid(k = 1:10))
+
+x <- train2[,-15]
+y <- train2$credit
+
+model_mlr <- nnet::multinom(credit ~., data = train2)
+
+
+
+#model_nb <- train(x,y,'nb',
+#            trControl = trainControl(method = "cv", number = 5, p = 0.75))
+
+```
+
+```{r warning=FALSE}
+result_knn <- predict(model_knn, test2, type = "prob")
+result_knn %>% head()
+#result_nb <- predict(model_nb, test2, type = "prob")
+#result_nb %>% head()
+result_mlr <- predict(model_mlr, test2, type = "prob")
+result_mlr %>% head()
+```
+
+```{r}
+#submission <- read_csv("sample_submission.csv")
+#sub_col <- names(submission)
+#submission <- bind_cols(submission$index, result_knn)
+#names(submission) <- sub_col
+#write.csv(submission, row.names = FALSE,
+#          "son_credit_knn.csv")
+
+#submission <- read_csv("sample_submission.csv")
+#sub_col <- names(submission)
+#submission <- bind_cols(submission$index, result_nb)
+#names(submission) <- sub_col
+#write.csv(submission, row.names = FALSE,
+#          "son_credit_nb.csv")
+
+#submission <- read_csv("sample_submission.csv")
+#sub_col <- names(submission)
+#submission <- bind_cols(submission$index, result_mlr)
+#names(submission) <- sub_col
+#write.csv(submission, row.names = FALSE,
+#          "son_credit_mlr.csv")
+
+#son_credit_mlr <-as.data.frame(read.csv("son_credit_mlr.csv")) 
+
+#names(son_credit_mlr)<-sub_col
+
+#write.csv(son_credit_mlr,"son_credit_mlr.csv",row.names = FALSE)
+
+```

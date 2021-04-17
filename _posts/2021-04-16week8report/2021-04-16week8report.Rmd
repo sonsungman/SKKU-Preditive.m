@@ -29,13 +29,6 @@ library(glmnet)
 theme_set(theme_bw())
 ```
 
-## Introduction
-
-Random Forest is a combination of two ideas. First, through bootstrapping, samples are drawn from training data to make various decision trees(Bagging), and predictors are also randomly drawn and used when making split of each tree.
-
-## Example from Lecture
-
-
 ```{r}
 train <- read_csv("train.csv") %>% 
   janitor::clean_names()
