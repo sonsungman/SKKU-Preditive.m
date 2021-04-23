@@ -120,7 +120,7 @@ workflow <- workflow() %>%
   add_formula(credit ~ .)
 ```
 
-# Tuning trees
+# Tuning Parameters
 
 ```{r tune-grid, message=FALSE}
 library(doParallel)
