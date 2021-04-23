@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts2/2021-04-16-Mack's Model/",
+    "title": "Mack's Model",
+    "description": "Stocastic Reserving",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m"
+      }
+    ],
+    "date": "2021-04-16",
+    "categories": [],
+    "contents": "\r\nIntroduction\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-18T04:55:06+09:00",
+    "input_file": "2021-04-16-Mack-s-model.utf8.md"
+  },
+  {
     "path": "posts2/2021-04-02-Insurance Accounting and Discount rate/",
     "title": "IAD part 1",
     "description": "From Lecture, Insurance Accounting and Discount rate",
