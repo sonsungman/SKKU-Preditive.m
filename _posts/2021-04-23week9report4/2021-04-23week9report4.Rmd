@@ -115,8 +115,7 @@ rf_fit_vfold %>%
   knn_spec <-
   nearest_neighbor(
     mode = "classification", 
-    neighbors = tune("k")
-  ) %>%
+    neighbors = tune("k")) %>%
   set_engine("kknn")
 
 knn_wflow <- 
@@ -126,7 +125,7 @@ knn_wflow <-
 
 
 knn_fit_vfold <- 
-    tune_grid(
+        tune_grid(
         knn_wflow,
         data = train2,
         resamples = validation_split,
