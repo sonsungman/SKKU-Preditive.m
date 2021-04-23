@@ -17,6 +17,23 @@
     "input_file": {}
   },
   {
+    "path": "posts/2021-04-23week9report3/",
+    "title": "WEEK_9 Report3",
+    "description": "Using KNN",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-04-23",
+    "categories": [],
+    "contents": "\r\nDATA\r\n\r\nShow code\r\ntrain <- read_csv(\"train.csv\") %>% \r\n  janitor::clean_names()\r\ntest <- read_csv( \"test.csv\") %>%\r\n  janitor::clean_names()\r\n\r\n\r\n\r\n\r\nShow code\r\ntrain %<>%\r\n  mutate_if(is.character, as.factor) %>% \r\n  mutate(credit = factor(credit))\r\n\r\n# all_data %>%\r\n#   mutate(yrs_birth = -ceiling(days_birth/365),\r\n#         yrs5_employed = -ceiling(days_employed/(356*5))) %>%\r\n#   mutate(occyp_type = fct_explicit_na(occyp_type, na_level = \"(Missing)\")) %>% \r\n#   group_by(yrs5_employed, occyp_type)\r\n# \r\n#train %>% \r\n#   select(credit) %>%\r\n#   mutate(level = case_when(\r\n#    credit == 0 ~ \"poor\",\r\n#     credit == 1 ~ \"medium\",\r\n#     credit == 2 ~ \"high\")) %>% \r\n#   mutate(n = 1) %>% \r\n#   pivot_wider(level,\r\n#     names_from = level,\r\n#     values_from = n)\r\n#   janitor::tabyl(credit, level, show_na = F)\r\n# all_data$occyp_type %>% unique()\r\n\r\n\r\n\r\n\r\nShow code\r\ncredit_recipe <- train %>% \r\n  recipe(credit ~ .) %>% \r\n  step_mutate(yrs_birth = -ceiling(days_birth/365),\r\n              yrs_employed = -ceiling(days_employed/365),\r\n              perincome = income_total / family_size,\r\n              adult_income = (family_size - child_num) * income_total,\r\n              begin_month = -begin_month) %>% \r\n  step_rm(index, days_birth, work_phone, phone, email) %>%\r\n  step_unknown(occyp_type) %>% \r\n  step_zv(all_predictors()) %>% \r\n  step_integer(all_nominal(), -all_outcomes()) %>% \r\n  step_center(all_predictors(), -all_outcomes()) %>% \r\n  prep(training = train)\r\n\r\n\r\n\r\n\r\nShow code\r\ntrain2 <- juice(credit_recipe)\r\ntest2 <- bake(credit_recipe, new_data= test)\r\n\r\n\r\n\r\n\r\nShow code\r\nset.seed(2021)\r\n\r\n# validation_split <- validation_split(train2, prop = 0.7,\r\n#                                      strata = credit)\r\nvalidation_split <- vfold_cv(train2, v = 5, strata = credit)\r\n\r\nctrl_grid <- control_stack_grid()\r\nctrl_res <- control_stack_resamples()\r\n\r\n\r\n\r\n\r\nShow code\r\n  knn_spec <-\r\n  nearest_neighbor(\r\n    mode = \"classification\", \r\n    neighbors = tune(\"k\")\r\n  ) %>%\r\n  set_engine(\"kknn\")\r\n\r\nknn_wflow <- \r\n  workflow() %>% \r\n  add_model(knn_spec) %>%\r\n  add_formula(credit ~ .)\r\n\r\n\r\n\r\n\r\nShow code\r\nlibrary(doParallel)\r\nCluster <- makeCluster(detectCores() - 1)\r\nregisterDoParallel(Cluster)\r\n\r\nlibrary(tictoc)\r\ntic()\r\ntune_result_knn <- knn_wflow %>% \r\n  tune_grid(validation_split,\r\n            grid = expand.grid(k = 1:10),\r\n            control = ctrl_grid,\r\n            metrics = metric_set(accuracy,roc_auc))\r\ntoc()\r\n\r\n\r\n159.86 sec elapsed\r\n\r\n\r\nShow code\r\ntune_best <- tune_result_knn %>% select_best(metric = \"accuracy\")\r\ntune_best$k\r\n\r\n\r\n[1] 10\r\n\r\n\r\nShow code\r\nknn_model <- \r\n    nearest_neighbor(neighbors = tune_best$k) %>%\r\n    set_engine(\"kknn\", seed = 2021) %>% \r\n    set_mode(\"classification\")\r\n\r\nknn_fit <- \r\n    knn_model %>% \r\n    fit(credit ~ ., data = train2)\r\n\r\n\r\n\r\n\r\nShow code\r\nresult <- predict(knn_fit, test2, type = \"prob\")\r\nresult %>% head()\r\n\r\n\r\n# A tibble: 6 x 3\r\n  .pred_0 .pred_1 .pred_2\r\n    <dbl>   <dbl>   <dbl>\r\n1  0       0.0704   0.930\r\n2  0.111   0.0180   0.871\r\n3  0       0.144    0.856\r\n4  0.0470  0.144    0.809\r\n5  0       0.516    0.484\r\n6  0       0.150    0.850\r\n\r\n\r\nShow code\r\n#submission <- read_csv(\"sample_submission.csv\")\r\n#sub_col <- names(submission)\r\n#submission <- bind_cols(submission$index, result)\r\n#names(submission) <- sub_col\r\n#write.csv(submission, row.names = FALSE,\r\n#          \"knn_dacon_credit_son.csv\")\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-04-23T18:14:38+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2021-04-16week8report/",
     "title": "WEEK_8 Report",
     "description": "Using Random forest",

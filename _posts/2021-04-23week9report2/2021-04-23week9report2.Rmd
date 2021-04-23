@@ -1,0 +1,186 @@
+---
+title: "WEEK_9 Report2"
+description: |
+  Using SVM
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 04-23-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(kernlab)
+theme_set(theme_bw())
+```
+
+
+## SVM
+
+```{r data}
+train <- read_csv("train.csv") %>% 
+  janitor::clean_names()
+test <- read_csv( "test.csv") %>%
+  janitor::clean_names()
+```
+
+
+```{r pre}
+train %<>%
+  mutate_if(is.character, as.factor) %>% 
+  mutate(credit = factor(credit))
+
+# all_data %>%
+#   mutate(yrs_birth = -ceiling(days_birth/365),
+#         yrs5_employed = -ceiling(days_employed/(356*5))) %>%
+#   mutate(occyp_type = fct_explicit_na(occyp_type, na_level = "(Missing)")) %>% 
+#   group_by(yrs5_employed, occyp_type)
+# 
+#train %>% 
+#   select(credit) %>%
+#   mutate(level = case_when(
+#    credit == 0 ~ "poor",
+#     credit == 1 ~ "medium",
+#     credit == 2 ~ "high")) %>% 
+#   mutate(n = 1) %>% 
+#   pivot_wider(level,
+#     names_from = level,
+#     values_from = n)
+#   janitor::tabyl(credit, level, show_na = F)
+# all_data$occyp_type %>% unique()
+```
+
+
+```{r recipe}
+credit_recipe <- train %>% 
+  recipe(credit ~ .) %>% 
+  step_mutate(yrs_birth = -ceiling(days_birth/365),
+              yrs_employed = -ceiling(days_employed/365),
+              perincome = income_total / family_size,
+              adult_income = (family_size - child_num) * income_total,
+              begin_month = -begin_month) %>% 
+  step_rm(index, days_birth, work_phone, phone, email) %>%
+  step_unknown(occyp_type) %>% 
+  step_zv(all_predictors()) %>% 
+  step_lincomb(all_numeric()) %>% 
+  step_integer(all_nominal(), -all_outcomes()) %>% 
+  step_center(all_predictors(), -all_outcomes()) %>% 
+  step_knnimpute(all_predictors()) %>%
+  prep(training = train)
+
+```
+
+
+
+```{r bake}
+train2 <- juice(credit_recipe)
+test2 <- bake(credit_recipe, new_data= test)
+```
+
+
+
+
+```{r vfold}
+set.seed(2021)
+
+# validation_split <- validation_split(train2, prop = 0.7,
+#                                      strata = credit)
+validation_split <- vfold_cv(train2, v = 5, strata = credit)
+
+```
+
+
+
+```{r tune-spec}
+tune_spec <- svm_rbf(cost = tune(),
+                     rbf_sigma = tune()) %>%
+  set_mode("classification") %>%
+  set_engine("kernlab")
+
+svm_grid <- expand.grid(
+    rbf_sigma = 10^seq(-5, -2, length.out = 10),
+    cost = 2^seq(0, 7, length.out = 10))
+
+```
+
+
+```{r work-flow}
+workflow <- workflow() %>%
+  add_model(tune_spec) %>% 
+  add_formula(credit ~ .)
+```
+
+## Tuning Parameters
+
+```{r tune-grid, message=FALSE}
+library(doParallel)
+Cluster <- makeCluster(detectCores() - 1)
+registerDoParallel(Cluster)
+
+library(tictoc)
+tic()
+tune_result <- workflow %>% 
+  tune_grid(validation_split,
+            grid = svm_grid,
+            control = control_grid(save_pred = TRUE, verbose = FALSE),
+            metrics = metric_set(accuracy,roc_auc))
+toc()
+```
+
+```{r eval=TRUE}
+# tune_result$.notes
+tune_result %>% 
+  collect_metrics()
+```
+
+
+```{r eval=TRUE}
+tune_result %>% show_best()
+```
+
+```{r eval=TRUE}
+tune_best <- tune_result %>% select_best(metric = "accuracy")
+tune_best$cost
+tune_best$rbf_sigma
+```
+
+```{r message=FALSE, warning=FALSE}
+SVM_model <- 
+    multinom_reg(cost = tune_best$cost,
+               rbf_sigma = tune_best$rbf_sigma) %>%
+    set_engine("accuracy")
+
+SVM_fit <- 
+    SVM_model %>% 
+    fit(credit ~ ., data = train2)
+```
+
+```{r warning=FALSE}
+result <- predict(SVM_fit, test2, type = "prob")
+result %>% head()
+```
+
+```{r, message=FALSE}
+submission <- read_csv("sample_submission.csv")
+sub_col <- names(submission)
+submission <- bind_cols(submission$index, result)
+names(submission) <- sub_col
+write.csv(submission, row.names = FALSE,
+          "svm_dacon_credit_son.csv")
+```
+
