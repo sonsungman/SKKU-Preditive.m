@@ -1,7 +1,7 @@
 [
   {
     "path": "posts2/2021-04-16-Mack's Model/",
-    "title": "Mack's Model",
+    "title": "Mack Model",
     "description": "Stocastic Reserving",
     "author": [
       {
@@ -11,10 +11,10 @@
     ],
     "date": "2021-04-16",
     "categories": [],
-    "contents": "\r\nIntroduction\r\n\r\n\r\n\r\n",
+    "contents": "\r\nIntroduction\r\n미지급 손해액 결정에 있어서 기존의 결정론적 방식의 적용은 소위 점추정치를 구하는 구조이다. 많이 알려져 있는 CLM방식은 upper 삼각형의 관측데이터를 모델에 fitting하고 fitting된 모수들(LDF)를 사용하여 곧바로 미래의 미지급 손해액을 예측한다.(FORCAST) 이러한 CLM방식은 관측데이터변화에 따라 민감하게 반응한다.\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-04-18T04:55:06+09:00",
-    "input_file": {}
+    "last_modified": "2021-04-23T21:35:39+09:00",
+    "input_file": "2021-04-16-Mack-s-model.utf8.md"
   },
   {
     "path": "posts2/2021-04-02-Insurance Accounting and Discount rate/",

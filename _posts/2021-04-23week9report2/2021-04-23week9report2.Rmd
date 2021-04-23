@@ -100,14 +100,16 @@ set.seed(2021)
 
 # validation_split <- validation_split(train2, prop = 0.7,
 #                                      strata = credit)
-validation_split <- vfold_cv(train2, v = 5, strata = credit)
+#validation_split <- vfold_cv(train2, v = 5, strata = credit)
+
+credit_rs <- bootstraps(train2, times = 30)
 
 ```
 
 
 
 ```{r tune-spec}
-tune_spec <- svm_rbf(cost = tune(),
+tune_spec_svm <- svm_rbf(cost = tune(),
                      rbf_sigma = tune()) %>%
   set_mode("classification") %>%
   set_engine("kernlab")
@@ -135,10 +137,10 @@ registerDoParallel(Cluster)
 library(tictoc)
 tic()
 tune_result <- workflow %>% 
-  tune_grid(validation_split,
+  tune_grid(credit_rs,
             grid = svm_grid,
             control = control_grid(save_pred = TRUE, verbose = FALSE),
-            metrics = metric_set(accuracy,roc_auc))
+            metrics = metric_set(roc_auc))
 toc()
 ```
 
@@ -154,16 +156,17 @@ tune_result %>% show_best()
 ```
 
 ```{r eval=TRUE}
-tune_best <- tune_result %>% select_best(metric = "accuracy")
+tune_best <- tune_result %>% select_best(metric = "roc_auc")
 tune_best$cost
 tune_best$rbf_sigma
 ```
 
 ```{r message=FALSE, warning=FALSE}
 SVM_model <- 
-    multinom_reg(cost = tune_best$cost,
+    svm_rbf(cost = tune_best$cost,
                rbf_sigma = tune_best$rbf_sigma) %>%
-    set_engine("accuracy")
+    set_mode("classification") %>%
+  set_engine("kernlab")
 
 SVM_fit <- 
     SVM_model %>% 
