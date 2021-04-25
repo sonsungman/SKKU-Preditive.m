@@ -1,7 +1,7 @@
 ---
 title: "WEEK_9 Report4"
 description: |
-  Let's Stacking_rf_knn_mlr
+  Let's Stacking_rf_knn_mlr_Lgbm_svm
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
@@ -28,8 +28,14 @@ library(knitr)
 library(kknn)
 library(stacks)
 library(glmnet)
+library(xgboost)
+library(kernlab)
 theme_set(theme_bw())
 ```
+
+## Introduction
+
+
 
 ## DATA
 
@@ -45,6 +51,8 @@ test <- read_csv( "test.csv") %>%
 train %<>%
   mutate_if(is.character, as.factor) %>% 
   mutate(credit = factor(credit))
+test %<>%
+  mutate_if(is.character, as.factor)
 ```
 
 ```{r recipe}
@@ -113,10 +121,9 @@ rf_fit_vfold %>%
 
 ```{r}
   knn_spec <-
-  nearest_neighbor(
-    mode = "classification", 
-    neighbors = tune("k")) %>%
-  set_engine("kknn")
+  nearest_neighbor(neighbors = 10) %>%
+  set_engine("kknn")  %>%
+  set_mode("classification")
 
 knn_wflow <- 
   workflow() %>% 
@@ -124,12 +131,13 @@ knn_wflow <-
   add_formula(credit ~ .)
 
 
+library(tictoc)
+tic()
 knn_fit_vfold <- 
         tune_grid(
         knn_wflow,
         data = train2,
         resamples = validation_split,
-        grid = expand.grid(k = 1:10),
         metrics = metric_set(accuracy,roc_auc),
         control = ctrl_grid)
 toc()
@@ -172,6 +180,72 @@ mlr_fit_vfold %>%
     collect_metrics()
 ```
 
+### Lgbm
+
+
+```{r}
+lgbm_spec <- boost_tree(
+    trees = 1000, 
+    tree_depth = 12, 
+    min_n = 3, 
+    loss_reduction = tune(),  
+    sample_size = 0.3779710, 
+    mtry = tune(),
+    learn_rate = 0.012945107
+) %>% 
+    set_engine("xgboost", objective = "multi:softprob") %>% 
+    set_mode("classification")
+
+lgbm_grid <- grid_latin_hypercube(
+    # min_n(), 
+    loss_reduction(),
+    finalize(mtry(), train2[-1]),
+    size = 50)
+
+lgbm_wflow <- 
+  workflow() %>% 
+  add_model(lgbm_spec) %>%
+  add_formula(credit ~ .)
+
+tic()
+lgbm_fit_vfold <-tune_grid(
+              lgbm_wflow,
+              data = train2,
+              resamples = validation_split,
+              grid = lgbm_grid,
+              control = ctrl_grid,
+              metrics = metric_set(accuracy,roc_auc))
+toc()
+
+```
+
+### svm
+
+```{r}
+  svm_spec <- svm_poly(
+  cost = tune(), degree = tune()) %>%
+  set_mode("classification") %>%
+  set_engine("kernlab")
+
+svm_grid <- expand.grid(cost = c(0.25, 0.5, 0.75, 1, 1.25, 1.5), degree = c(1, 2, 3, 4))
+
+svm_wflow <- 
+  workflow() %>% 
+  add_model(svm_spec) %>%
+  add_formula(credit ~ .)
+
+tic()
+svm_fit_vfold <-tune_grid(
+              svm_wflow,
+              data = train2,
+              resamples = validation_split,
+              grid = svm_grid,
+              control = ctrl_grid,
+              metrics = metric_set(accuracy,roc_auc))
+toc()
+
+
+```
 
 
 ```{r}
@@ -181,7 +255,10 @@ mlr_fit_vfold %>%
     collect_metrics()
   mlr_fit_vfold %>% 
     collect_metrics()
-
+  lgbm_fit_vfold%>% 
+    collect_metrics()
+  svm_fit_vfold%>% 
+    collect_metrics()
 ```
 
 ## stacks
@@ -192,7 +269,9 @@ credit_stacking <-
     stacks() %>% 
     add_candidates(rf_fit_vfold) %>% 
     add_candidates(knn_fit_vfold) %>%
-    add_candidates(mlr_fit_vfold)
+    add_candidates(mlr_fit_vfold) %>%
+    add_candidates(lgbm_fit_vfold) %>%
+    add_candidates(svm_fit_vfold)
 
 as_tibble(credit_stacking) %>% head()
 
@@ -206,12 +285,12 @@ result %>% head()
 ```
 
 ```{r, message=FALSE}
-#submission <- read_csv("sample_submission.csv")
-#sub_col <- names(submission)
-#submission <- bind_cols(submission$index, result)
-#names(submission) <- sub_col
-#write.csv(submission, row.names = FALSE,
-#          "stacking_rf_knn_mlr_son.csv")
+submission <- read_csv("sample_submission.csv")
+sub_col <- names(submission)
+submission <- bind_cols(submission$index, result)
+names(submission) <- sub_col
+write.csv(submission, row.names = FALSE,
+          "stacking_rf_knn_mlr_lgbm_son.csv")
 ```
 
 
