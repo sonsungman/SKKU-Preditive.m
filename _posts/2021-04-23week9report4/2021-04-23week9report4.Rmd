@@ -33,9 +33,6 @@ library(kernlab)
 theme_set(theme_bw())
 ```
 
-## Introduction
-
-
 
 ## DATA
 
@@ -54,6 +51,8 @@ train %<>%
 test %<>%
   mutate_if(is.character, as.factor)
 ```
+
+## Preprocessing
 
 ```{r recipe}
 credit_recipe <- train %>% 
@@ -77,6 +76,8 @@ train2 <- juice(credit_recipe)
 test2 <- bake(credit_recipe, new_data= test)
 ```
 
+## Validation
+
 ```{r}
   set.seed(2021)
 
@@ -89,61 +90,61 @@ test2 <- bake(credit_recipe, new_data= test)
 ### Random forest
 
 ```{r}
-  model_spec <- rand_forest(mtry = 3,
-                         min_n = 5,
-                         trees = 1000) %>% 
-    set_engine("ranger", importance = "impurity") %>%
-    set_mode("classification")
+#  model_spec <- rand_forest(mtry = 3,
+#                         min_n = 5,
+#                         trees = 1000) %>% 
+#    set_engine("ranger", importance = "impurity") %>%
+#    set_mode("classification")
 
-  rf_workflow <- workflow() %>%
-    add_model(model_spec) %>% 
-    add_formula(credit ~ .)
+#  rf_workflow <- workflow() %>%
+#    add_model(model_spec) %>% 
+#    add_formula(credit ~ .)
   
-ctrl_res <- control_stack_resamples()
+#ctrl_res <- control_stack_resamples()
 
-library(tictoc)
-tic()
-rf_fit_vfold <- 
-    rf_workflow %>% 
-    fit_resamples(credit ~ .,
-        data = train2,
-        resamples = validation_split,
-        metrics = metric_set(accuracy,roc_auc),
-        control = ctrl_res)
-toc()
+#library(tictoc)
+#tic()
+#rf_fit_vfold <- 
+#    rf_workflow %>% 
+#    fit_resamples(credit ~ .,
+#        data = train2,
+#        resamples = validation_split,
+#        metrics = metric_set(accuracy,roc_auc),
+#        control = ctrl_res)
+#toc()
 
-rf_fit_vfold %>% 
-    collect_metrics()
+#rf_fit_vfold %>% 
+#    collect_metrics()
 
 ```
 
 ### KNN
 
 ```{r}
-  knn_spec <-
-  nearest_neighbor(neighbors = 10) %>%
-  set_engine("kknn")  %>%
-  set_mode("classification")
+#  knn_spec <-
+#  nearest_neighbor(neighbors = 10) %>%
+#  set_engine("kknn")  %>%
+#  set_mode("classification")
 
-knn_wflow <- 
-  workflow() %>% 
-  add_model(knn_spec) %>%
-  add_formula(credit ~ .)
+#knn_wflow <- 
+#  workflow() %>% 
+#  add_model(knn_spec) %>%
+#  add_formula(credit ~ .)
 
 
-library(tictoc)
-tic()
-knn_fit_vfold <- 
-        tune_grid(
-        knn_wflow,
-        data = train2,
-        resamples = validation_split,
-        metrics = metric_set(accuracy,roc_auc),
-        control = ctrl_grid)
-toc()
+#library(tictoc)
+#tic()
+#knn_fit_vfold <- 
+#        tune_grid(
+#        knn_wflow,
+#        data = train2,
+#        resamples = validation_split,
+#        metrics = metric_set(accuracy,roc_auc),
+#        control = ctrl_grid)
+#toc()
 
-knn_fit_vfold %>% 
-    collect_metrics()
+#knn_fit_vfold %>% 
+#    collect_metrics()
 
 ```
 
@@ -151,146 +152,150 @@ knn_fit_vfold %>%
 ### MLR
 
 ```{r}
-mlr_spec <- multinom_reg(penalty = tune(),
-                        mixture = tune()) %>% 
-  set_engine("glmnet") %>% 
-  set_mode("classification")
+#mlr_spec <- multinom_reg(penalty = tune(),
+#                        mixture = tune()) %>% 
+#  set_engine("glmnet") %>% 
+#  set_mode("classification")
 
 
-param_grid <- grid_latin_hypercube(penalty(),
-                           mixture(),
-                           size = 3)
+#param_grid <- grid_latin_hypercube(penalty(),
+#                           mixture(),
+#                           size = 3)
 
-mlr_wflow <- 
-  workflow() %>% 
-  add_model(mlr_spec) %>%
-  add_formula(credit ~ .)
 
-tic()
-mlr_fit_vfold <-tune_grid(
-              mlr_wflow,
-              data = train2,
-              resamples = validation_split,
-              grid = param_grid,
-              control = ctrl_grid,
-              metrics = metric_set(accuracy,roc_auc))
-toc()
 
-mlr_fit_vfold %>% 
-    collect_metrics()
+#mlr_wflow <- 
+#  workflow() %>% 
+#  add_model(mlr_spec) %>%
+#  add_formula(credit ~ .)
+
+#tic()
+#mlr_fit_vfold <-tune_grid(
+#              mlr_wflow,
+#              data = train2,
+#              resamples = validation_split,
+#              grid = param_grid,
+#              control = ctrl_grid,
+#              metrics = metric_set(accuracy,roc_auc))
+#toc()
+
+#mlr_fit_vfold %>% 
+#    collect_metrics()
 ```
 
 ### Lgbm
 
 
 ```{r}
-lgbm_spec <- boost_tree(
-    trees = 1000, 
-    tree_depth = 12, 
-    min_n = 3, 
-    loss_reduction = tune(),  
-    sample_size = 0.3779710, 
-    mtry = tune(),
-    learn_rate = 0.012945107
-) %>% 
-    set_engine("xgboost", objective = "multi:softprob") %>% 
-    set_mode("classification")
+#lgbm_spec <- boost_tree(
+#    trees = 1000, 
+#    tree_depth = 12, 
+#    min_n = 3, 
+#    loss_reduction = tune(),  
+#    sample_size = 0.3779710, 
+#    mtry = tune(),
+#    learn_rate = 0.012945107
+#) %>% 
+#    set_engine("xgboost", objective = "multi:softprob") %>% 
+#    set_mode("classification")
 
-lgbm_grid <- grid_latin_hypercube(
+#lgbm_grid <- grid_latin_hypercube(
     # min_n(), 
-    loss_reduction(),
-    finalize(mtry(), train2[-1]),
-    size = 50)
+#    loss_reduction(),
+#    finalize(mtry(), train2[-1]),
+#    size = 50)
 
-lgbm_wflow <- 
-  workflow() %>% 
-  add_model(lgbm_spec) %>%
-  add_formula(credit ~ .)
-
-tic()
-lgbm_fit_vfold <-tune_grid(
-              lgbm_wflow,
-              data = train2,
-              resamples = validation_split,
-              grid = lgbm_grid,
-              control = ctrl_grid,
-              metrics = metric_set(accuracy,roc_auc))
-toc()
-
-```
-
-### svm
-
-```{r}
-  svm_spec <- svm_poly(
-  cost = tune(), degree = tune()) %>%
-  set_mode("classification") %>%
-  set_engine("kernlab")
-
-svm_grid <- expand.grid(cost = c(0.25, 0.5, 0.75, 1, 1.25, 1.5), degree = c(1, 2, 3, 4))
-
-svm_wflow <- 
-  workflow() %>% 
-  add_model(svm_spec) %>%
-  add_formula(credit ~ .)
-
-tic()
-svm_fit_vfold <-tune_grid(
-              svm_wflow,
-              data = train2,
-              resamples = validation_split,
-              grid = svm_grid,
-              control = ctrl_grid,
-              metrics = metric_set(accuracy,roc_auc))
-toc()
-
+#lgbm_wflow <- 
+#  workflow() %>% 
+#  add_model(lgbm_spec) %>%
+#  add_formula(credit ~ .)
+#
+#tic()
+#lgbm_fit_vfold <-tune_grid(
+#              lgbm_wflow,
+#              data = train2,
+#              resamples = validation_split,
+#              grid = lgbm_grid,
+#              control = ctrl_grid,
+#              metrics = metric_set(accuracy,roc_auc))
+#toc()
 
 ```
 
+### SVM
 
 ```{r}
-  rf_fit_vfold %>% 
-    collect_metrics()
-  knn_fit_vfold %>% 
-    collect_metrics()
-  mlr_fit_vfold %>% 
-    collect_metrics()
-  lgbm_fit_vfold%>% 
-    collect_metrics()
-  svm_fit_vfold%>% 
-    collect_metrics()
+#  svm_spec <- svm_poly(
+#  cost = tune(), degree = tune()) %>%
+#  set_mode("classification") %>%
+#  set_engine("kernlab")
+
+#svm_grid <- expand.grid(cost = c(0.25, 0.5, 0.75, 1, 1.25, 1.5), degree = c(1, 2, #3, 4))
+
+#svm_wflow <- 
+#  workflow() %>% 
+#  add_model(svm_spec) %>%
+#  add_formula(credit ~ .)
+
+#tic()
+#svm_fit_vfold <-tune_grid(
+#              svm_wflow,
+#              data = train2,
+#              resamples = validation_split,
+#              grid = svm_grid,
+#              control = ctrl_grid,
+#              metrics = metric_set(accuracy,roc_auc))
+#toc()
+
+
+```
+
+
+```{r}
+#  rf_fit_vfold %>% 
+#    collect_metrics()
+#  knn_fit_vfold %>% 
+#    collect_metrics()
+#  mlr_fit_vfold %>% 
+#    collect_metrics()
+#  lgbm_fit_vfold%>% 
+#    collect_metrics()
+#  svm_fit_vfold%>% 
+#    collect_metrics()
 ```
 
 ## stacks
 
 ```{r}
 
-credit_stacking <- 
-    stacks() %>% 
-    add_candidates(rf_fit_vfold) %>% 
-    add_candidates(knn_fit_vfold) %>%
-    add_candidates(mlr_fit_vfold) %>%
-    add_candidates(lgbm_fit_vfold) %>%
-    add_candidates(svm_fit_vfold)
+#credit_stacking <- 
+#    stacks() %>% 
+#    add_candidates(rf_fit_vfold) %>% 
+#    add_candidates(knn_fit_vfold) %>%
+#    add_candidates(mlr_fit_vfold)
+#    add_candidates(lgbm_fit_vfold) %>%
+#    add_candidates(svm_fit_vfold)
 
-as_tibble(credit_stacking) %>% head()
+#as_tibble(credit_stacking) %>% head()
 
-credit_stacking %<>% 
-    blend_predictions() %>% 
-    fit_members()
+#credit_stacking %<>% 
+#    blend_predictions() %>% 
+#    fit_members()
 
-result <- predict(credit_stacking, test2, type = "prob")
-result %>% head()
+#result <- predict(credit_stacking, test2, type = "prob")
+#result %>% head()
 
 ```
 
+## Submission
+
 ```{r, message=FALSE}
-submission <- read_csv("sample_submission.csv")
-sub_col <- names(submission)
-submission <- bind_cols(submission$index, result)
-names(submission) <- sub_col
-write.csv(submission, row.names = FALSE,
-          "stacking_rf_knn_mlr_lgbm_son.csv")
+#submission <- read_csv("sample_submission.csv")
+#sub_col <- names(submission)
+#submission <- bind_cols(submission$index, result)
+#names(submission) <- sub_col
+#write.csv(submission, row.names = FALSE,
+#          "stacking_rf_knn_mlr_lgbm_son.csv")
 ```
 
 
