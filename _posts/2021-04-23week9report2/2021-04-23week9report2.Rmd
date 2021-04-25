@@ -109,81 +109,81 @@ credit_rs <- bootstraps(train2, times = 30)
 
 
 ```{r tune-spec}
-tune_spec_svm <- svm_rbf(cost = tune(),
-                     rbf_sigma = tune()) %>%
-  set_mode("classification") %>%
-  set_engine("kernlab")
+#tune_spec_svm <- svm_rbf(cost = tune(),
+#                     rbf_sigma = tune()) %>%
+#  set_mode("classification") %>%
+#  set_engine("kernlab")
 
-svm_grid <- expand.grid(
-    rbf_sigma = 10^seq(-5, -2, length.out = 10),
-    cost = 2^seq(0, 7, length.out = 10))
+#svm_grid <- expand.grid(
+#    rbf_sigma = 10^seq(-5, -2, length.out = 10),
+#    cost = 2^seq(0, 7, length.out = 10))
 
 ```
 
 
 ```{r work-flow}
-workflow <- workflow() %>%
-  add_model(tune_spec) %>% 
-  add_formula(credit ~ .)
+#workflow <- workflow() %>%
+#  add_model(tune_spec) %>% 
+#  add_formula(credit ~ .)
 ```
 
 ## Tuning Parameters
 
 ```{r tune-grid, message=FALSE}
-library(doParallel)
-Cluster <- makeCluster(detectCores() - 1)
-registerDoParallel(Cluster)
+#library(doParallel)
+#Cluster <- makeCluster(detectCores() - 1)
+#registerDoParallel(Cluster)
 
-library(tictoc)
-tic()
-tune_result <- workflow %>% 
-  tune_grid(credit_rs,
-            grid = svm_grid,
-            control = control_grid(save_pred = TRUE, verbose = FALSE),
-            metrics = metric_set(roc_auc))
-toc()
+#library(tictoc)
+#tic()
+#tune_result <- workflow %>% 
+#  tune_grid(credit_rs,
+#            grid = svm_grid,
+#            control = control_grid(save_pred = TRUE, verbose = FALSE),
+#            metrics = metric_set(roc_auc))
+#toc()
 ```
 
 ```{r eval=TRUE}
 # tune_result$.notes
-tune_result %>% 
-  collect_metrics()
+#tune_result %>% 
+#  collect_metrics()
 ```
 
 
 ```{r eval=TRUE}
-tune_result %>% show_best()
+#tune_result %>% show_best()
 ```
 
 ```{r eval=TRUE}
-tune_best <- tune_result %>% select_best(metric = "roc_auc")
-tune_best$cost
-tune_best$rbf_sigma
+#tune_best <- tune_result %>% select_best(metric = "roc_auc")
+#tune_best$cost
+#tune_best$rbf_sigma
 ```
 
 ```{r message=FALSE, warning=FALSE}
-SVM_model <- 
-    svm_rbf(cost = tune_best$cost,
-               rbf_sigma = tune_best$rbf_sigma) %>%
-    set_mode("classification") %>%
-  set_engine("kernlab")
+#SVM_model <- 
+#    svm_rbf(cost = tune_best$cost,
+#               rbf_sigma = tune_best$rbf_sigma) %>%
+#    set_mode("classification") %>%
+#  set_engine("kernlab")
 
-SVM_fit <- 
-    SVM_model %>% 
-    fit(credit ~ ., data = train2)
+#SVM_fit <- 
+#    SVM_model %>% 
+#    fit(credit ~ ., data = train2)
 ```
 
 ```{r warning=FALSE}
-result <- predict(SVM_fit, test2, type = "prob")
-result %>% head()
+#result <- predict(SVM_fit, test2, type = "prob")
+#result %>% head()
 ```
 
 ```{r, message=FALSE}
-submission <- read_csv("sample_submission.csv")
-sub_col <- names(submission)
-submission <- bind_cols(submission$index, result)
-names(submission) <- sub_col
-write.csv(submission, row.names = FALSE,
-          "svm_dacon_credit_son.csv")
+#submission <- read_csv("sample_submission.csv")
+#sub_col <- names(submission)
+#submission <- bind_cols(submission$index, result)
+#names(submission) <- sub_col
+#write.csv(submission, row.names = FALSE,
+#          "svm_dacon_credit_son.csv")
 ```
 
