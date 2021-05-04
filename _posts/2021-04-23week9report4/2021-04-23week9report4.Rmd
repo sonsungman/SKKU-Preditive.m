@@ -1,7 +1,7 @@
 ---
 title: "WEEK_9 Report4"
 description: |
-  Let's Stacking_rf_knn_mlr_Lgbm_svm
+  Let's Stacking_Rf_Knn_Mlr_Nn_Lgbm_svm
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
@@ -24,12 +24,13 @@ library(tidymodels)
 library(tidyverse)
 library(magrittr)
 library(skimr)
-library(knitr)
 library(kknn)
 library(stacks)
 library(glmnet)
 library(xgboost)
 library(kernlab)
+library(keras)
+library(ranger)
 theme_set(theme_bw())
 ```
 
@@ -37,51 +38,51 @@ theme_set(theme_bw())
 ## DATA
 
 ```{r}
-train <- read_csv("train.csv") %>% 
-  janitor::clean_names()
-test <- read_csv( "test.csv") %>%
-  janitor::clean_names()
+#train <- read_csv("train.csv") %>% 
+#  janitor::clean_names()
+#test <- read_csv( "test.csv") %>%
+#  janitor::clean_names()
 ```
 
 
 ```{r}
-train %<>%
-  mutate_if(is.character, as.factor) %>% 
-  mutate(credit = factor(credit))
-test %<>%
-  mutate_if(is.character, as.factor)
+#train %<>%
+#  mutate_if(is.character, as.factor) %>% 
+#  mutate(credit = factor(credit))
+#test %<>%
+#  mutate_if(is.character, as.factor)
 ```
 
 ## Preprocessing
 
 ```{r recipe}
-credit_recipe <- train %>% 
-  recipe(credit ~ .) %>% 
-  step_mutate(yrs_birth = -ceiling(days_birth/365),
-              yrs_employed = -ceiling(days_employed/365),
-              perincome = income_total / family_size,
-              adult_income = (family_size - child_num) * income_total,
-              begin_month = -begin_month) %>% 
-  step_rm(index, days_birth, work_phone, phone, email) %>%
-  step_unknown(occyp_type) %>% 
-  step_zv(all_predictors()) %>% 
-  step_integer(all_nominal(), -all_outcomes()) %>% 
-  step_center(all_predictors(), -all_outcomes()) %>% 
-  prep(training = train)
+#credit_recipe <- train %>% 
+#  recipe(credit ~ .) %>% 
+#  step_mutate(yrs_birth = -ceiling(days_birth/365),
+#              yrs_employed = -ceiling(days_employed/365),
+#              perincome = income_total / family_size,
+#              adult_income = (family_size - child_num) * income_total,
+#              begin_month = -begin_month) %>% 
+#  step_rm(index, days_birth, work_phone, phone, email) %>%
+#  step_unknown(occyp_type) %>% 
+#  step_zv(all_predictors()) %>% 
+#  step_integer(all_nominal(), -all_outcomes()) %>% 
+#  step_center(all_predictors(), -all_outcomes()) %>% 
+#  prep(training = train)
 
 ```
 
 ```{r}
-train2 <- juice(credit_recipe)
-test2 <- bake(credit_recipe, new_data= test)
+#train2 <- juice(credit_recipe)
+#test2 <- bake(credit_recipe, new_data= test)
 ```
 
 ## Validation
 
 ```{r}
-  set.seed(2021)
+#  set.seed(2021)
 
- validation_split <- vfold_cv(train2, v = 5, strata = credit)
+# validation_split <- vfold_cv(train2, v = 5, strata = credit)
 ```
 
 
@@ -91,16 +92,15 @@ test2 <- bake(credit_recipe, new_data= test)
 
 ```{r}
 #  model_spec <- rand_forest(mtry = 3,
-#                         min_n = 5,
+#                        min_n = 5,
 #                         trees = 1000) %>% 
-#    set_engine("ranger", importance = "impurity") %>%
-#    set_mode("classification")
+#   set_engine("ranger", importance = "impurity") %>%
+#   set_mode("classification")
 
 #  rf_workflow <- workflow() %>%
 #    add_model(model_spec) %>% 
 #    add_formula(credit ~ .)
   
-#ctrl_res <- control_stack_resamples()
 
 #library(tictoc)
 #tic()
@@ -109,8 +109,9 @@ test2 <- bake(credit_recipe, new_data= test)
 #    fit_resamples(credit ~ .,
 #        data = train2,
 #        resamples = validation_split,
+#        grid = 2,
 #        metrics = metric_set(accuracy,roc_auc),
-#        control = ctrl_res)
+#        control = control_stack_resamples())
 #toc()
 
 #rf_fit_vfold %>% 
@@ -122,7 +123,7 @@ test2 <- bake(credit_recipe, new_data= test)
 
 ```{r}
 #  knn_spec <-
-#  nearest_neighbor(neighbors = 10) %>%
+#  nearest_neighbor(neighbors = tune()) %>%
 #  set_engine("kknn")  %>%
 #  set_mode("classification")
 
@@ -139,8 +140,9 @@ test2 <- bake(credit_recipe, new_data= test)
 #        knn_wflow,
 #        data = train2,
 #        resamples = validation_split,
+#        grid = 4,
 #        metrics = metric_set(accuracy,roc_auc),
-#        control = ctrl_grid)
+#        control = control_stack_resamples())
 #toc()
 
 #knn_fit_vfold %>% 
@@ -160,7 +162,7 @@ test2 <- bake(credit_recipe, new_data= test)
 
 #param_grid <- grid_latin_hypercube(penalty(),
 #                           mixture(),
-#                           size = 3)
+#                          size = 3)
 
 
 
@@ -175,13 +177,45 @@ test2 <- bake(credit_recipe, new_data= test)
 #              data = train2,
 #              resamples = validation_split,
 #              grid = param_grid,
-#              control = ctrl_grid,
+#              control = control_stack_resamples(),
 #              metrics = metric_set(accuracy,roc_auc))
 #toc()
 
-#mlr_fit_vfold %>% 
+#mlr_fit_vfold %>%
 #    collect_metrics()
+
 ```
+
+### Neural network
+
+```{r}
+#nn_spec   <- mlp(
+#                hidden_units = tune(),
+#                dropout = tune()) %>%
+#              set_engine("keras") %>%
+#              set_mode("classification")
+
+#nn_wflow <- 
+#  workflow() %>% 
+#  add_model(nn_spec) %>%
+#  add_formula(credit ~ .)
+
+#library(tictoc)
+#tic()
+#nn_fit_vfold <-tune_grid(
+#              nn_wflow,
+#              data = train2,
+#              resamples = validation_split,
+#              grid = 2,
+#              control = control_stack_resamples(),
+#              metrics = metric_set(accuracy,roc_auc))
+#toc()
+
+#nn_fit_vfold %>% 
+#    collect_metrics()
+
+```
+
 
 ### Lgbm
 
@@ -200,7 +234,7 @@ test2 <- bake(credit_recipe, new_data= test)
 #    set_mode("classification")
 
 #lgbm_grid <- grid_latin_hypercube(
-    # min_n(), 
+#     min_n(), 
 #    loss_reduction(),
 #    finalize(mtry(), train2[-1]),
 #    size = 50)
@@ -209,7 +243,7 @@ test2 <- bake(credit_recipe, new_data= test)
 #  workflow() %>% 
 #  add_model(lgbm_spec) %>%
 #  add_formula(credit ~ .)
-#
+
 #tic()
 #lgbm_fit_vfold <-tune_grid(
 #              lgbm_wflow,
@@ -230,7 +264,7 @@ test2 <- bake(credit_recipe, new_data= test)
 #  set_mode("classification") %>%
 #  set_engine("kernlab")
 
-#svm_grid <- expand.grid(cost = c(0.25, 0.5, 0.75, 1, 1.25, 1.5), degree = c(1, 2, #3, 4))
+#svm_grid <- expand.grid(cost = c(0.25, 0.5, 0.75, 1, 1.25, 1.5), degree = c(1, 2, 3, 4))
 
 #svm_wflow <- 
 #  workflow() %>% 
@@ -257,7 +291,7 @@ test2 <- bake(credit_recipe, new_data= test)
 #  knn_fit_vfold %>% 
 #    collect_metrics()
 #  mlr_fit_vfold %>% 
-#    collect_metrics()
+#        collect_metrics()
 #  lgbm_fit_vfold%>% 
 #    collect_metrics()
 #  svm_fit_vfold%>% 
@@ -272,7 +306,8 @@ test2 <- bake(credit_recipe, new_data= test)
 #    stacks() %>% 
 #    add_candidates(rf_fit_vfold) %>% 
 #    add_candidates(knn_fit_vfold) %>%
-#    add_candidates(mlr_fit_vfold)
+#    add_candidates(mlr_fit_vfold) %>%
+#    add_candidates(nn_fit_vfold) %>%
 #    add_candidates(lgbm_fit_vfold) %>%
 #    add_candidates(svm_fit_vfold)
 
@@ -295,7 +330,7 @@ test2 <- bake(credit_recipe, new_data= test)
 #submission <- bind_cols(submission$index, result)
 #names(submission) <- sub_col
 #write.csv(submission, row.names = FALSE,
-#          "stacking_rf_knn_mlr_lgbm_son.csv")
+#          "stacking_rf_knn_mlr_lgbm_nn_svm_son.csv")
 ```
 
 
