@@ -1,0 +1,83 @@
+---
+title: "WEEK_10 Report"
+description: |
+  HW 2
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 05-06-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(glmnet)
+theme_set(theme_bw())
+```
+
+## 1. Exponential family
+
+### 1) Bernulli
+
+
+$\theta$ is natural or canonical parameter.
+
+$a(\phi)=$
+
+$b(\theta)=$
+
+$c(y, \phi)=$
+
+### 2) Poisson
+
+
+$\theta=$ is natural or canonical parameter.
+
+$a(\phi)=$
+
+$b(\theta)=$
+
+$c(y, \phi)=$
+
+### 3) 
+For logistic regression, 
+$$
+  \begin{aligned}
+    E(y_{i}) &= \mu_{i} =  \\
+  \end{aligned}
+$$
+For poisson regression, 
+$$
+  \begin{aligned}
+    E(y_{i}) &= \mu_{i} =  \\
+  \end{aligned}
+$$
+
+## 2. Maximum Likelihood Estimator of Poisson Regression
+
+### 1) Calculate the coefficients by using the following code
+
+
+```{r}
+#example_data<-
+  
+#  glm(Claims ~ Gender + Territory,
+#family = poisson(link=log), data = example_data)
+
+```
+
+### 2)

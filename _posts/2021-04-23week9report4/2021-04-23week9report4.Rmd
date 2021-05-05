@@ -251,7 +251,8 @@ theme_set(theme_bw())
 #              resamples = validation_split,
 #              grid = lgbm_grid,
 #              control = ctrl_grid,
-#              metrics = metric_set(accuracy,roc_auc))
+#              metrics = metric_set(accuracy,roc_auc),
+#              eval_metric='mlogloss')
 #toc()
 
 ```

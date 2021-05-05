@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-05-06week10report/",
+    "title": "WEEK_10 Report",
+    "description": "HW 2",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-05-06",
+    "categories": [],
+    "contents": "\r\n1. Exponential family\r\n1) Bernulli\r\n\\(\\theta\\) is natural or canonical parameter.\r\n\\(a(\\phi)=\\)\r\n\\(b(\\theta)=\\)\r\n\\(c(y, \\phi)=\\)\r\n2) Poisson\r\n\\(\\theta=\\) is natural or canonical parameter.\r\n\\(a(\\phi)=\\)\r\n\\(b(\\theta)=\\)\r\n\\(c(y, \\phi)=\\)\r\n3)\r\nFor logistic regression, \\[\r\n  \\begin{aligned}\r\n    E(y_{i}) &= \\mu_{i} =  \\\\\r\n  \\end{aligned}\r\n\\] For poisson regression, \\[\r\n  \\begin{aligned}\r\n    E(y_{i}) &= \\mu_{i} =  \\\\\r\n  \\end{aligned}\r\n\\]\r\n2. Maximum Likelihood Estimator of Poisson Regression\r\n1) Calculate the coefficients by using the following code\r\n\r\nShow code\r\n#example_data<-\r\n  \r\n#  glm(Claims ~ Gender + Territory,\r\n#family = poisson(link=log), data = example_data)\r\n\r\n\r\n\r\n2)\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-05-06T07:09:25+09:00",
+    "input_file": "2021-05-06week10report.utf8.md"
+  },
+  {
     "path": "posts/2021-04-23week9report/",
     "title": "WEEK_9 Report",
     "description": "Using Multinomial LR",
