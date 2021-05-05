@@ -19,14 +19,14 @@
       "title": "Article",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-05-06T07:12:15+09:00"
+      "last_modified": "2021-05-06T07:13:47+09:00"
     },
     {
       "path": "index3.html",
       "title": "BDA Project with RStan",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-05-06T06:53:52+09:00"
+      "last_modified": "2021-05-06T07:13:28+09:00"
     }
   ],
   "collections": ["posts/posts.json", "posts2/posts2.json", "posts3/posts3.json"]
