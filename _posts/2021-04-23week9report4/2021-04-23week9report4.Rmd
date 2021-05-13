@@ -221,40 +221,41 @@ theme_set(theme_bw())
 
 
 ```{r}
-#lgbm_spec <- boost_tree(
-#    trees = 1000, 
-#    tree_depth = 12, 
-#    min_n = 3, 
-#    loss_reduction = tune(),  
-#    sample_size = 0.3779710, 
-#    mtry = tune(),
-#    learn_rate = 0.012945107
-#) %>% 
-#    set_engine("xgboost", objective = "multi:softprob") %>% 
-#    set_mode("classification")
+lgbm_spec <- boost_tree(
+    trees = 1000, 
+    tree_depth = 4, 
+    min_n = 3, 
+    loss_reduction = tune(),  
+    sample_size = 0.3779710, 
+    mtry = tune(),
+    learn_rate = 0.012945107
+) %>% 
+    set_engine("xgboost", objective = "multi:softprob", early_stopping_rounds = "10") %>% 
+    set_mode("classification")
 
-#lgbm_grid <- grid_latin_hypercube(
-#     min_n(), 
-#    loss_reduction(),
-#    finalize(mtry(), train2[-1]),
-#    size = 50)
 
-#lgbm_wflow <- 
-#  workflow() %>% 
-#  add_model(lgbm_spec) %>%
-#  add_formula(credit ~ .)
 
-#tic()
-#lgbm_fit_vfold <-tune_grid(
-#              lgbm_wflow,
-#              data = train2,
-#              resamples = validation_split,
-#              grid = lgbm_grid,
-#              control = ctrl_grid,
-#              metrics = metric_set(accuracy,roc_auc),
-#              eval_metric='mlogloss')
-#toc()
+lgbm_grid <- grid_latin_hypercube(
+     min_n(), 
+    loss_reduction(),
+    finalize(mtry(), train2[-1]),
+    size = 50)
 
+lgbm_wflow <- 
+  workflow() %>% 
+  add_model(lgbm_spec) %>%
+  add_formula(credit ~ .)
+
+tic()
+lgbm_fit_vfold <-tune_grid(
+              lgbm_wflow,
+              data = train2,
+              resamples = validation_split,
+              grid = lgbm_grid,
+              control = ctrl_grid,
+              metrics = metric_set(accuracy,roc_auc),
+              eval_metric='mlogloss')
+toc()
 ```
 
 ### SVM

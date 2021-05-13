@@ -1,0 +1,198 @@
+---
+title: "WEEK_11 Report"
+description: |
+  HW 2 Solution
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 05-13-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(glmnet)
+library(caret)
+theme_set(theme_bw())
+```
+
+## 1. Exponential family
+
+### 1) Bernulli
+
+Taking the log and then the exponential,
+
+$$
+\begin{aligned}
+    f(y;p) &= p^{y}(1-p)^{1-y} \\
+    &= exp[yln(p) + (1-y)ln(1-p)] \\
+    &= exp[yln(\frac{p}{1-p}) + ln(1-p)] \\
+\end{aligned}
+$$
+
+$\theta = ln(\frac{p}{1-p})$ is natural or canonical parameter.
+
+$a(\phi) = 1$
+
+$b(\theta) = -ln(\frac{1}{1+exp(\theta)})$
+
+$c(y, \phi) = 0$
+
+### 2) Poisson
+
+Taking the log and then the exponential,
+
+$$
+  \begin{aligned}
+    f(y;\theta,\phi) &=\frac{\lambda^{y}e^{-\lambda}}{y!} \\
+    &= exp[ln(\frac{\lambda^{y}e^{-\lambda}}{y!})] \\
+    &= exp[ ln(\lambda^{y}e^{-\lambda}) - ln(y!)] \\
+    &= exp[yln(\lambda) - \lambda - ln(y!)] \\
+  \end{aligned}
+$$
+
+$\theta = ln(\lambda)$ is natural or canonical parameter.
+
+$a(\phi) = 1$
+
+$b(\theta) = e^{\theta}$
+
+$c(y, \phi) = -ln(y!)$
+
+### 3) Verify the logit link for the logistic regression and the log link for the poisson regression are the canonical link functions.
+
+
+For logistic regression, 
+$$
+  \begin{aligned}
+    E(y_{i}) &= \mu_{i} = p \\
+    g(\mu_{i}) &= logit(\mu_{i}) = ln(\frac{p}{1-p}) = \theta
+  \end{aligned}
+$$
+For poisson regression, 
+$$
+  \begin{aligned}
+    E(y_{i}) &= \mu_{i} = \lambda \\
+    g(\mu_{i}) &= log(\mu_{i}) = ln(\lambda) = \theta
+  \end{aligned}
+$$
+
+## 2. Maximum Likelihood Estimator of Poisson Regression
+
+### 1) Calculate the coefficients by using the following code
+
+
+```{r message=FALSE}
+example_data <- read_csv("example_data.csv", col_names = FALSE) 
+colnames(example_data) <- c("Policy", "Policy.Years", "Gender", "Territory","Claims") 
+example_data 
+
+ dmy <- dummyVars(~., data = example_data)
+  example_data_pre<- as.tibble(predict(dmy, newdata = example_data))
+
+    example_data_pre
+
+```
+
+```{r}
+  Result<-glm(Claims ~ Gender + Territory, family = poisson(link=log), data = example_data)
+
+Result2<-glm(Claims ~   GenderF + GenderM + TerritoryWest + TerritoryEast, family = poisson(link=log), data = example_data_pre)
+
+  Result$coefficients
+  Result2$coefficients
+```
+
+### 2) Find the coefficients of Poisson regression above using an user define R function via gradient descent algorithm. Your answer must include the following steps:
+- Define Likelihood and Loglikelihood function.
+- Calculate gradient of Loglikelihood function with repect to $\beta$.
+
+
+a) Define Likelihood and Loglikelihood function
+
+$$
+  \begin{aligned}
+    Y_{i} &\sim {\sf Poisson}(\lambda_{i}) \\
+    ln(\lambda_{i}) &= \beta_{0} + \beta_{1}x_{i1} + \beta_{2}x_{i2}
+  \end{aligned}
+$$
+$Y_{i}$ is Claims.
+
+$x_{i1}$ is Gender.
+
+$x_{i2}$ is Territory.
+
+$$
+  \begin{aligned}
+    L(\beta_{0},\beta_{1},\beta_{2}) &= \prod_{i = 1}^{12} \frac{\lambda_{i}^{Y_{i}}e^{-\lambda_{i}}}{Y_{i}!} \\
+    l(\beta_{0},\beta_{1},\beta_{2}) &= \sum_{i = 1}^{12} Y_{i}ln\lambda_{i} - \lambda_{i} - lnY_{i}! \\
+    &= \sum_{i = 1}^{12} Y_{i}(\sum_{j = 0}^{2}\beta_{j}x_{ij})-e^{\sum_{j = 0}^{2}\beta_{j}x_{ij}}-lnY_{i}!
+  \end{aligned}
+$$
+
+
+b) Calculate gradient of Loglikelihood function with repect to $\beta$.
+
+```{r}
+beta<-rnorm(3)
+nll <- function(beta){
+    y <- example_data_pre$Claims
+    ln_lambda <- matrix(cbind(1, example_data_pre$GenderM,
+                          example_data_pre$TerritoryWest),
+         ncol = 3) %*% beta
+    
+    -sum(y*ln_lambda-exp(ln_lambda)-log(factorial(y)))
+}
+
+nll(beta)
+```
+```{r}
+beta<-rnorm(3)
+grad_nll <- function(beta){
+    y <- example_data_pre$Claims
+    ln_lambda <- matrix(cbind(1, example_data_pre$GenderM,
+                          example_data_pre$TerritoryWest),
+         ncol = 3) %*% beta
+    
+  -colSums(matrix(cbind(1, example_data_pre$GenderM,
+                          example_data_pre$TerritoryWest),
+         ncol = 3)*as.vector(y - exp(ln_lambda)))
+}
+
+grad_nll(beta)
+```
+
+```{r}
+  set.seed(2021)
+beta <- rnorm(3)
+iter_n <- 1
+improve <- 1
+conv_threshold <- 1e-5
+max_n <- 10000
+result <- matrix(0, nrow = max_n, ncol = 3)
+while ((improve > conv_threshold) & (iter_n <= max_n)) {
+    beta_new <- beta - 0.001 * grad_nll(beta)
+    improve <- abs(nll(beta) - nll(beta_new))
+    result[iter_n,] <- beta_new
+    beta <- beta_new
+    iter_n <- iter_n + 1
+}
+
+iter_n ; result[1798,] ; result[1799,]
+
+```
+
