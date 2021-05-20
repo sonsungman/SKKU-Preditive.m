@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-05-20week12report/",
+    "title": "WEEK_12 Report",
+    "description": "Deeping learning with Torch",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-05-20",
+    "categories": [],
+    "contents": "\r\nIntroduction\r\nThe use of neural networks, generally referred to as ‘Deep Learning’, in the Actuarial Science is increasing. Claim reserving, non-life pricing, mortality modelling, and telematics are the examples. In this report, Using a package called torch, I try to use deep learning in R.\r\nA list of the books I have referenced to produce this report is shown below.\r\n\r\nAI in Actuarial Science, Ronald Richman(2018)\r\nhttps://deeplearning-playbook.netlify.app/ 딥러닝 공략집, 슬기로운 통계 생활(2021)\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-05-20T15:06:30+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2021-05-13week11report/",
     "title": "WEEK_11 Report",
     "description": "HW 2 Solution",

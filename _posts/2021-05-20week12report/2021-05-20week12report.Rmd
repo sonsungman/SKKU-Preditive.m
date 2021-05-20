@@ -1,0 +1,45 @@
+---
+title: "WEEK_12 Report"
+description: |
+  Deeping learning with Torch
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 05-20-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(kernlab)
+theme_set(theme_bw())
+```
+
+### Introduction
+
+The use of neural networks, generally referred to as 'Deep Learning', in the Actuarial Science is increasing.
+Claim reserving, non-life pricing, mortality modelling, and telematics are the examples. In this report, Using a package called torch, I try to use deep learning in R.
+
+***
+
+A list of the books I have referenced to produce this report is shown below.
+
+> -  AI in Actuarial Science, Ronald Richman(2018)
+> -  https://deeplearning-playbook.netlify.app/ 딥러닝 공략집, 슬기로운 통계 생활(2021)
+
+
+***
