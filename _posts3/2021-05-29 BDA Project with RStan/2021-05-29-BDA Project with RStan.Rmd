@@ -1,0 +1,85 @@
+---
+title: "BDA Project with RStan_2"
+description: |
+  Using Stan
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 05-29-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS) ; library(rstan) ; 
+```
+
+
+```{r load_lib, message=FALSE, warning=FALSE, results='hide'}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(skimr)
+library(knitr)
+library(bayesplot)
+theme_set(theme_bw())
+```
+
+# MCMC Example
+
+간단한 포아송 모델을 Stan 코드로 작성해보자.
+
+$\lambda \sim {\sf Gamma}(1,1)$
+  
+$y_{n} \sim {\sf poisson}(\lambda)$   
+
+관측치  $y_{1}, y_{2}, ..., y_{N}$ 이 있을때에
+
+```{r}
+    poisson_model<-
+'  data{
+    int<lower = 0> N ;
+    int<lower = 0> y[N] ; 
+  }
+  parameters {
+    real<lower = 0> lambda ; 
+  }
+  model{
+    lambda ~ gamma(1,1) ; 
+    y ~ poisson(lambda) ; 
+  }
+'  
+```
+
+```{r, warning=FALSE}
+
+  stanmodel_poisson <- stan(model_code = poisson_model)
+  
+  y <-c(5,4,0,0,10,0,0,1,2,3,4)
+  N = length(y)
+  
+data1 <-list(N=N,y=y)
+
+fit <-stan(model_code=poisson_model , data=data1 , iter =10000, chains=4, warmup = 2000, init = "random" )
+
+posterior <- as.array(fit) ;  plot_title <- ggtitle("Posterior distributions",
+                      "with medians and 80% intervals")
+
+```
+
+```{r, warning=FALSE}
+mcmc_areas(posterior, pars =  c("lambda"),prob = 0.8, intervalsprob_outer = 0.99, point_est = "mean") + plot_title
+```
+
+```{r}
+  summary_poisson<-summary(fit);
+  head(summary_poisson$summary)
+```
+
+```{r}
+  head(posterior)
+```
