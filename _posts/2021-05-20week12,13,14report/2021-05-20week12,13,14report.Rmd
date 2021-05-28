@@ -48,6 +48,9 @@ A list of the books I have referenced to produce this report is shown below.
 
 ***
 
+Deep learning has great advantages in image classification. It also has high predictive performance compared to various models prior to deep learning. However, more research seems to be needed on the interpretive aspects of previous traditional models.
+
+
 ### Example from Lecture
 
 ```{r}
