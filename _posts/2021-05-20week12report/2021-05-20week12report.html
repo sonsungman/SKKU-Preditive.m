@@ -84,7 +84,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-  <title>WEEK_12 Report</title>
+  <title>WEEK_12,13,14 Report</title>
   
   <meta property="description" itemprop="description" content="Deeping learning with Torch"/>
   
@@ -95,21 +95,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="sonsungman"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="WEEK_12 Report"/>
+  <meta property="og:title" content="WEEK_12,13,14 Report"/>
   <meta property="og:type" content="article"/>
   <meta property="og:description" content="Deeping learning with Torch"/>
   <meta property="og:locale" content="en_US"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="WEEK_12 Report"/>
+  <meta property="twitter:title" content="WEEK_12,13,14 Report"/>
   <meta property="twitter:description" content="Deeping learning with Torch"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["WEEK_12 Report"]},{"type":"character","attributes":{},"value":["Deeping learning with Torch\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["sonsungman"]},{"type":"character","attributes":{},"value":["https://sonsungman.github.io/SKKU-Preditive.m/"]}]}]},{"type":"character","attributes":{},"value":["05-20-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","draft"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["WEEK_12,13,14 Report"]},{"type":"character","attributes":{},"value":["Deeping learning with Torch\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["sonsungman"]},{"type":"character","attributes":{},"value":["https://sonsungman.github.io/SKKU-Preditive.m/"]}]}]},{"type":"character","attributes":{},"value":["05-20-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","code_folding","draft"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1452,7 +1452,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"WEEK_12 Report","description":"Deeping learning with Torch","authors":[{"author":"sonsungman","authorURL":"https://sonsungman.github.io/SKKU-Preditive.m/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-05-20T00:00:00.000+09:00","citationText":"sonsungman, 2021"}
+{"title":"WEEK_12,13,14 Report","description":"Deeping learning with Torch","authors":[{"author":"sonsungman","authorURL":"https://sonsungman.github.io/SKKU-Preditive.m/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-05-20T00:00:00.000+09:00","citationText":"sonsungman, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1462,7 +1462,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>WEEK_12 Report</h1>
+<h1>WEEK_12,13,14 Report</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p><p>Deeping learning with Torch</p></p>
@@ -1486,6 +1486,133 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </ul>
 </blockquote>
 <hr />
+<h3 id="example-from-lecture">Example from Lecture</h3>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'>#penguins %&gt;% head(5)</span>
+
+
+
+
+<span class='co'>#penguin_data &lt;- penguins %&gt;% </span>
+<span class='co'>#  recipe(species ~ .) %&gt;%</span>
+<span class='co'>#  step_impute_mode(all_nominal()) %&gt;% </span>
+<span class='co'>#  step_impute_mean(all_numeric()) %&gt;% </span>
+<span class='co'>#  step_dummy(all_nominal(), -all_outcomes()) %&gt;% </span>
+<span class='co'>#  step_integer(all_nominal()) %&gt;% </span>
+<span class='co'>#  step_normalize(all_predictors(), -all_outcomes()) %&gt;% </span>
+<span class='co'>#  prep() %&gt;% juice()</span>
+
+<span class='co'>#penguin_data %&gt;% dim()</span>
+
+<span class='co'>#penguin_data %&gt;% head()</span>
+
+<span class='co'>#library(rsample)</span>
+<span class='co'>#split_data &lt;- initial_split(penguin_data, prop = 0.8) </span>
+<span class='co'>#penguin_data_train &lt;- training(split_data)</span>
+<span class='co'>#penguin_data_test &lt;- testing(split_data)</span>
+
+<span class='co'>#TwoLayerNet &lt;- nn_module(</span>
+<span class='co'>#  classname = "TowLayerNet",</span>
+<span class='co'>#  initialize = function(data_in, hidden, data_out){</span>
+<span class='co'>#    self$hidden1 &lt;- nn_linear(data_in, hidden)</span>
+<span class='co'>#    self$output_layer &lt;- nn_linear(hidden, data_out)</span>
+<span class='co'>#    self$tanh &lt;- nn_tanh()</span>
+<span class='co'>#  },</span>
+<span class='co'>#  forward = function(X) {</span>
+<span class='co'>#    x &lt;- self$tanh(self$hidden1(X))</span>
+<span class='co'>#    y_hat &lt;- self$output_layer(x)</span>
+<span class='co'>#    return(y_hat)</span>
+<span class='co'>#  }</span>
+<span class='co'>#)</span>
+
+<span class='co'>#my_net &lt;- TwoLayerNet(8, 10, 3)</span>
+
+
+<span class='co'>#penguin_dataset &lt;- dataset(</span>
+<span class='co'>#  name = "penguin_data",</span>
+<span class='co'>#  initialize = function() {</span>
+<span class='co'>#    self$data &lt;- torch_tensor(as.matrix(select(penguin_data, species, #everything())))</span>
+<span class='co'>#  },</span>
+<span class='co'>#  .getitem = function(index) {</span>
+<span class='co'>#    x &lt;- self$data[index, 2:9]</span>
+<span class='co'>#    y &lt;- self$data[index, 1]</span>
+<span class='co'>#    </span>
+<span class='co'>#    list(x, y)</span>
+<span class='co'>#  },</span>
+<span class='co'>#  .length = function() {</span>
+<span class='co'>#    self$data$size()[[1]]</span>
+<span class='co'>#  }</span>
+<span class='co'>#)</span>
+
+<span class='co'>#torch_penguin_data &lt;- penguin_dataset()</span>
+<span class='co'>#torch_penguin_data</span>
+
+<span class='co'>#torch_penguin_data$.getitem(1:6)</span>
+<span class='co'>#penguin_dl &lt;- dataloader(torch_penguin_data, batch_size = 8)</span>
+<span class='co'>#penguin_dl$.length()</span>
+
+<span class='co'>#b &lt;- penguin_dl$.iter()$.next()</span>
+<span class='co'>#length(b)</span>
+<span class='co'>#b[[1]]</span>
+
+<span class='co'>#device &lt;- if (cuda_is_available()) torch_device("cuda:0") else "cpu"</span>
+<span class='co'>#my_net &lt;- my_net$to(device = device)</span>
+
+<span class='co'>#criterion &lt;- nn_cross_entropy_loss()</span>
+<span class='co'>#optimizer &lt;- optim_sgd(my_net$parameters, </span>
+<span class='co'>#                       lr = 0.1, momentum = 0.9)</span>
+<span class='co'>#num_epochs &lt;- 5</span>
+
+<span class='co'>#train_batch &lt;- function(b) {</span>
+  
+<span class='co'>#  optimizer$zero_grad()</span>
+<span class='co'>#  output &lt;- my_net(b[[1]])</span>
+<span class='co'>#  loss &lt;- criterion(output, b[[2]]$to(device = device,</span>
+<span class='co'>#                                      dtype  = torch_long()))</span>
+<span class='co'>#  loss$backward()</span>
+<span class='co'>#  optimizer$step()</span>
+<span class='co'>#  loss$item()</span>
+<span class='co'>#  </span>
+<span class='co'>#}</span>
+
+<span class='co'>#valid_batch &lt;- function(b) {</span>
+  
+<span class='co'>#  output &lt;- my_net(b[[1]])</span>
+<span class='co'>#  loss &lt;- criterion(output, b[[2]]$to(device = device, </span>
+<span class='co'>#                                      dtype  = torch_long()))</span>
+<span class='co'>#  loss$item()</span>
+<span class='co'>#}</span>
+
+<span class='co'>#for (epoch in 1:num_epochs) {</span>
+<span class='co'>#  my_net$train()</span>
+<span class='co'>#  train_losses &lt;- c()  </span>
+<span class='co'>#  </span>
+<span class='co'>#  coro::loop(for (b in penguin_dl) {</span>
+<span class='co'>#    loss &lt;- train_batch(b)</span>
+<span class='co'>#    train_losses &lt;- c(train_losses, loss)</span>
+<span class='co'>#  })</span>
+<span class='co'>#  </span>
+<span class='co'>#  my_net$eval()</span>
+<span class='co'>#  valid_losses &lt;- c()</span>
+<span class='co'>#  </span>
+<span class='co'>#  coro::loop(for (b in valid_dl) {</span>
+<span class='co'>#    loss &lt;- valid_batch(b)</span>
+<span class='co'>#    valid_losses &lt;- c(valid_losses, loss)</span>
+<span class='co'>#  })</span>
+<span class='co'>#  </span>
+<span class='co'>#  if (epoch %% 100 == 0){</span>
+<span class='co'>#    cat(sprintf("\nLoss at epoch %d: training: %3f, validation: %3f\n",</span>
+<span class='co'>#                epoch, mean(train_losses), mean(valid_losses)))</span>
+<span class='co'>#  }</span>
+<span class='co'>#  </span>
+<span class='co'>#}</span>
+</code></pre>
+</div>
+</details>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
