@@ -1,0 +1,109 @@
+---
+title: "WEEK_15 Presentation"
+description: |
+  Deeping learning with Keras
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 05-30-2021
+output:
+  distill::distill_article:
+    self_contained: false
+    code_folding: true
+    draft: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.align = "center")
+library(purrr) ; library(magrittr) ; library(MASS)
+```
+
+```{r load_lib, include=FALSE}
+library(tidymodels)
+library(tidyverse)
+library(magrittr)
+library(tictoc)
+library(skimr)
+library(kernlab)
+library(keras)
+library(ranger)
+library(purrr) ; library(magrittr) ; library(MASS)
+theme_set(theme_bw())
+```
+
+### DATA
+
+```{r}
+  train <- read_csv("train_credit.csv") %>% 
+  janitor::clean_names()
+test <- read_csv( "test_credit.csv") %>%
+  janitor::clean_names()
+```
+
+### Preprocessing
+
+```{r}
+  train %<>%
+  mutate_if(is.character, as.factor) %>% 
+  mutate(credit = factor(credit))
+
+test %<>%
+  mutate_if(is.character, as.factor)
+
+credit_recipe <- train %>% 
+  recipe(credit ~ .) %>%  
+  step_mutate(yrs_birth = -ceiling(days_birth/365), 
+              yrs_employed = -ceiling(days_employed/365), 
+              perincome = income_total / family_size, 
+              adult_income = (family_size - child_num) * income_total, 
+              begin_month = -begin_month) %>% 
+  step_rm(index, days_birth, work_phone, phone, email) %>%  
+  step_unknown(occyp_type) %>% 
+  step_zv(all_predictors()) %>% 
+  step_integer(all_nominal(), -all_outcomes()) %>% 
+  step_center(all_predictors(), -all_outcomes()) %>% 
+  prep(training = train) 
+
+train2 <- juice(credit_recipe)
+test2 <- bake(credit_recipe, new_data= test)
+
+
+```
+
+### CV
+
+```{r}
+set.seed(2021)
+
+validation_split <- vfold_cv(train2, v = 5, strata = credit)
+
+```
+
+### Traning NN
+
+```{r}
+nn_spec   <- mlp(epochs = 10, 
+                dropout = 0.2, activation = "linear",hidden_units = 5) %>% 
+              set_engine("keras") %>%
+              set_mode("classification")
+
+#시간 관계상 epochs =10으로 조정
+#epochs -> 데이터를 몇 번 학습할지
+#dropout -> 추정된 모수들중 몇 프로를 떨굴지
+#activation -> 각 layer간의 함수 설정
+#hidden_units -> input layer와 output layer 사이의 층 갯수
+
+NN_fit <- 
+    nn_spec %>% 
+    fit(credit ~ ., data = train2)
+```
+
+### Predict
+
+```{r warning=FALSE}
+result <- predict(NN_fit, test2, type = "prob")
+result %>% head()
+```
+
+
