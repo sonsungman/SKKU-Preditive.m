@@ -35,10 +35,10 @@ theme_set(theme_bw())
 ### DATA
 
 ```{r}
-  train <- read_csv("train_credit.csv") %>% 
-  janitor::clean_names()
-test <- read_csv( "test_credit.csv") %>%
-  janitor::clean_names()
+  train <- read.csv(file = "C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-05-30week15Presentation/train_credit.csv") %>% 
+    janitor::clean_names()
+  test <- read.csv( file = "C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-05-30week15Presentation/test_credit.csv") %>%
+    janitor::clean_names()
 ```
 
 ### Preprocessing
@@ -71,32 +71,20 @@ test2 <- bake(credit_recipe, new_data= test)
 
 ```
 
-### CV
-
-```{r}
-set.seed(2021)
-
-validation_split <- vfold_cv(train2, v = 5, strata = credit)
-
-```
-
 ### Traning NN
 
-```{r}
-nn_spec   <- mlp(epochs = 10, 
+```{r, warning=FALSE}
+nn_spec   <- mlp(epochs = 100, 
                 dropout = 0.2, activation = "linear",hidden_units = 5) %>% 
               set_engine("keras") %>%
               set_mode("classification")
 
-#시간 관계상 epochs =10으로 조정
-#epochs -> 데이터를 몇 번 학습할지
-#dropout -> 추정된 모수들중 몇 프로를 떨굴지
-#activation -> 각 layer간의 함수 설정
-#hidden_units -> input layer와 output layer 사이의 층 갯수
 
+tic()
 NN_fit <- 
     nn_spec %>% 
     fit(credit ~ ., data = train2)
+toc()
 ```
 
 ### Predict

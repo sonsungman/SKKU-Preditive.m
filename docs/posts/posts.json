@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-05-30week15Presentation/",
+    "title": "WEEK_15 Presentation",
+    "description": "Deeping learning with Keras",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-05-30",
+    "categories": [],
+    "contents": "\r\nDATA\r\n\r\nShow code\r\n  train <- read.csv(file = \"C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-05-30week15Presentation/train_credit.csv\") %>% \r\n    janitor::clean_names()\r\n  test <- read.csv( file = \"C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-05-30week15Presentation/test_credit.csv\") %>%\r\n    janitor::clean_names()\r\n\r\n\r\n\r\nPreprocessing\r\n\r\nShow code\r\n  train %<>%\r\n  mutate_if(is.character, as.factor) %>% \r\n  mutate(credit = factor(credit))\r\n\r\ntest %<>%\r\n  mutate_if(is.character, as.factor)\r\n\r\ncredit_recipe <- train %>% \r\n  recipe(credit ~ .) %>%  \r\n  step_mutate(yrs_birth = -ceiling(days_birth/365), \r\n              yrs_employed = -ceiling(days_employed/365), \r\n              perincome = income_total / family_size, \r\n              adult_income = (family_size - child_num) * income_total, \r\n              begin_month = -begin_month) %>% \r\n  step_rm(index, days_birth, work_phone, phone, email) %>%  \r\n  step_unknown(occyp_type) %>% \r\n  step_zv(all_predictors()) %>% \r\n  step_integer(all_nominal(), -all_outcomes()) %>% \r\n  step_center(all_predictors(), -all_outcomes()) %>% \r\n  prep(training = train) \r\n\r\ntrain2 <- juice(credit_recipe)\r\ntest2 <- bake(credit_recipe, new_data= test)\r\n\r\n\r\n\r\nTraning NN\r\n\r\nShow code\r\nnn_spec   <- mlp(epochs = 100, \r\n                dropout = 0.2, activation = \"linear\",hidden_units = 5) %>% \r\n              set_engine(\"keras\") %>%\r\n              set_mode(\"classification\")\r\n\r\n\r\ntic()\r\nNN_fit <- \r\n    nn_spec %>% \r\n    fit(credit ~ ., data = train2)\r\ntoc()\r\n\r\n\r\n112.69 sec elapsed\r\n\r\nPredict\r\n\r\nShow code\r\nresult <- predict(NN_fit, test2, type = \"prob\")\r\nresult %>% head()\r\n\r\n\r\n# A tibble: 6 x 3\r\n  .pred_0 .pred_1 .pred_2\r\n    <dbl>   <dbl>   <dbl>\r\n1  0.0546   0.134   0.812\r\n2  0.0587   0.134   0.807\r\n3  0.0616   0.140   0.798\r\n4  0.0599   0.137   0.803\r\n5  0.0535   0.124   0.823\r\n6  0.0671   0.136   0.797\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-05-30T01:04:57+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2021-05-20week12,13,14report/",
     "title": "WEEK_12,13,14 Report",
     "description": "Deeping learning with Torch",
