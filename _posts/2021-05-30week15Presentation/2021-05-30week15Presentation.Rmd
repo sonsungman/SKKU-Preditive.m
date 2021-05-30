@@ -1,7 +1,7 @@
 ---
 title: "WEEK_15 Presentation"
 description: |
-  Deeping learning with Keras
+  Deep learning with Keras
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
@@ -71,7 +71,7 @@ test2 <- bake(credit_recipe, new_data= test)
 
 ```
 
-### Traning NN
+### Training NN
 
 ```{r, warning=FALSE}
 nn_spec   <- mlp(epochs = 100, 

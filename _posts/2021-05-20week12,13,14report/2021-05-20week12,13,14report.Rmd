@@ -1,7 +1,7 @@
 ---
 title: "WEEK_12,13,14 Report"
 description: |
-  Deeping learning with Torch
+  Deep learning with Torch
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m/
