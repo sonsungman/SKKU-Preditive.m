@@ -92,6 +92,137 @@ $$
 As the $\lambda$ grows, the upper bound of $\|\hat{\beta}_{Ridge}\|_{2}$ becomes smaller, so the value of $\|\hat{\beta}_{Ridge}\|_{2}$ becomes smaller.
 
 
+
+## 2. Kaggle competition data
+
+### 1) calculates the all the coefficients
+
+#### Data load
+
+
+```{r, message=FALSE}
+train <- read.csv(file = "C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-04-09-week7report/train.csv") %>% 
+  janitor::clean_names()
+```
+
+```{r}
+housing_recipe <- train %>% 
+  recipe(sale_price ~ .) %>%
+  step_rm(id) %>% 
+  step_log(sale_price) %>%
+  step_modeimpute(all_nominal()) %>% 
+  step_dummy(all_nominal()) %>% 
+  step_meanimpute(all_predictors()) %>%
+  step_normalize(all_predictors()) %>% 
+  prep(training = train)
+
+```
+
+```{r}
+train2 <- juice(housing_recipe)
+
+```
+
+Cross-validation for hyperparameter tuning
+
+```{r}
+set.seed(2021)
+
+validation_split <- vfold_cv(train2, v = 10, strata = sale_price)
+
+```
+
+
+
+```{r}
+tune_spec_Ridge <- linear_reg(penalty = tune(), mixture = 0) %>%
+  
+  set_engine("glmnet")
+
+Ridge_grid <- grid_regular(penalty(), levels = 100)
+
+```
+
+
+
+```{R}
+tune_spec_Lasso <- linear_reg(penalty = tune(), mixture = 1) %>%
+  
+  set_engine("glmnet")
+
+Lasso_grid <- grid_regular(penalty(), levels = 100)
+
+```
+
+
+```{r}
+workflow_Ridge <- workflow() %>%
+  add_model(tune_spec_Ridge) %>% 
+  add_formula(sale_price ~ .)
+
+workflow_Lasso <- workflow() %>%
+  add_model(tune_spec_Lasso) %>% 
+  add_formula(sale_price ~ .)
+```
+
+
+```{r}
+library(tictoc)
+doParallel::registerDoParallel()
+
+tic()
+tune_result_Ridge <- workflow_Ridge %>% 
+  tune_grid(validation_split,
+            grid = Ridge_grid,
+            metrics = metric_set(rmse))
+toc()
+```
+
+
+```{r}
+library(tictoc)
+doParallel::registerDoParallel()
+
+tic()
+tune_result_Lasso <- workflow_Lasso %>% 
+  tune_grid(validation_split,
+            grid = Lasso_grid,
+            metrics = metric_set(rmse))
+toc()
+```
+
+```{r}
+result_R<-tune_result_Ridge %>% 
+  collect_metrics()
+```
+
+```{r}
+result_L<- tune_result_Lasso %>% 
+  collect_metrics()
+```
+
+
+```{r}
+  final_Ridge <- 
+  workflow_Ridge %>%
+  finalize_workflow(select_best(tune_result_Ridge, 'rmse')) %>%
+  fit(data = train2)
+
+  head(final_Ridge)
+```
+
+```{r}
+  final_Lasso <- 
+  workflow_Lasso %>%
+  finalize_workflow(select_best(tune_result_Lasso, 'rmse')) %>%
+  fit(data = train2)
+
+  head(final_Lasso)
+
+```
+
+
+
 ## 2. Example from HW
 
 ### 2) Plot the coefficients vs. the specified penalty values
@@ -122,5 +253,45 @@ ggplot(tmp[tmp$coef != "(Intercept)",], aes(lambda, value, color = coef, linetyp
            linetype = guide_legend(title = "")) +
     theme_bw() + 
     theme(legend.key.width = unit(3,"lines"))
+
+```
+
+#### Lasso
+
+```{r}
+
+  x <- model.matrix(sale_price ~ . , train2)[,-37]
+  y <- train$sale_price
+  
+  train_sam <- sample(1:nrow(x), nrow(x)/2)
+  test_sam <-(-train_sam)
+  ytest <- y[test_sam]
+
+  cv.lasso <- cv.glmnet(x[train_sam,], y[train_sam], alpha = 1)
+  
+  lasso.coef <- predict(cv.lasso, type = "coefficients", s=cv.lasso$lambda.min )
+  
+  plot(cv.lasso$glmnet.fit, xvar = "lambda")
+
+```
+
+
+#### Ridge
+
+```{r}
+
+  x <- model.matrix(sale_price ~ . , train2)[,-37]
+  y <- train$sale_price
+  
+  train_sam <- sample(1:nrow(x), nrow(x)/2)
+  test_sam <-(-train_sam)
+  ytest <- y[test_sam]
+
+  cv.ridge <- cv.glmnet(x[train_sam,], y[train_sam], alpha = 0)
+  
+  lasso.coef <- predict(cv.ridge , type = "coefficients", s=cv.lasso$lambda.min )
+  
+  plot(cv.ridge$glmnet.fit, xvar = "lambda")
+  
 
 ```

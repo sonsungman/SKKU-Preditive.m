@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["2021-04-09-week7report_files/anchor-4.2.2/anchor.min.js","2021-04-09-week7report_files/bowser-1.9.3/bowser.min.js","2021-04-09-week7report_files/distill-2.2.21/template.v2.js","2021-04-09-week7report_files/figure-html5/unnamed-chunk-1-1.png","2021-04-09-week7report_files/jquery-1.11.3/jquery.min.js","2021-04-09-week7report_files/popper-2.6.0/popper.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-bundle.umd.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-light-border.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.umd.min.js","2021-04-09-week7report_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["2021-04-09-week7report_files/anchor-4.2.2/anchor.min.js","2021-04-09-week7report_files/bowser-1.9.3/bowser.min.js","2021-04-09-week7report_files/distill-2.2.21/template.v2.js","2021-04-09-week7report_files/figure-html5/unnamed-chunk-1-1.png","2021-04-09-week7report_files/figure-html5/unnamed-chunk-14-1.png","2021-04-09-week7report_files/figure-html5/unnamed-chunk-15-1.png","2021-04-09-week7report_files/figure-html5/unnamed-chunk-16-1.png","2021-04-09-week7report_files/jquery-1.11.3/jquery.min.js","2021-04-09-week7report_files/popper-2.6.0/popper.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-bundle.umd.min.js","2021-04-09-week7report_files/tippy-6.2.7/tippy-light-border.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.css","2021-04-09-week7report_files/tippy-6.2.7/tippy.umd.min.js","2021-04-09-week7report_files/webcomponents-2.0.0/webcomponents.js","train.csv"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2140,6 +2140,696 @@ document.addEventListener('DOMContentLoaded', function() {
   0\le\|\hat{\beta}_{Ridge}\|_{2}\le\min(\sqrt{\sum_{i = 1}^{d} (\frac{\sigma_{i}}{\sigma^{2}_{i}+\lambda})^{2}}\|y\|_{2},\|\hat{\beta}_{OLS}\|_{2})
 \]</span></p>
 <p>As the <span class="math inline">\(\lambda\)</span> grows, the upper bound of <span class="math inline">\(\|\hat{\beta}_{Ridge}\|_{2}\)</span> becomes smaller, so the value of <span class="math inline">\(\|\hat{\beta}_{Ridge}\|_{2}\)</span> becomes smaller.</p>
+<h2 id="kaggle-competition-data">2. Kaggle competition data</h2>
+<h3 id="calculates-the-all-the-coefficients">1) calculates the all the coefficients</h3>
+<h4 id="data-load">Data load</h4>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>train</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span>file <span class='op'>=</span> <span class='st'>"C:/Users/Actuary/Desktop/R with Stan/SKKU-Preditive.m2/_posts/2021-04-09-week7report/train.csv"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/clean_names.html'>clean_names</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>housing_recipe</span> <span class='op'>&lt;-</span> <span class='va'>train</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>recipe</span><span class='op'>(</span><span class='va'>sale_price</span> <span class='op'>~</span> <span class='va'>.</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_rm</span><span class='op'>(</span><span class='va'>id</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_log</span><span class='op'>(</span><span class='va'>sale_price</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_modeimpute</span><span class='op'>(</span><span class='fu'>all_nominal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_dummy</span><span class='op'>(</span><span class='fu'>all_nominal</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>step_meanimpute</span><span class='op'>(</span><span class='fu'>all_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>step_normalize</span><span class='op'>(</span><span class='fu'>all_predictors</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>prep</span><span class='op'>(</span>training <span class='op'>=</span> <span class='va'>train</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>train2</span> <span class='op'>&lt;-</span> <span class='fu'>juice</span><span class='op'>(</span><span class='va'>housing_recipe</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<p>Cross-validation for hyperparameter tuning</p>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2021</span><span class='op'>)</span>
+
+<span class='va'>validation_split</span> <span class='op'>&lt;-</span> <span class='fu'>vfold_cv</span><span class='op'>(</span><span class='va'>train2</span>, v <span class='op'>=</span> <span class='fl'>10</span>, strata <span class='op'>=</span> <span class='va'>sale_price</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>tune_spec_Ridge</span> <span class='op'>&lt;-</span> <span class='fu'>linear_reg</span><span class='op'>(</span>penalty <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, mixture <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  
+  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"glmnet"</span><span class='op'>)</span>
+
+<span class='va'>Ridge_grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_regular</span><span class='op'>(</span><span class='fu'>penalty</span><span class='op'>(</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>tune_spec_Lasso</span> <span class='op'>&lt;-</span> <span class='fu'>linear_reg</span><span class='op'>(</span>penalty <span class='op'>=</span> <span class='fu'>tune</span><span class='op'>(</span><span class='op'>)</span>, mixture <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  
+  <span class='fu'>set_engine</span><span class='op'>(</span><span class='st'>"glmnet"</span><span class='op'>)</span>
+
+<span class='va'>Lasso_grid</span> <span class='op'>&lt;-</span> <span class='fu'>grid_regular</span><span class='op'>(</span><span class='fu'>penalty</span><span class='op'>(</span><span class='op'>)</span>, levels <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>workflow_Ridge</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>tune_spec_Ridge</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>add_formula</span><span class='op'>(</span><span class='va'>sale_price</span> <span class='op'>~</span> <span class='va'>.</span><span class='op'>)</span>
+
+<span class='va'>workflow_Lasso</span> <span class='op'>&lt;-</span> <span class='fu'>workflow</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_model</span><span class='op'>(</span><span class='va'>tune_spec_Lasso</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>add_formula</span><span class='op'>(</span><span class='va'>sale_price</span> <span class='op'>~</span> <span class='va'>.</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://github.com/collectivemedia/tictoc'>tictoc</a></span><span class='op'>)</span>
+<span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>tune_result_Ridge</span> <span class='op'>&lt;-</span> <span class='va'>workflow_Ridge</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tune_grid</span><span class='op'>(</span><span class='va'>validation_split</span>,
+            grid <span class='op'>=</span> <span class='va'>Ridge_grid</span>,
+            metrics <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>rmse</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code>15.41 sec elapsed</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://github.com/collectivemedia/tictoc'>tictoc</a></span><span class='op'>)</span>
+<span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>registerDoParallel</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>tic</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>tune_result_Lasso</span> <span class='op'>&lt;-</span> <span class='va'>workflow_Lasso</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>tune_grid</span><span class='op'>(</span><span class='va'>validation_split</span>,
+            grid <span class='op'>=</span> <span class='va'>Lasso_grid</span>,
+            metrics <span class='op'>=</span> <span class='fu'>metric_set</span><span class='op'>(</span><span class='va'>rmse</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/tictoc/man/tic.html'>toc</a></span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code>14.55 sec elapsed</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>result_R</span><span class='op'>&lt;-</span><span class='va'>tune_result_Ridge</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>result_L</span><span class='op'>&lt;-</span> <span class='va'>tune_result_Lasso</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>collect_metrics</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>final_Ridge</span> <span class='op'>&lt;-</span> 
+  <span class='va'>workflow_Ridge</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>finalize_workflow</span><span class='op'>(</span><span class='fu'>select_best</span><span class='op'>(</span><span class='va'>tune_result_Ridge</span>, <span class='st'>'rmse'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>train2</span><span class='op'>)</span>
+
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>final_Ridge</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code>$pre
+$actions
+$actions$formula
+$formula
+sale_price ~ .
+&lt;environment: 0x0000000028374ac8&gt;
+
+$blueprint
+Formula blueprint: 
+ 
+# Predictors: 0 
+  # Outcomes: 0 
+   Intercept: TRUE 
+Novel Levels: FALSE 
+ Composition: tibble 
+  Indicators: traditional 
+
+attr(,&quot;class&quot;)
+[1] &quot;action_formula&quot; &quot;action_pre&quot;     &quot;action&quot;        
+
+
+$mold
+$mold$predictors
+# A tibble: 1,460 x 246
+   `(Intercept)` ms_sub_class lot_frontage lot_area overall_qual
+           &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+ 1             1       0.0733     -0.229    -0.207        0.651 
+ 2             1      -0.872       0.452    -0.0919      -0.0718
+ 3             1       0.0733     -0.0927    0.0735       0.651 
+ 4             1       0.310      -0.456    -0.0969       0.651 
+ 5             1       0.0733      0.634     0.375        1.37  
+ 6             1      -0.163       0.679     0.360       -0.795 
+ 7             1      -0.872       0.225    -0.0434       1.37  
+ 8             1       0.0733     -0.00187  -0.0135       0.651 
+ 9             1      -0.163      -0.865    -0.441        0.651 
+10             1       3.15       -0.910    -0.310       -0.795 
+# ... with 1,450 more rows, and 241 more variables:
+#   overall_cond &lt;dbl&gt;, year_built &lt;dbl&gt;, year_remod_add &lt;dbl&gt;,
+#   mas_vnr_area &lt;dbl&gt;, bsmt_fin_sf1 &lt;dbl&gt;, bsmt_fin_sf2 &lt;dbl&gt;,
+#   bsmt_unf_sf &lt;dbl&gt;, total_bsmt_sf &lt;dbl&gt;, x1st_flr_sf &lt;dbl&gt;,
+#   x2nd_flr_sf &lt;dbl&gt;, low_qual_fin_sf &lt;dbl&gt;, gr_liv_area &lt;dbl&gt;,
+#   bsmt_full_bath &lt;dbl&gt;, bsmt_half_bath &lt;dbl&gt;, full_bath &lt;dbl&gt;,
+#   half_bath &lt;dbl&gt;, bedroom_abv_gr &lt;dbl&gt;, kitchen_abv_gr &lt;dbl&gt;,
+#   tot_rms_abv_grd &lt;dbl&gt;, fireplaces &lt;dbl&gt;, garage_yr_blt &lt;dbl&gt;,
+#   garage_cars &lt;dbl&gt;, garage_area &lt;dbl&gt;, wood_deck_sf &lt;dbl&gt;,
+#   open_porch_sf &lt;dbl&gt;, enclosed_porch &lt;dbl&gt;, x3ssn_porch &lt;dbl&gt;,
+#   screen_porch &lt;dbl&gt;, pool_area &lt;dbl&gt;, misc_val &lt;dbl&gt;,
+#   mo_sold &lt;dbl&gt;, yr_sold &lt;dbl&gt;, ms_zoning_FV &lt;dbl&gt;,
+#   ms_zoning_RH &lt;dbl&gt;, ms_zoning_RL &lt;dbl&gt;, ms_zoning_RM &lt;dbl&gt;,
+#   street_Pave &lt;dbl&gt;, alley_Pave &lt;dbl&gt;, lot_shape_IR2 &lt;dbl&gt;,
+#   lot_shape_IR3 &lt;dbl&gt;, lot_shape_Reg &lt;dbl&gt;, land_contour_HLS &lt;dbl&gt;,
+#   land_contour_Low &lt;dbl&gt;, land_contour_Lvl &lt;dbl&gt;,
+#   utilities_NoSeWa &lt;dbl&gt;, lot_config_CulDSac &lt;dbl&gt;,
+#   lot_config_FR2 &lt;dbl&gt;, lot_config_FR3 &lt;dbl&gt;,
+#   lot_config_Inside &lt;dbl&gt;, land_slope_Mod &lt;dbl&gt;,
+#   land_slope_Sev &lt;dbl&gt;, neighborhood_Blueste &lt;dbl&gt;,
+#   neighborhood_BrDale &lt;dbl&gt;, neighborhood_BrkSide &lt;dbl&gt;,
+#   neighborhood_ClearCr &lt;dbl&gt;, neighborhood_CollgCr &lt;dbl&gt;,
+#   neighborhood_Crawfor &lt;dbl&gt;, neighborhood_Edwards &lt;dbl&gt;,
+#   neighborhood_Gilbert &lt;dbl&gt;, neighborhood_IDOTRR &lt;dbl&gt;,
+#   neighborhood_MeadowV &lt;dbl&gt;, neighborhood_Mitchel &lt;dbl&gt;,
+#   neighborhood_NAmes &lt;dbl&gt;, neighborhood_NoRidge &lt;dbl&gt;,
+#   neighborhood_NPkVill &lt;dbl&gt;, neighborhood_NridgHt &lt;dbl&gt;,
+#   neighborhood_NWAmes &lt;dbl&gt;, neighborhood_OldTown &lt;dbl&gt;,
+#   neighborhood_Sawyer &lt;dbl&gt;, neighborhood_SawyerW &lt;dbl&gt;,
+#   neighborhood_Somerst &lt;dbl&gt;, neighborhood_StoneBr &lt;dbl&gt;,
+#   neighborhood_SWISU &lt;dbl&gt;, neighborhood_Timber &lt;dbl&gt;,
+#   neighborhood_Veenker &lt;dbl&gt;, condition1_Feedr &lt;dbl&gt;,
+#   condition1_Norm &lt;dbl&gt;, condition1_PosA &lt;dbl&gt;,
+#   condition1_PosN &lt;dbl&gt;, condition1_RRAe &lt;dbl&gt;,
+#   condition1_RRAn &lt;dbl&gt;, condition1_RRNe &lt;dbl&gt;,
+#   condition1_RRNn &lt;dbl&gt;, condition2_Feedr &lt;dbl&gt;,
+#   condition2_Norm &lt;dbl&gt;, condition2_PosA &lt;dbl&gt;,
+#   condition2_PosN &lt;dbl&gt;, condition2_RRAe &lt;dbl&gt;,
+#   condition2_RRAn &lt;dbl&gt;, condition2_RRNn &lt;dbl&gt;,
+#   bldg_type_X2fmCon &lt;dbl&gt;, bldg_type_Duplex &lt;dbl&gt;,
+#   bldg_type_Twnhs &lt;dbl&gt;, bldg_type_TwnhsE &lt;dbl&gt;,
+#   house_style_X1.5Unf &lt;dbl&gt;, house_style_X1Story &lt;dbl&gt;,
+#   house_style_X2.5Fin &lt;dbl&gt;, house_style_X2.5Unf &lt;dbl&gt;,
+#   house_style_X2Story &lt;dbl&gt;, house_style_SFoyer &lt;dbl&gt;, ...
+
+$mold$outcomes
+# A tibble: 1,460 x 1
+   sale_price
+        &lt;dbl&gt;
+ 1       12.2
+ 2       12.1
+ 3       12.3
+ 4       11.8
+ 5       12.4
+ 6       11.9
+ 7       12.6
+ 8       12.2
+ 9       11.8
+10       11.7
+# ... with 1,450 more rows
+
+$mold$blueprint
+Formula blueprint: 
+ 
+# Predictors: 245 
+  # Outcomes: 1 
+   Intercept: TRUE 
+Novel Levels: FALSE 
+ Composition: tibble 
+  Indicators: traditional 
+
+$mold$extras
+$mold$extras$offset
+NULL
+
+
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_pre&quot; &quot;stage&quot;    
+
+$fit
+$actions
+$actions$model
+$spec
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = 0.196304065004027
+  mixture = 0
+
+Computational engine: glmnet 
+
+
+$formula
+NULL
+
+attr(,&quot;class&quot;)
+[1] &quot;action_model&quot; &quot;action_fit&quot;   &quot;action&quot;      
+
+
+$fit
+parsnip model object
+
+Fit time:  90ms 
+
+Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = &quot;gaussian&quot;,      alpha = ~0) 
+
+     Df  %Dev Lambda
+1   245  0.00 326.30
+2   245  3.13 297.30
+3   245  3.43 270.90
+4   245  3.75 246.80
+5   245  4.10 224.90
+6   245  4.48 204.90
+7   245  4.90 186.70
+8   245  5.35 170.10
+9   245  5.85 155.00
+10  245  6.38 141.30
+11  245  6.96 128.70
+12  245  7.59 117.30
+13  245  8.27 106.90
+14  245  9.01  97.36
+15  245  9.80  88.71
+16  245 10.66  80.83
+17  245 11.58  73.65
+18  245 12.57  67.11
+19  245 13.63  61.15
+20  245 14.77  55.71
+21  245 15.98  50.76
+22  245 17.28  46.25
+23  245 18.65  42.15
+24  245 20.11  38.40
+25  245 21.65  34.99
+26  245 23.28  31.88
+27  245 24.98  29.05
+28  245 26.77  26.47
+29  245 28.63  24.12
+30  245 30.57  21.97
+31  245 32.57  20.02
+32  245 34.64  18.24
+33  245 36.76  16.62
+34  245 38.92  15.15
+35  245 41.12  13.80
+36  245 43.35  12.57
+37  245 45.60  11.46
+38  245 47.85  10.44
+39  245 50.09   9.51
+40  245 52.32   8.67
+41  245 54.51   7.90
+42  245 56.67   7.20
+43  245 58.78   6.56
+44  245 60.83   5.97
+45  245 62.81   5.44
+46  245 64.72   4.96
+47  245 66.55   4.52
+48  245 68.30   4.12
+49  245 69.97   3.75
+50  245 71.54   3.42
+51  245 73.03   3.12
+52  245 74.43   2.84
+53  245 75.74   2.59
+54  245 76.97   2.36
+55  245 78.12   2.15
+56  245 79.19   1.96
+57  245 80.19   1.78
+58  245 81.12   1.62
+59  245 81.98   1.48
+60  245 82.77   1.35
+61  245 83.51   1.23
+62  245 84.19   1.12
+63  245 84.83   1.02
+64  245 85.41   0.93
+65  245 85.96   0.85
+66  245 86.46   0.77
+67  245 86.93   0.70
+68  245 87.36   0.64
+69  245 87.76   0.58
+70  245 88.13   0.53
+71  245 88.47   0.48
+72  245 88.79   0.44
+73  245 89.09   0.40
+74  245 89.36   0.37
+75  245 89.62   0.33
+76  245 89.86   0.30
+77  245 90.08   0.28
+78  245 90.29   0.25
+79  245 90.48   0.23
+80  245 90.66   0.21
+81  245 90.83   0.19
+82  245 90.99   0.17
+83  245 91.14   0.16
+84  245 91.27   0.14
+85  245 91.40   0.13
+86  245 91.52   0.12
+87  245 91.63   0.11
+88  245 91.74   0.10
+89  245 91.84   0.09
+90  245 91.93   0.08
+91  245 92.02   0.08
+92  245 92.10   0.07
+93  245 92.18   0.06
+94  245 92.25   0.06
+95  245 92.32   0.05
+96  245 92.39   0.05
+97  245 92.45   0.04
+98  245 92.51   0.04
+99  245 92.57   0.04
+100 245 92.63   0.03
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_fit&quot; &quot;stage&quot;    
+
+$post
+$actions
+list()
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_post&quot; &quot;stage&quot;     
+
+$trained
+[1] TRUE</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>final_Lasso</span> <span class='op'>&lt;-</span> 
+  <span class='va'>workflow_Lasso</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>finalize_workflow</span><span class='op'>(</span><span class='fu'>select_best</span><span class='op'>(</span><span class='va'>tune_result_Lasso</span>, <span class='st'>'rmse'</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>fit</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>train2</span><span class='op'>)</span>
+
+  <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>final_Lasso</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<pre><code>$pre
+$actions
+$actions$formula
+$formula
+sale_price ~ .
+&lt;environment: 0x00000000284019f8&gt;
+
+$blueprint
+Formula blueprint: 
+ 
+# Predictors: 0 
+  # Outcomes: 0 
+   Intercept: TRUE 
+Novel Levels: FALSE 
+ Composition: tibble 
+  Indicators: traditional 
+
+attr(,&quot;class&quot;)
+[1] &quot;action_formula&quot; &quot;action_pre&quot;     &quot;action&quot;        
+
+
+$mold
+$mold$predictors
+# A tibble: 1,460 x 246
+   `(Intercept)` ms_sub_class lot_frontage lot_area overall_qual
+           &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;    &lt;dbl&gt;        &lt;dbl&gt;
+ 1             1       0.0733     -0.229    -0.207        0.651 
+ 2             1      -0.872       0.452    -0.0919      -0.0718
+ 3             1       0.0733     -0.0927    0.0735       0.651 
+ 4             1       0.310      -0.456    -0.0969       0.651 
+ 5             1       0.0733      0.634     0.375        1.37  
+ 6             1      -0.163       0.679     0.360       -0.795 
+ 7             1      -0.872       0.225    -0.0434       1.37  
+ 8             1       0.0733     -0.00187  -0.0135       0.651 
+ 9             1      -0.163      -0.865    -0.441        0.651 
+10             1       3.15       -0.910    -0.310       -0.795 
+# ... with 1,450 more rows, and 241 more variables:
+#   overall_cond &lt;dbl&gt;, year_built &lt;dbl&gt;, year_remod_add &lt;dbl&gt;,
+#   mas_vnr_area &lt;dbl&gt;, bsmt_fin_sf1 &lt;dbl&gt;, bsmt_fin_sf2 &lt;dbl&gt;,
+#   bsmt_unf_sf &lt;dbl&gt;, total_bsmt_sf &lt;dbl&gt;, x1st_flr_sf &lt;dbl&gt;,
+#   x2nd_flr_sf &lt;dbl&gt;, low_qual_fin_sf &lt;dbl&gt;, gr_liv_area &lt;dbl&gt;,
+#   bsmt_full_bath &lt;dbl&gt;, bsmt_half_bath &lt;dbl&gt;, full_bath &lt;dbl&gt;,
+#   half_bath &lt;dbl&gt;, bedroom_abv_gr &lt;dbl&gt;, kitchen_abv_gr &lt;dbl&gt;,
+#   tot_rms_abv_grd &lt;dbl&gt;, fireplaces &lt;dbl&gt;, garage_yr_blt &lt;dbl&gt;,
+#   garage_cars &lt;dbl&gt;, garage_area &lt;dbl&gt;, wood_deck_sf &lt;dbl&gt;,
+#   open_porch_sf &lt;dbl&gt;, enclosed_porch &lt;dbl&gt;, x3ssn_porch &lt;dbl&gt;,
+#   screen_porch &lt;dbl&gt;, pool_area &lt;dbl&gt;, misc_val &lt;dbl&gt;,
+#   mo_sold &lt;dbl&gt;, yr_sold &lt;dbl&gt;, ms_zoning_FV &lt;dbl&gt;,
+#   ms_zoning_RH &lt;dbl&gt;, ms_zoning_RL &lt;dbl&gt;, ms_zoning_RM &lt;dbl&gt;,
+#   street_Pave &lt;dbl&gt;, alley_Pave &lt;dbl&gt;, lot_shape_IR2 &lt;dbl&gt;,
+#   lot_shape_IR3 &lt;dbl&gt;, lot_shape_Reg &lt;dbl&gt;, land_contour_HLS &lt;dbl&gt;,
+#   land_contour_Low &lt;dbl&gt;, land_contour_Lvl &lt;dbl&gt;,
+#   utilities_NoSeWa &lt;dbl&gt;, lot_config_CulDSac &lt;dbl&gt;,
+#   lot_config_FR2 &lt;dbl&gt;, lot_config_FR3 &lt;dbl&gt;,
+#   lot_config_Inside &lt;dbl&gt;, land_slope_Mod &lt;dbl&gt;,
+#   land_slope_Sev &lt;dbl&gt;, neighborhood_Blueste &lt;dbl&gt;,
+#   neighborhood_BrDale &lt;dbl&gt;, neighborhood_BrkSide &lt;dbl&gt;,
+#   neighborhood_ClearCr &lt;dbl&gt;, neighborhood_CollgCr &lt;dbl&gt;,
+#   neighborhood_Crawfor &lt;dbl&gt;, neighborhood_Edwards &lt;dbl&gt;,
+#   neighborhood_Gilbert &lt;dbl&gt;, neighborhood_IDOTRR &lt;dbl&gt;,
+#   neighborhood_MeadowV &lt;dbl&gt;, neighborhood_Mitchel &lt;dbl&gt;,
+#   neighborhood_NAmes &lt;dbl&gt;, neighborhood_NoRidge &lt;dbl&gt;,
+#   neighborhood_NPkVill &lt;dbl&gt;, neighborhood_NridgHt &lt;dbl&gt;,
+#   neighborhood_NWAmes &lt;dbl&gt;, neighborhood_OldTown &lt;dbl&gt;,
+#   neighborhood_Sawyer &lt;dbl&gt;, neighborhood_SawyerW &lt;dbl&gt;,
+#   neighborhood_Somerst &lt;dbl&gt;, neighborhood_StoneBr &lt;dbl&gt;,
+#   neighborhood_SWISU &lt;dbl&gt;, neighborhood_Timber &lt;dbl&gt;,
+#   neighborhood_Veenker &lt;dbl&gt;, condition1_Feedr &lt;dbl&gt;,
+#   condition1_Norm &lt;dbl&gt;, condition1_PosA &lt;dbl&gt;,
+#   condition1_PosN &lt;dbl&gt;, condition1_RRAe &lt;dbl&gt;,
+#   condition1_RRAn &lt;dbl&gt;, condition1_RRNe &lt;dbl&gt;,
+#   condition1_RRNn &lt;dbl&gt;, condition2_Feedr &lt;dbl&gt;,
+#   condition2_Norm &lt;dbl&gt;, condition2_PosA &lt;dbl&gt;,
+#   condition2_PosN &lt;dbl&gt;, condition2_RRAe &lt;dbl&gt;,
+#   condition2_RRAn &lt;dbl&gt;, condition2_RRNn &lt;dbl&gt;,
+#   bldg_type_X2fmCon &lt;dbl&gt;, bldg_type_Duplex &lt;dbl&gt;,
+#   bldg_type_Twnhs &lt;dbl&gt;, bldg_type_TwnhsE &lt;dbl&gt;,
+#   house_style_X1.5Unf &lt;dbl&gt;, house_style_X1Story &lt;dbl&gt;,
+#   house_style_X2.5Fin &lt;dbl&gt;, house_style_X2.5Unf &lt;dbl&gt;,
+#   house_style_X2Story &lt;dbl&gt;, house_style_SFoyer &lt;dbl&gt;, ...
+
+$mold$outcomes
+# A tibble: 1,460 x 1
+   sale_price
+        &lt;dbl&gt;
+ 1       12.2
+ 2       12.1
+ 3       12.3
+ 4       11.8
+ 5       12.4
+ 6       11.9
+ 7       12.6
+ 8       12.2
+ 9       11.8
+10       11.7
+# ... with 1,450 more rows
+
+$mold$blueprint
+Formula blueprint: 
+ 
+# Predictors: 245 
+  # Outcomes: 1 
+   Intercept: TRUE 
+Novel Levels: FALSE 
+ Composition: tibble 
+  Indicators: traditional 
+
+$mold$extras
+$mold$extras$offset
+NULL
+
+
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_pre&quot; &quot;stage&quot;    
+
+$fit
+$actions
+$actions$model
+$spec
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = 0.00954548456661833
+  mixture = 1
+
+Computational engine: glmnet 
+
+
+$formula
+NULL
+
+attr(,&quot;class&quot;)
+[1] &quot;action_model&quot; &quot;action_fit&quot;   &quot;action&quot;      
+
+
+$fit
+parsnip model object
+
+Fit time:  141ms 
+
+Call:  glmnet::glmnet(x = maybe_matrix(x), y = y, family = &quot;gaussian&quot;,      alpha = ~1) 
+
+     Df  %Dev  Lambda
+1     0  0.00 0.32630
+2     1 11.34 0.29730
+3     1 20.75 0.27090
+4     1 28.57 0.24680
+5     1 35.05 0.22490
+6     2 40.93 0.20490
+7     2 46.54 0.18670
+8     3 51.78 0.17010
+9     3 56.20 0.15500
+10    3 59.86 0.14130
+11    3 62.90 0.12870
+12    4 65.68 0.11730
+13    5 68.11 0.10690
+14    5 70.33 0.09736
+15    8 72.27 0.08871
+16    8 73.96 0.08083
+17    8 75.37 0.07365
+18   10 76.72 0.06711
+19   11 77.96 0.06115
+20   13 79.05 0.05571
+21   14 80.06 0.05076
+22   14 80.91 0.04625
+23   14 81.61 0.04215
+24   15 82.20 0.03840
+25   17 82.75 0.03499
+26   19 83.25 0.03188
+27   20 83.73 0.02905
+28   22 84.27 0.02647
+29   23 84.74 0.02412
+30   27 85.24 0.02197
+31   30 85.77 0.02002
+32   34 86.31 0.01824
+33   37 86.82 0.01662
+34   39 87.28 0.01515
+35   43 87.69 0.01380
+36   45 88.06 0.01257
+37   49 88.40 0.01146
+38   51 88.73 0.01044
+39   55 89.07 0.00951
+40   59 89.37 0.00867
+41   63 89.63 0.00790
+42   67 89.88 0.00720
+43   70 90.10 0.00656
+44   76 90.29 0.00597
+45   80 90.46 0.00544
+46   84 90.61 0.00496
+47   88 90.75 0.00452
+48   93 90.88 0.00412
+49  100 91.02 0.00375
+50  105 91.14 0.00342
+51  109 91.26 0.00312
+52  122 91.37 0.00284
+53  128 91.49 0.00259
+54  137 91.62 0.00236
+55  143 91.90 0.00215
+56  149 92.19 0.00196
+57  151 92.44 0.00178
+58  156 92.64 0.00162
+59  164 92.83 0.00148
+60  171 93.03 0.00135
+61  177 93.21 0.00123
+62  180 93.36 0.00112
+63  184 93.49 0.00102
+64  185 93.60 0.00093
+65  190 93.70 0.00085
+66  193 93.78 0.00077
+67  201 93.85 0.00070
+68  204 93.91 0.00064
+69  207 93.97 0.00058
+70  208 94.01 0.00053
+71  213 94.06 0.00048
+72  213 94.10 0.00044
+73  212 94.13 0.00040
+74  212 94.15 0.00037
+75  214 94.18 0.00033
+76  216 94.19 0.00030
+77  217 94.21 0.00028
+78  221 94.23 0.00025
+79  221 94.24 0.00023
+80  223 94.25 0.00021
+81  227 94.26 0.00019
+82  228 94.27 0.00017
+83  229 94.28 0.00016
+84  233 94.29 0.00014
+85  233 94.30 0.00013
+86  233 94.30 0.00012
+87  234 94.31 0.00011
+88  233 94.31 0.00010
+89  237 94.32 0.00009
+90  236 94.32 0.00008
+91  238 94.33 0.00008
+92  238 94.33 0.00007
+93  238 94.33 0.00006
+94  238 94.33 0.00006
+95  238 94.34 0.00005
+96  239 94.34 0.00005
+97  239 94.34 0.00004
+98  240 94.34 0.00004
+99  239 94.34 0.00004
+100 239 94.34 0.00003
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_fit&quot; &quot;stage&quot;    
+
+$post
+$actions
+list()
+
+attr(,&quot;class&quot;)
+[1] &quot;stage_post&quot; &quot;stage&quot;     
+
+$trained
+[1] TRUE</code></pre>
+</div>
 <h2 id="example-from-hw">2. Example from HW</h2>
 <h3 id="plot-the-coefficients-vs.-the-specified-penalty-values">2) Plot the coefficients vs. the specified penalty values</h3>
 <p>This is example from HW pdf</p>
@@ -2173,9 +2863,53 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </details>
-<p><img src="2021-04-09-week7report_files/figure-html5/unnamed-chunk-1-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="2021-04-09-week7report_files/figure-html5/unnamed-chunk-14-1.png" width="624" style="display: block; margin: auto;" /></p>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h4 id="lasso">Lasso</h4>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span><span class='op'>(</span><span class='va'>sale_price</span> <span class='op'>~</span> <span class='va'>.</span> , <span class='va'>train2</span><span class='op'>)</span><span class='op'>[</span>,<span class='op'>-</span><span class='fl'>37</span><span class='op'>]</span>
+  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>train</span><span class='op'>$</span><span class='va'>sale_price</span>
+  
+  <span class='va'>train_sam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='va'>test_sam</span> <span class='op'>&lt;-</span><span class='op'>(</span><span class='op'>-</span><span class='va'>train_sam</span><span class='op'>)</span>
+  <span class='va'>ytest</span> <span class='op'>&lt;-</span> <span class='va'>y</span><span class='op'>[</span><span class='va'>test_sam</span><span class='op'>]</span>
+
+  <span class='va'>cv.lasso</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='va'>train_sam</span>,<span class='op'>]</span>, <span class='va'>y</span><span class='op'>[</span><span class='va'>train_sam</span><span class='op'>]</span>, alpha <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  
+  <span class='va'>lasso.coef</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>cv.lasso</span>, type <span class='op'>=</span> <span class='st'>"coefficients"</span>, s<span class='op'>=</span><span class='va'>cv.lasso</span><span class='op'>$</span><span class='va'>lambda.min</span> <span class='op'>)</span>
+  
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cv.lasso</span><span class='op'>$</span><span class='va'>glmnet.fit</span>, xvar <span class='op'>=</span> <span class='st'>"lambda"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<p><img src="2021-04-09-week7report_files/figure-html5/unnamed-chunk-15-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<h4 id="ridge">Ridge</h4>
+<div class="layout-chunk" data-layout="l-body">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r">  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/model.matrix.html'>model.matrix</a></span><span class='op'>(</span><span class='va'>sale_price</span> <span class='op'>~</span> <span class='va'>.</span> , <span class='va'>train2</span><span class='op'>)</span><span class='op'>[</span>,<span class='op'>-</span><span class='fl'>37</span><span class='op'>]</span>
+  <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>train</span><span class='op'>$</span><span class='va'>sale_price</span>
+  
+  <span class='va'>train_sam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='va'>test_sam</span> <span class='op'>&lt;-</span><span class='op'>(</span><span class='op'>-</span><span class='va'>train_sam</span><span class='op'>)</span>
+  <span class='va'>ytest</span> <span class='op'>&lt;-</span> <span class='va'>y</span><span class='op'>[</span><span class='va'>test_sam</span><span class='op'>]</span>
+
+  <span class='va'>cv.ridge</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://glmnet.stanford.edu/reference/cv.glmnet.html'>cv.glmnet</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='va'>train_sam</span>,<span class='op'>]</span>, <span class='va'>y</span><span class='op'>[</span><span class='va'>train_sam</span><span class='op'>]</span>, alpha <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+  
+  <span class='va'>lasso.coef</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>cv.ridge</span> , type <span class='op'>=</span> <span class='st'>"coefficients"</span>, s<span class='op'>=</span><span class='va'>cv.lasso</span><span class='op'>$</span><span class='va'>lambda.min</span> <span class='op'>)</span>
+  
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>cv.ridge</span><span class='op'>$</span><span class='va'>glmnet.fit</span>, xvar <span class='op'>=</span> <span class='st'>"lambda"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</details>
+<p><img src="2021-04-09-week7report_files/figure-html5/unnamed-chunk-16-1.png" width="624" style="display: block; margin: auto;" /></p>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
