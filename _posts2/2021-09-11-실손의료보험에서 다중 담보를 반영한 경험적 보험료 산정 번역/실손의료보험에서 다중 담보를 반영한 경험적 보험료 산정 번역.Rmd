@@ -31,7 +31,7 @@ Although the loss rate (Incurred Losses/ Earned premium) of PHI is on the declin
 
 1. 본 연구에서 사용한 모형은 일반화 혼합선형모형(Generalized Linear Mixed Model, GLMM)으로 GLM의 확장된 모형들 중 하나이다. 일반화 혼합선형모형(이하 GLMM)에서는 GLM에서 설명변수의 계수들을 모두 고정 효과(fixed effect)로 보고 있는 것에 반해 임의 효과(random effect)를 고려하고 있다. 다음의 식은 GLMM을 나타낸 것이다.
 
-$g(μ)=lna(μ)= x^' β+ z^' γ ,γ ~ N(0,G)
+$g(μ)=ln(μ)= x'\beta+ z'\gamma ,\gamma  \sim {\sf N}(0, G)$
 
 위의 식에서 X_1= x_1,… ,X_p= x_p들은 피보험자의 특성을 나타내는 개인의 사전적 관찰 정보들인 설명변수들로 생각할 수 있고, 이들의 계수는 군집(보험증권들 또는 피보험자들)에 따라 다른 값이 아닌 고정 효과로 간주하게 된다. 또한 설명변수 z의 계수인 모수 벡터 γ는 공분산 행렬 G를 갖는다고 가정하고, 본 연구는 GLMM을 이용하여 계약자의 사전적 관찰 정보들(설명변수 x_i들)과 비관찰 정보들(설명변수 z)을 모두 활용하여 실손의료보험에서 다중 담보를 반영한 보험료율 산정 방식에 대해 논의한다. 독립 변수 간의 상호 작용이 종속 변수에 영향을 주는 교호작용을 고려하여 y를 보험사고 청구 건수로 가정할 때 교호작용을 고려하여 
 
@@ -42,7 +42,7 @@ y~성+연령+위험급수+담보+성:담보+연령:담보+위험급수:담보
 
 1. The model used in this study is a generalized linear mixed model (GLMM), which is one of the extended models of GLM. The generalized mixed linear model (referred to as GLMM) considers random effects while all the coefficients of explanatory variables in GLM are viewed as fixed effects. The following equation represents GLMM. 
 
-g(μ)=lna(μ)= x^' β+ z^' γ ,γ ~ N(0,G)
+$g(μ)=ln(μ)= x'\beta+ z'\gamma ,\gamma  \sim {\sf N}(0, G)$
 
 In the above equation, X_1= x_1,… ,X_p= x_p can be considered as explanatory variables, which are individual prior observation information representing the characteristics of the insured, and their coefficients are considered fixed effects, not different values, depending on the cluster (insurance policies or insured). In addition, assuming that the parameter vector γ, the coefficient of the explanatory variable z, has a covariance matrix G, this study discusses the method of rate making reflecting multiple coverage in PHI using both the policyholder's prior observation information (explanatory variable x_i) and non-observation information (explanatory variable z) through GLMM. In consideration of the interaction effect in which the interaction between independent variables affects the dependent variable, we assume y as the number of insurance claims considering the interaction effect. The equation was set as
 
@@ -110,18 +110,33 @@ In Korea, new private health insurance have been sold since April 2017, allowing
 ## 6. references:
 
 Kim, Daehwan, and Lee, Bongjoo. “An Analysis on Adverse Selection in Fee-For-Service Health Insurance.” Korean Insurance Journal 96 (2013): 25-50.
+
 Kim, Daehwan. “Empirical Analysis of Maintaining and Canceling Behaviors of the Indemnity Private Health Insurance and Its Implications.” Korean Insurance Journal 108.0 (2016): 29-54. 
+
 You, Changhoon, and Kim, Jeong dong. “A Study on the Determinants of Purchasing and Surrendering Private Health Insurance.” The Journal of Risk Management 22.2 (2011): 189-222.
+
 Lee, Hangsuck, Lee, Gaeun and Lee, Kyoungah. “A Ratemaking of the Korean Private Health Insurance using GLM.” The Journal of Risk Management 28.4 (2017): 37-71.
+
 Lee, Hangsuck, Lee, Minha and Baek, Hyeyoun. “An Empirical Analysis of Bonus-Malus System in Private Health Insurance.” Korean Insurance Journal 116 (2018): 33-66.
+
 Chung, Sung Hee, and Lee, Jung-Taek. “Case and Implication of Application of Premium Differentiation System for Private Health Insurance.” KiRi Ageing Review 1 (2016): 9-12.
+
 Cho, Jaerin, and Chung, Sung Hee. “A Study on the Improvement of Private Health Insurance from a Actuarial Perspective.” KiRi Research Report 2018.6 (2018).
+
 Financial Supervisory Service. “Current Status of Loss Ratio in Private Health Insurance, etc. in the first half of 2018.” Press Release, Financial Supervisory Service, 2018.
+
 Altman, Daniel, David M. Cutler, and Richard J. Zeckhauser. “Adverse selection and adverse retention.” The American Economic Review 88.2 (1998): 122-126. 
+
 Christiansen, Marcus C., et al. “Who is changing health insurance coverage? Empirical evidence on policyholder dynamics.” Journal of Risk and Insurance 83.2 (2016): 269-300. 
+
 De Jong, Piet, and Gillian Z. Heller. Generalized linear models for insurance data. Cambridge University Press, 2008. 
+
 Denuit, Michel, et al. Actuarial modelling of claim counts: Risk classification, credibility and bonus-malus systems. John Wiley & Sons, 2007. 
+
 Faraway, Julian J. Extending the linear model with R: generalized linear, mixed effects and nonparametric regression models, Second edition. Chapman and Hall/CRC: Florida, 2016. 
+
 Goldburd, Mark, Anand Khare, and Dan Tevet. “Generalized linear models for insurance rating.” Casualty Actuarial Society, CAS Monographs Series 5 (2016). 
+
 Oh, Rosy, Peng Shi, and Jae Youn Ahn. “Implementation of frequencyseverity association in bms ratemaking.” arXiv preprint arXiv:1903.05851 (2019). 
+
 Tsai, Tsung-han, and Jeff Gill. “Interactions in generalized linear models: theoretical issues and an application to personal vote-earning attributes.” Social Sciences 2.2 (2013): 91-113.
