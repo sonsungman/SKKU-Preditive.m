@@ -1,0 +1,100 @@
+---
+title: "계리리스크관리 연구 동향 번역"
+description: |
+  번역 하던 중 논문 바뀜.
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m
+date: 09-02-2021
+output:
+  distill::distill_article
+---
+
+## 1. 초록
+
+본 연구는 지난 30년간(1990년부터 2019년 상반기) 한국리스크관리학회지인 「리스크관리연구」 논문에 게재된 계리 리스크관리 연구 논문 총 78편에 대해 논문의 주요 내용들과 시사점들을 리뷰한 것이다. 계리 리스크관리 연구 논문들의 연구 동향을 살펴보기 위해 시 대별·주제별로 그동안의 연구 성과를 주로 다루었다. 계리 리스크관리 연구는 전통적인 계 리 업무인 상품개발 관련 연구, 재무건전성에 관한 연구, 재보험과 ALM, ERM 등과 같은 계리 리스크관리 기법에 관한 연구들로 구분해 볼 수 있었다. 이러한 연구 논문들을 살펴본 결과, 계리 리스크관리 분야의 연구 주제가 2000년 이후 매우 세분화된 것에 비해 「리스크 관리연구」에 게재된 논문들은 일부 주제에 편중되어 있는 편이었고, 실증분석과 같이 수리 적 접근 방법의 논문들이 제도와 정책 연구 논문들에 비해 좀 더 많은 비중을 차지하고 있 었다. 이 결과들을 바탕으로 향후 새로운 분야나 다양한 연구방법론들을 다룬 논문들이 균 형 있게 「리스크관리연구」에서 다뤄지기를 기대해 본다.
+
+This study reviewed the main contents and implications of the paper on the total 78 articles of the Journal of Risk Management published in the Korea Risk Management Society's research paper over the past 30 years (from 1990 to the first half of 2019). In order to examine the research trends of the research papers on actuarial risk management, the research achievements were mainly dealt with by period and subject. The actuarial risk management research could be divided into the traditional actuarial work related to insurance product development, the study on financial soundness, and the reinsurance and the method of actuarial risk management such as ALM and ERM. As a result of reviewing these research papers, the papers published in the Journal of Risk Management were biased to some subjects, while the research topics in the field of actuarial risk management were very subdivided since 2000. And papers of the mathematical approaches, such as empirical analysis, have taken up more weight than those of policy research. Based on these results, we hope that future papers on new fields or various research methods will be dealt with in the Journal of Risk Management in a balanced manner.
+
+## 2. purpose of the study: 이전 선행연구 요약, 본 논문의 연구 목적
+
+
+본 연구에서는 과거 30년 동안 한국리스크관리학회지에 게재된 논문들 중 계리 리스크관리 연구 영역으로 분류할 수 있는 논문들을 대상으로 시대별, 그리고 연구 주제별 연구 성과를 주로 다루고자 한다. 한국리스크관리학회지가 최초 발행된 1990년 이후 2019년 상반기 말 제30권 2호에 이르기까지 약 4,000여 편의 논문이 발표되었다. 그 중 계리 리스크관리 영역에 속하는 논문은 총 78편에 달하고 있으며, 논문들의 대분류 주제(계리 리스크관리, 생명보험, 손해보험, 연금, 보험이론 및 경영 등) 기준으로는 계리 리스크관리 분야가 약 20%를 차지하고 있었다. 계리 리스크관리 영역이 포함하는 주요 연구 내용은 다음과 같이 구분할 수 있다. 첫째, 보험회사에서 계리사의 주 업무에 관한 내용으로 전통적인 계리 업무로 볼 수 있는 상품개발에 관련한 사망률, 할인율, 해약률 등에 대한 내용을 있다. 둘째, 재무건전성에 관련된 법규, 부채평가, Solvency 및 수익성, 자본관리, 준비금 산출 방법 등에 관한 리스크관리 내용을 주요 연구 내용으로 들 수 있다. 그리고 마지막으로 계리 리스크관리 기법인 재보험, 자산부채 종합 관리(ALM), 전사적 위험관리(ERM) 등도 포함할 수 있다. 이와 같이 과거 게재된 논문들의 연구 성과를 되짚어 보는 것은 매우 의미 있는 작업이라 생각한다. 과거의 연구 추이를 살펴봄으로써 계리 리스크관리 연구 분야의 역사를 재조명할 수 있고, 본 연구를 향후 계리 리스크관리 분야의 연구에 참고자료로 활용할 수도 있을 것이다.
+
+This study will mainly deal with the research achievements of each period and subject of research for papers of the Journal of Risk Management published in the Korea Risk Management Society's research paper over the past 30 years that can be classified as actuarial risk management research areas. Since 1990 when the Korea Risk Management Society's research paper was first published, about 4,000 papers have been published, ranging by Vol 30 No 2 in the first half of 2019. Among them, there are a total of 78 papers in the actuarial risk management area, and the actuarial risk management field accounted for about 20% of the papers based on their main classification topics (actuarial risk management, life insurance, general insurance, pension, insurance theory, and management). The main research that the actuarial risk management area includes can be divided into. First, it is about the main work of the actuary in the insurance company, including the mortality rate, discount rate, and lapse rate related to the development of products that can be seen as traditional actuarial work. Second, the contents of risk management related to liability valuation, solvency, profitability, capital management, reserving method, law which is about financial soundness and etc can be classified into major research contents. Finally, reinsurance, asset liability management (ALM) and enterprise risk management (ERM) and etc, which are actuarial risk management techniques, may be included. As such, reconsidering the findings of past papers is a very meaningful task. By looking at past research trends, it can shed light on the history of actuarial risk management and may be used as a reference for future research in actuarial risk management.
+
+## 4. analysis:
+
+### 시대별
+
+우리나라의 보험사들은 1990년대까지 미성숙한 보험환경으로 인해 리스크관리가 미흡한 상태이었다. 1990년대 후반에는 경제위기와 구조조정 등과 같은 사회, 경제적 환경 변화가 있었고, 2000년대 초반에는 보험상품의 요율 자율화와 제3분야 보험상품의 규제 완화, 그리고 지급여력제도 등 보험사의 규제 환경 변화로 상품개발과 리스크관리 방법의 선진화가 요구되기 시작하였다.
+1990년대 초 연구들을 살펴보면 송일(1990), 이경룡(1990), 박승전(1992) 등 리스크관리에 대한 정의, 이론, 그리고 해외 국가와 다양한 산업에서의 리스크관리 사례들을 소개하는 방식으로 한국 기업들에게 리스크관리에 대한 필요성을 강조하는 동시에 리스크관리 학문의 발전을 위한 제안 및 향후 과제들을 제시하였다.
+2000년대에 진입하면서 보험부채 평가 및 재무건전성 강화를 위한 보험감독 체계에 대한 관심도가 높아지기 시작하였다. 또한 더 실무적으로 적용 가능한 다양한 선진 기법들에 대한 연구가 실제로 이뤄지기 시작했다.
+2010년 이후에는 계리 리스크관리 분야의 연구주제들이 그 이전에 비해서 매우 다양해지기 시작했다. 보험부채/자본평가, 보험감독 등에 대한 논문이 게재되었고 또한 사망률 관련 연구가 꾸준히 증가하기 시작하였다.
+지난 30년간 계리 리스크관리 분야의 논문들을 시대별로 비교해본 결과, 주로 그 시대에 직면한 환경 변화에 선제적으로 대응하기 위한 연구들이 다루어졌으며, 또한 실제로도 보험, 금융시장의 다양한 금융상품들에 점점 더 고도화된 선진 기법들이 적용되기 시작하였다. 이러한 새로운 모형들에 대한 연구들로 인해 계리 리스크관리 분야의 연구 주제는 전통적인 계리 업무의 내용에서 점점 벗어나 확장되어 가고 있는 추세라 볼 수 있다.
+
+### 주제별
+
+개별 논문들을 범주화하여 구분한 결과는 Table 4와 같다. 지난 20년간 계리 리스크관리 분야의 게재된 논문들 중에서 빈번하게 등장하는 주제어들이 주로 보험사의 리스크관리를 위한 재무 건전성 규제에 관련된 내용들이었다. 다양한 계리 리스크관리 분야의 주제들 중 특히 보험사의 재무건전성 강화를 위해 적용된 제도들에 대한 도입 전후 효과, 도입 이후 제도의 개선을 위한 발전 방안 제안 등 보험사 관련 리스크관리에 관한 지난 30년간의 연구 논문들을 집중적으로 고찰해 본다.
+1990년대까지는 국내 보험사에 대한 건전성 규제가 크게 까다롭지 않았으며, 건전성 규제 자체가 자산 감소 또는 부채 증가로 이어져 자본이 감소할 위험성을 평가하는 체계는 아니었다. (김해식, 2018) 그러나 1999년 3월에 EU식 지급여력제도가 도입되면서 초보적이나마 국내 보험시장에도 위험평가를 기준으로 한 자본규제가 적용되었다.
+2003년부터는 제도가 안정기에 접어들었고, 금융위기 이후인 2009년에는 보험사가 직면한 리스크를 더 세분화한 건전성제도인 RBC(Risk-based Capital)지급여력제도를 도입하기 시작하였다. 또한 국제기구의 권고사항과 유럽 및 미국 등의 제도 개선 추진 내용을 고려하여 2014년에 재무건전성 감독제도 선진화 종합 로드맵이 제시되었다.
+2017년에는 2021년부터 RBC 지급여력제도에서 K-ICS(신지급여력제도)로 전면 전환된다는 계획이 담긴 ‘신지급여력제도(K-ICS) 로드맵’이 제시되었다. 2018년 11월 국제회계기준위원회(IASB)가 보험사의 요청에 따라 새국제회계기준(IFRS17) 도입을 2021년에서 2022년으로 연기하기로 결정하면서 이에 맞춰 K-ICS도 1년 늦게 도입되는 것으로 연기된 상태이었다. 그러나 최근 2020년 3월에는 일부 보험사의 전산시스템 개발 준비 미흡 등을 고려해 국제회계기준위원회는 다시 한 번 IFRS17 도입을 2023년 1월 도입으로 1년 더 연장하였다. 새로 고안된 K-ICS의 적용 시점도 역시 더 늦춰질 것으로 전망된다.
+
+## 5. results: 결론 부분 전체 번역
+
+This study analyzed the total 78 articles, which are classified as actuarial risk management fields, among papers of the Journal of Risk Management published in the Korea Risk Management Society's research paper, published from 1990 to the first half of 2019, by period and subject, to identify the past and present of this field. Although it was difficult to mention all the papers in this study, we wanted to introduce representative papers based on insurance company-oriented risk measurement and management methods that can be seen as the definition of actuarial risk management. In the past, corporate managers used their capital as a buffer for risk management, but with the development of risk management techniques and risk measurement theories, risk can be managed much cheaper by a risk-dispersion method that transfers that risks factors to third parties by pricing risks held by an entity. The papers of Journal of Risk Management published in the Korea Risk Management Society's research paper can be seen as also having took the lead in providing and informing various tools and techniques for risk management. With risk-oriented insurance oversight in place, researchers have suggested quantitative risk indicators as a measurement method of the risks that insurers faced, such as Value at Risk (VaR) model, and proposed method that ultimately reduce risk through calculating the risks inherent in an enterprise using option pricing model such as Black–Scholes model. In addition, many studies have been conducted to think about how to apply the system itself with the aim of strengthening financial soundness, and to suggest implication and problem-solving methods from the new system or theory of advanced oversea countries. As a result of examining the trends of research topics addressed by the time period, the subjects of published papers were mainly to introduce cases and techniques of advanced countries abroad as domestic insurers were less aware of the interest and necessity of using risk management methods, systems, and manpower. In the 1990s, after the financial crisis, etc., it began to become common to subdivide risks and measure the size of each risk using a metering model. Entering the 2000s, the world began to discuss establishing International Accounting Standards to meet the growing demand for reliable financial information prepared on a single basis. The introduction of the new International Accounting Standards does not just change the accounting standards, but also affects the overall process and systems of the entity, so Korea is making thorough preparations for its introduction. In line with this global trend, analyses of expected problems, introduction effects and etc also are included in studies in the Journal of Risk Management in case the application of IFRS17 to insurers. Also, around 2000 as the government's regulatory and supervisory systems have been established similar to the type of developed countries, the subjects of the study began to be further subdivided, and empirical analyses began to increase. Based on the research results of actuarial risk management studies published in the Journal of the Korean Society for Risk Management for the past 30 years in this text, the tasks to be additionally proposed for the development of the journal in the future are as follows. First, although research topics in the field of actuarial risk management have been more subdivided since 2000, it can be confirmed that they are still concentrated on some topics. Therefore, further diversification of research topics is necessary in the future. Of course, the biggest risk facing insurance companies today is government regulation and supervision. Since Korea is aiming to introduce a new International Accounting Standard (IFRS17) in 2023, it is also a very important issue to have active discussions about it. However, when recalling that the journal is a place where new technologies and disciplines must be discussed practically and academically, it is necessary for Journal of the Korean Risk Management Society to make efforts to enhance the role in both exchanging knowledge of researchers and providing rising techniques to practitioners by further diversifying research topics. Second, it is necessary to publish papers of various analysis methods. Currently, papers that approach mathematically such as empirical analysis and papers related to institutional and policy research are published in the journal. Because both analysis of the effects of mathematical approaches and institutional research are necessary methods of writing papers to share study and knowledge with various people, what to propose here is that there needs to be an effort to ensure that the research can be shared in a balanced manner as a whole, without publishing papers that are biased towards either side. We hope that studies on timely issues will be published in the Korean Journal of Risk Management in the future, and that academic and practical studies on various topics and rising techniques can contribute to the development of the insurance industry.
+
+
+## 6. references: 참고문헌
+
+강중철, 이도수, 성주호. “장수리스크를 고려한 사망률 추정방법에 관한 연구.” 리스크관리 연구 17.1 (2006): 153-178. 
+김광빈. “생보사의 현금흐름테스트기법에 관한 고찰.” 리스크관리 연구 11.1 (1999): 125-151. 
+김동훈. “재보험 자율화에 따른 손보사의 리스크 관리전략.” 리스크관리 연구 5 (1995): 53-71. 
+김동훈, 김광빈. “생보사 경영위기와 RBC 규제에 관한 연구.” 리스크관리 연구 9 (1998): 125-176. 김세중. “극단치 이론을 이용한 고연령 사망률과 최대 생존연령 추정에 관한 연 구.” 리스크관리 연구 24.1 (2013): 129-150. 
+김해식. “Solvency Ⅱ 시행 전후 유럽보험시장과 시사점.” 연구보고서, 보험연구원 (2018). 
+노건엽, 박경국. “IFRS4 2단계 하에서의 보험부채 평가목적 할인율에 관한 연 구.” 리스크관리 연구 25.3 (2014): 73-111. 
+노건엽, 박경국, 박찬원. “신지급여력제도(K-ICS)에서의 금리리스크 측정에 관한 연구.” 리스크관리 연구 30.1 (2019): 59-89. 
+류건식, 정석영. “보험회사의 리스크관리 실태 평가.” 리스크관리 연구 12.2 (2001): 3-38. 
+류건식, 정석영. “우리나라 보험회사의 리스크관리시스템 현황 및 실태분석.” 리 스크관리 연구 13.1 (2002): 233-262. 
+류건식, 천일영. “생명보험사의 RBC제도 도입방안 연구.” 리스크관리 연구 13.2 (2002): 3-37. 
+류근옥. “보험회사의 위험기준자본금을 평가하기 위한 현금흐름 시뮬레이션 모형 과 M&A 전략에 주는 시사점.” 리스크관리 연구 12. (1999): 75-113.
+마승렬. “임금과 할인율의 장기예측에 관한 연구.” 리스크관리 연구 12.2 (2001): 91-131. 
+마승렬, 김경선. “세입자의 유형별 임차비용 부담 리스크 평가.” 리스크관리 연구 30.1 (2019): 91-122. 
+박승전. “위험관리를 위한 종합금융전략의 기본모형.” 리스크관리 연구 2 (1992): 1-15. 
+백철, 김현태. “Gompertz 사망함수의 모수추정과 연령기준 설정에 대한 통계적 방법.” 리스크관리 연구 27.3 (2016): 25-65. 
+보험연구원. “보험상품 변천과 향후 과제,” 보험연구원 심포지엄 자료 (2018). 
+선제우, 윤정연, 송성주. “포트폴리오 리스크 측정을 위한 Copula-normal inverse Gaussian모형.” 리스크관리 연구 29.1 (2018): 113-148. 
+성주호, 김양균, 박찬웅, 강중철. “현행 표준사망률 산출체계의 개선에 관한 연 구.” 리스크관리 연구 16.2 (2005): 97-125.
+송일. “학문으로서의 위험관리의 위상.” 리스크관리 연구 1 (1990): 1-24.
+오창수. “국제회계기준도입에 따른 보험상품의 영향분석.” 리스크관리 연구 22.2 (2011): 159-188. 오창수, 오수연, 오창영, 이성호, 이창욱. “Solvency Ⅱ 기준에 따른 보험부채평 가에 관한 연구.” 리스크관리 연구 23.1 (2012): 147-185.
+오창수, 유인현, 박규서, 강원재. “IFRS4 기준하의 보험부채평가에 관한 연구.” 리스크관리 연구 24.2 (2013): 99-122.
+오창수, 조석희. “지급여력비율 수준에 따른 회계정보의 가치관련성에 관한 연구: 손해보험산업을 중심으로.” 리스크관리 연구 24.2 (2013): 41-67. 
+이강욱, 이동선. “규제환경 변화에 따른 금융업권별 영향 전망Ⅱ: 보험 IRFS 17 도입 진행경과 및 주요 쟁점사항.” 스페셜리포트, NICE Issue, NICE신용평가 (2017): 2-17. 
+이경룡. “한국기업의 리스크관리 현황과 과제.” 리스크관리 연구 1 (1990): 67-100
+이경룡. “건설기업의 리스크관리 현황과 과제.” 리스크관리 연구 5 (1995): 133-166. 
+이경룡, 김사영. “우리나라 제조기업의 리스크관리 현황과 발전과제.” 리스크관 리 연구 18.1 (2007): 3-37. 
+이경룡, 김용호. “한국기업의 수출신용 리스크관리와 수출성과 분석.” 리스크관 리 연구 4 (1994): 1-27. 
+이경룡, 이상림. “한국 생명보험기업의 지급능력 확보에 관한 연구.” 리스크관리 연구 4 (1994): 107-161. 
+이광봉, 이창수, 정창호. “생보사 책임준비금의 평가를 위한 통계적 추정모형에 관한 연구.” 리스크관리 연구 14.1 (2003): 75-97. 
+이긍희, 이명활. “Vine Copula를 이용한 금융그룹의 통합리스크 측정.” 리스크 관리 연구 28.3 (2017): 1-41. 
+이봉주, 박동규. “손해보험사의 금리리스크와 기업 가치.” 리스크관리 연구 12 (1999): 43-74. 
+이봉주, 이근창. “손해보험산업의 RBC 제도 도입에 관한 연구.” 리스크관리 연구 13.1 (2002): 63-100. 
+이창수. “이자율 변동에 대한 확률모형의 적용 - 생명보험과 생명연금의 순보험 료 계산에의 응용.” 리스크관리 연구 4 (1994): 209-225. 
+이해관. “미국 RIMS의 조직과 운영.” 리스크관리 연구 1 (1990): 149-170. 
+이해관. “기업의 위험재무기법.” 리스크관리 연구 4 (1994): 51-64. 
+이희찬. “가상시장 가치평가법을 이용한 산림보험료 산정에 관한 연구.” 리스크 관리 연구 15.2 (2004): 3-28. 
+임준환, 문혜정. “신 지급여력제도와 자본관리 다변화.” KiRi 리포트 2019.1.7. 포커스, 보험연구원 (2019). 
+정신동. “솔벤시2와 RBC제도의 비교분석-국내 보험회사 지급여력제도에 대한 시사점을 중심으로-.” 한국금융정보학회, 금융정보연구 2.2 (2013): 67-97
+정중영. “RBC 제도 도입에 따른 정책적 과제-미국의 경험을 중심으로-.” 리스크 관리 연구 17.2 (2006): 3-40. 
+조재린, 김해식. “일반손해보험의 부채 시가평가와 보험위험계수 산출에 관한 연 구.” 리스크관리 연구 26.1 (2015): 125-151. 
+조재훈, 김정호, 이항석. “재보험의 위험경감과 RBC.” 리스크관리 연구 25.2 (2014): 95-121. 
+주민정, 김해식. “우리나라 보험 산업의 위기진단지표 개발에 관한 연구.” 리스크 관리 연구 15.2 (2004): 143-166. 
+주효찬, 노준희, 이항석. “보험에서의 유동성 프리미엄 기간구조 추정.” 리스크관 리 연구 26.1 (2015): 93-123. 
+황지연, Thao, B. T., 고방원. “Lee-Carter 모형의 베이지안 추정을 이용한 국가 별 사망률 개선추이에 관한 비교연구.” 리스크관리 연구 29.1 (2018): 89-112. 
+Jho, Jae Hoon and Jang, Jiwook. “Asymptotic Super(Sub) Additivity of the Value-at-Risk of Regularly Varying Random Variables.” The Journal of Risk Management 22.1 (2011): 181-202. 
+Ko, Bangwon, Jiraporn, Phonchewin and Yoo, Byoung Hark. “A Study on Reserving Multiple Life Insurances and Annuities: A Copula Approach.” The Journal of Risk Management 25.2 (2014): 35-58. Lee, Hangsuck. “Pricing Barrier Options with Flexible Monitoring Periods.” The Journal of Risk Management 19.2 (2008): 3-27.
+Nguyen, Tristan and Molinari, Robert Danilo. “Solvency Ⅱ-Considering Risk Dependencies-.” The Journal of Risk Management 21.1 (2010): 3-39.
+금융감독원. “新지급여력제도 도입수정안(K-ICS 2.0).” 금융감독원 업무자료, 2019년 7월 10일,
+http://www.fss.or.kr/fss/kr/bbs/view.jsp?url=/fss/kr/1240186854180&bbsid=1240186854180&idx=1562744969045&num=33&stitle=%E3%E6%C1%F6%B1%DE%BF%A9%B7%C2%C1%A6%B5%B5 %20%B5%B5%C0%D4%BC%F6%C1%A4%BE%C8(K-ICS%202.0. 2020년 6월 6일 접속.
+금융위원회. “보험회사에 대한 新.지급여력제도 도입초안 등 마련-보험권 국제회 계기준 도입준비위원회 제4차 회의 개최. 보도자료(2018a).” 대한민국 정책브리핑, 2018년 4월 5일, http://www.korea.kr/news/pressReleaseView.do?newsId=15626 2762. 2019년 10월 29일 접속. 
+금융위원회. “「보험 자본건전성 선진화 추진단」 구성 및 제1차 회의 개최. 보도자 료(2018b).” 대한민국 정책브리핑, 2018년 11월 27일, http://www.korea.kr/news/pressReleaseView.do?newsId=156305818&pageIndex=1&repCode=&repCodeType=. 2019년 10월 29 일 접속.
