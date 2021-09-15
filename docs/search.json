@@ -27,7 +27,14 @@
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
       "last_modified": "2021-05-30T14:33:00+09:00"
+    },
+    {
+      "path": "index4.html",
+      "title": "2021 Papers Projects",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-09-15T13:47:50+09:00"
     }
   ],
-  "collections": ["posts/posts.json", "posts2/posts2.json", "posts3/posts3.json"]
+  "collections": ["posts/posts.json", "posts2/posts2.json", "posts3/posts3.json", "posts4/posts4.json"]
 }

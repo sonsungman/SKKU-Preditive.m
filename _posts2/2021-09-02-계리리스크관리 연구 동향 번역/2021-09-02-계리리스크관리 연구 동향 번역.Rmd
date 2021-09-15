@@ -1,7 +1,7 @@
 ---
 title: "계리리스크관리 연구 동향 번역"
 description: |
-  번역 하던 중 논문 바뀜.
+  번역 하던 중 실손의료보험관련 논문으로 교체.
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m
