@@ -1,7 +1,7 @@
 ---
 title: "A Change of the MultiPillar OldAge Income Security System"
 description: |
-  다층 연금 구조
+  다층 연금 구조, 석사 3학기 퇴직연금강의 기말과제
 author:
   - name: sonsungman
     url: https://sonsungman.github.io/SKKU-Preditive.m

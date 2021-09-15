@@ -8,6 +8,8 @@ navbar:
   right:
     - text: "Applied Statistics"
       href: index.html
+    - text: "2021 Paper Project"
+      href: index4.html
     - text: "BDA Project"
       href: index3.html
     - text: "Article"
