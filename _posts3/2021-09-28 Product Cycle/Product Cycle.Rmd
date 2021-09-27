@@ -1,0 +1,31 @@
+---
+title: "Product Cycle"
+description: |
+  상품 모델링
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 09-28-2021
+output:
+  distill::distill_article
+---
+
+### 상품 모델링
+
+학부 마지막 학기와 대학원 1학기 때에 상품관련하여 Pricing, Reserving, Profit test 까지 엑셀을 활용하여 진행해 보았다. 실무적인 엑셀파일을 얻게된 것이 처음인데 교수님께서 관련 엑셀 파일을 매주 조금씩 업데이트 해주신 것을 각자 받아 학습해오는 식으로 강의가 진행되었던 것으로 기억난다. 대학원 수업에서는 이 엑셀 파일과 함께 삼성, AIA, Met 라이프의 재무제표를 뜯어서 보는 식으로 강의가 진행되었다.
+
+```{r, echo=FALSE, fig.cap='상품 엑셀 파일', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
+knitr::include_graphics("figure10.png")
+knitr::include_graphics("figure11.png")
+knitr::include_graphics("figure12.png")
+```
+

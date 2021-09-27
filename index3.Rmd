@@ -1,5 +1,5 @@
 ---
-title: "BDA Project with RStan"
+title: "Product and Analysis"
 site: distill::distill_website
 listing: posts3
 ---

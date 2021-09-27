@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts3/2021-09-28 Product Cycle/",
+    "title": "Product Cycle",
+    "description": "상품 모델링",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-09-28",
+    "categories": [],
+    "contents": "\r\n상품 모델링\r\n학부 마지막 학기와 대학원 1학기 때에 상품관련하여 Pricing, Reserving, Profit test 까지 엑셀을 활용하여 진행해 보았다. 실무적인 엑셀파일을 얻게된 것이 처음인데 교수님께서 관련 엑셀 파일을 매주 조금씩 업데이트 해주신 것을 각자 받아 학습해오는 식으로 강의가 진행되었던 것으로 기억난다. 대학원 수업에서는 이 엑셀 파일과 함께 삼성, AIA, Met 라이프의 재무제표를 뜯어서 보는 식으로 강의가 진행되었다.\r\n\r\n\r\n\r\nFigure 1: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 2: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 3: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 4: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 5: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 6: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 7: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 8: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 9: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 10: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 11: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 12: 상품 엑셀 파일\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-09-28T04:04:58+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts3/2021-05-29 BDA Project with RStan/",
     "title": "BDA Project with RStan_2",
     "description": "Using Stan",
