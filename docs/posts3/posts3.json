@@ -17,6 +17,23 @@
     "input_file": {}
   },
   {
+    "path": "posts3/2021-09-28 Prophet/",
+    "title": "Prophet",
+    "description": "프로펫에 대하여",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-09-28",
+    "categories": [],
+    "contents": "\r\n대학원 1학기 때에 (2020) 내 학부 대학원에서 Prophet 관련 1학기 수업을 청강하였다. ABL 현직자께서 오셔서 강의를 하셨는데 프로펫 인터페이스에 익숙해질 수 있었던 좋은 경험이었다. 간단한 정기보험 모델링을 실시 하였다. 저작권상 실무관련 ppt의 내용은 올리수 없을 듯 하다. 마지막의 엑셀 자료는 프로펫으로 모델링한 상품의 현금흐름을 엑셀로 가지고 온 것이다.\r\n\r\n\r\n\r\nFigure 1: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\nFigure 2: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\nFigure 3: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\nFigure 4: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\nFigure 5: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\nFigure 6: 프로펫 수업 관련 파일\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-09-28T04:52:42+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts3/2021-05-29 BDA Project with RStan/",
     "title": "BDA Project with RStan_2",
     "description": "Using Stan",
