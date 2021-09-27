@@ -1,0 +1,27 @@
+---
+title: "2021년 2학기 2"
+description: |
+  IFRS17 IE 발표
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 09-24-2021
+output:
+  distill::distill_article
+---
+
+### IFRS17 관련 사례 발표
+
+17의 사례연구(IE)에서 후속측정에 관한 Example 2를 맡아 발표하게 되었다. 후속측정 예제의 경우 문단 40, 44,48, 101, 적용지침(B)96~97 까지 적용되며 2A와 2B로 나누어 지게 되는데 각각 미래현금흐름의 긍정적, 부정적 변화에 따라 보험부채와 보험계약마진이 어떤식으로 변화하는지를 예제를 통해 알아본다.
+
+```{r, echo=FALSE, fig.cap='ppt 자료', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
+```
