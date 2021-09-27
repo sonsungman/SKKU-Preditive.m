@@ -1,0 +1,28 @@
+---
+title: "2020년 2학기 2"
+description: |
+  해지율 시나리오 모델링 논문 분석
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 12-01-2020
+output:
+  distill::distill_article
+---
+
+### 2020년 2학기 2
+
+20년도 2학기 보험수학 마지막 과제는 논문 분석 및 발표였다. 내가 맡게된 논문은 Hull-White 모형을 이용하여 해지율 시나리오 산출에 관한 논문이 었다. 엑셀 작성과 관련하여 본인이 모두 재산출하였다.
+
+```{r, echo=FALSE, fig.cap='논문 및 관련 엑셀 파일', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
+knitr::include_graphics("figure10.png")
+```
