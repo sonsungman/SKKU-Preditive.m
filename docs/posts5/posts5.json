@@ -1,0 +1,19 @@
+[
+  {
+    "path": "posts5/2020년 2학기 1/",
+    "title": "2020년 2학기 1",
+    "description": "주가와 이자율 모델링",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2020-12-18",
+    "categories": [],
+    "contents": "\r\n2학기 금융투자론\r\n20년도 2학기 금융공학 수업에서 기말과제는 바시첵 모델링과 주가 모델링이 중심이었다. 엑셀파일을 작성하여 제출하였다.\r\n\r\n\r\n\r\nFigure 1: 제출 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 2: 제출 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 3: 제출 엑셀 파일\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-09-27T17:07:52+09:00",
+    "input_file": "2020년-2학기-1.utf8.md"
+  }
+]

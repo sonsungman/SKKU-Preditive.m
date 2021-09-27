@@ -1,0 +1,21 @@
+---
+title: "2020년 2학기 1"
+description: |
+  주가와 이자율 모델링
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 12-18-2020
+output:
+  distill::distill_article
+---
+
+### 2학기 금융투자론
+
+20년도 2학기 금융공학 수업에서 기말과제는 바시첵 모델링과 주가 모델링이 중심이었다. 엑셀파일을 작성하여 제출하였다. 
+
+```{r, echo=FALSE, fig.cap='제출 엑셀 파일', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+```
