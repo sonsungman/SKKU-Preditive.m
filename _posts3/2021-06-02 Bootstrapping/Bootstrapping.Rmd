@@ -1,0 +1,26 @@
+---
+title: "Bootstrapping"
+description: |
+  지급준비금의 예측분포 산출을 위한 부트스트랩핑 기법
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 06-02-2021
+output:
+  distill::distill_article
+---
+
+내 석사학위논문 주제인 지급준비금의 예측분포를 통한 위험조정금액 산출과 관련하여 MCMC 기법을 통한 산출은 조재훈 교수님의 2016년 논문을 중심으로 발표하였다. 또 다른 기법인 부트스트랩 기법과 관련하여서는 내가 석사학위논문 작성을 위해 엑셀 VBA를 활용하여 파일을 만들고 해당 파일을 발표할 동료 대학원생분들께 넘겨주었다. 지급준비금의 예측분포 산출과 이를 활용한 위험조정금액 산출이라는 주제의 발표가 잘 마무리되었던 것으로 기억난다.
+
+
+```{r, echo=FALSE, fig.cap='부트스트랩핑 엑셀 파일', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+```
+
