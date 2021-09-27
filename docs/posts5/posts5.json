@@ -34,6 +34,23 @@
     "input_file": {}
   },
   {
+    "path": "posts5/2021년 1학기 1/",
+    "title": "2021년 1학기 1",
+    "description": "MCMC기법을 활용한 지급준비금 위험조정금액 추정 발표_조재훈(2016)을 중심으로",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-06-02",
+    "categories": [],
+    "contents": "\r\n석사학위논문주제로 잡은 지급준비금의 예측분포 추정을 통한 위험조정금액 산출애 있어 하나의 기법인 MCMC기법을 활용한 산출의 결과를 발표한 내용이다.\r\n\r\n\r\n\r\nFigure 1: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 2: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 3: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 4: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 5: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 6: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 7: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 8: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 9: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 10: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 11: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 12: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 13: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 14: ppt 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-09-27T21:48:09+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts5/2020년 2학기 1/",
     "title": "2020년 2학기 1",
     "description": "주가와 이자율 모델링",

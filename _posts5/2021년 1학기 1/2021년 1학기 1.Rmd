@@ -1,0 +1,30 @@
+---
+title: "2021년 1학기 1"
+description: |
+  MCMC기법을 활용한 지급준비금 위험조정금액 추정 발표_조재훈(2016)을 중심으로
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 06-02-2021
+output:
+  distill::distill_article
+---
+
+석사학위논문주제로 잡은 지급준비금의 예측분포 추정을 통한 위험조정금액 산출애 있어 하나의 기법인 MCMC기법을 활용한 산출의 결과를 발표한 내용이다.
+
+```{r, echo=FALSE, fig.cap='ppt 자료', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
+knitr::include_graphics("figure10.png")
+knitr::include_graphics("figure11.png")
+knitr::include_graphics("figure12.png")
+knitr::include_graphics("figure13.png")
+knitr::include_graphics("figure14.png")
+```
