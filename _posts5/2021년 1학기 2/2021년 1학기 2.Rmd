@@ -1,0 +1,30 @@
+---
+title: "2021년 1학기 2"
+description: |
+  Deep Learning with keras
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m/
+date: 06-04-2021
+output:
+  distill::distill_article
+---
+
+내가 지금 업로드하고 있는 홈페이지를 R을 활용한 제작을 배울 수 있게 된 수업이 석사3학기 응용통계학 수업이었다. 머신러닝 모델과 딥러닝 모델을 학습하고 마지막 발표로서 케라스를 활용한 딥러닝 모델에 대한 간단한 발표를 이 수업  마지막에 했던 것으로 기억이 난다.
+
+
+```{r, echo=FALSE, fig.cap='발표 자료', out.width = '30%', fig.ncol=2, fig.align='center'}
+knitr::include_graphics("figure1.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
+knitr::include_graphics("figure.png")
+knitr::include_graphics("figure5.png")
+knitr::include_graphics("figure6.png")
+knitr::include_graphics("figure7.png")
+knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
+knitr::include_graphics("figure10.png")
+knitr::include_graphics("figure11.png")
+knitr::include_graphics("figure12.png")
+```

@@ -34,6 +34,23 @@
     "input_file": {}
   },
   {
+    "path": "posts5/2021년 1학기 2/",
+    "title": "2021년 1학기 2",
+    "description": "Deep Learning with keras",
+    "author": [
+      {
+        "name": "sonsungman",
+        "url": "https://sonsungman.github.io/SKKU-Preditive.m/"
+      }
+    ],
+    "date": "2021-06-04",
+    "categories": [],
+    "contents": "\r\n내가 지금 업로드하고 있는 홈페이지를 R을 활용한 제작을 배울 수 있게 된 수업이 석사3학기 응용통계학 수업이었다. 머신러닝 모델과 딥러닝 모델을 학습하고 마지막 발표로서 케라스를 활용한 딥러닝 모델에 대한 간단한 발표를 이 수업 마지막에 했던 것으로 기억이 난다.\r\n\r\n\r\n\r\nFigure 1: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 2: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 3: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 4: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 5: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 6: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 7: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 8: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 9: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 10: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 11: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 12: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 13: 발표 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-09-29T13:31:37+09:00",
+    "input_file": {}
+  },
+  {
     "path": "posts5/2021년 1학기 1/",
     "title": "2021년 1학기 1",
     "description": "MCMC기법을 활용한 지급준비금 위험조정금액 추정 발표_조재훈(2016)을 중심으로",
