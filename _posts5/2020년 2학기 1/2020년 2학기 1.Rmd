@@ -12,10 +12,11 @@ output:
 
 ### 2학기 금융투자론
 
-20년도 2학기 금융공학 수업에서 기말과제는 바시첵 모델링과 주가 모델링이 중심이었다. 엑셀파일을 작성하여 제출하였다. 
+20년도 2학기 금융공학 수업에서 기말과제는 바시첵 모델링과 주가 모델링이 중심이었다. 엑셀파일을 작성하여 제출하였다. 수업에서 따로 엑셀 VBA를 깊이 있게 교육하거나 모델링 실습을 진행하지 않았다. 이론적인 부분만 식을 중심으로 수업에서 다루었다. 한국보험계리사회에서 진행한 보증리스크관리, 이론 및 실습 수업에서 엑셀 VBA를 활용한 전체적인 내용을 알 수 있었다. 계리사회 강의를 통해 이자율, 주가 모델링을 실습하였고 이를 바탕으로 수업 기말과제를 제출하였다.
 
-```{r, echo=FALSE, fig.cap='제출 엑셀 파일', out.width = '30%', fig.ncol=2, fig.align='center'}
+```{r, echo=FALSE, fig.cap='제출 엑셀 파일 & 보증리스크관리 수업 자료', out.width = '30%', fig.ncol=2, fig.align='center'}
 knitr::include_graphics("figure1.png")
 knitr::include_graphics("figure2.png")
 knitr::include_graphics("figure3.png")
+knitr::include_graphics("figure4.png")
 ```
