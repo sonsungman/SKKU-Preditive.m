@@ -22,5 +22,5 @@ knitr::include_graphics("figure5.png")
 knitr::include_graphics("figure6.png")
 knitr::include_graphics("figure7.png")
 knitr::include_graphics("figure8.png")
+knitr::include_graphics("figure9.png")
 ```
-
