@@ -32,4 +32,6 @@ IFRS17에서 보험이익의 경우 3가지 측면에서 발생한다. CSM 상�
 
 ```{r, echo=FALSE, fig.cap='IFRS17 관련 자료', out.width = '70%', fig.ncol=2, fig.align='center'}
 knitr::include_graphics("figure.png")
+knitr::include_graphics("figure2.png")
+knitr::include_graphics("figure3.png")
 ```
