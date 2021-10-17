@@ -1,0 +1,142 @@
+---
+title: "실손의료보험에서 다중 담보를 반영한 경험적 보험료 산정 번역"
+description: |
+  번역 완료 제출
+author:
+  - name: sonsungman
+    url: https://sonsungman.github.io/SKKU-Preditive.m
+date: 09-11-2021
+output:
+  distill::distill_article
+---
+
+## 1. 초록
+
+실손의료보험에서 경험적 보험료 산정에 대한 기존 연구는 개별 담보별 분석을 통한 보험료 차등화 방식을 주로 다루었다. 실손의료보험은 상해와 질병에 대하여 통원과 입원 등의 다중 담보를 보장하는 보험상품으로 현재는 계약자별 위험특성을 충분히 반영하지 못하는 단일 보험료 부과 방식이 적용되고 있다. 그러나 이러한 요율산정방식으로 인해 역선택, 도덕적 해이 등의 문제점들이 발생함에 따라 개선된 요율산정 방식에 대한 관심이 점점 늘고 있다. 이러한 개선 의지에 따라 이 연구에서는 과거 계약자의 경험정보를 바탕으로 계약자의 리스크 성향을 반영하는 베이지언 접근법을 근거로 한 경험적 요율산정 방식을 제안하 고자 한다. 또한 개별 담보별로 각각 모형화하여 경험적 보험료를 산출했던 선행연구를 발전시켜 다중 담보(multiple coverages)를 동시에 반영하는 경험적 요율산정 방법에 대하여 논의하고자 한다. 이 연구에서는 담보별로 사고 빈도의 모형을 복합적으로 반영하기 위해 담보와 사전 요율변수와의 교호작용을 추가한 일반화 혼합선형모형을 사용하였다. 그리고 실증분석을 위해 보험사 데이터를 이용하여 정상적인(stationary) 상태에 도달했을 때의 계약자 포트폴리오 와 최적 상대도(베이지언 보험료)를 산출하여 경험적 요율산정 방식을 제시하였다. 이러한 요율산정 방식은 단일 보험료 부과 방식에 비해 보험사의 리스크 관리 및 피보험자들 간 형평성을 제고하는데 도움을 줄 것으로 예상된다.
+
+The existing studies on the experience rate making in private health insurance has mainly dealt with the way of premium differentiating from the analysis of individual coverage. In the case of private health insurance, the insurance system guarantees multiple coverage such as outpatient and inpatient for injuries and diseases. Currently, a single premium that does not fully reflect the risk characteristics of each policyholder is applied. However, because of the problems such as adverse selection and moral hazard due to such rate making, there is an increasing interest in the improved rate making. In this study, we propose an experience rate making based on the Bayesian premium approach which reflects the risk characteristics of the policyholder based on experience information about the policyholder from the past. In addition, we will discuss the experience rate making that simultaneously reflects multiple coverage by developing prior studies that model experience rate making for each individual coverage. In this study, we used a generalized liner mixed model with the interaction of coverage and pre-rate variables to reflect the complexity of the frequency by coverage. For the empirical analysis, the experience rate making is proposed by calculating the policyholder’s portfolio when the stationary state is reached and the optimal degree of relativities (Bayesian premium) using the insurance data. This rate making is expected to help insurers manage risk and improve equity among policyholders compared to single premiums.
+
+
+## 2. purpose of the study
+
+매년 실손의료보험의 손해율(발생손해액/경과보험료)은 감소하는 추세를 보이고 있으나, 실손의료보험이 꾸준하게 성장함에 따라 여전히 손해율이 높은 편이기 때문에 실손의료보험의 개선 방안 관련 논의들이 활발하게 이뤄질 필요가 있다. 그러나 실손의료보험에서 질병과 상해, 통원과 입원 등 다양한 담보들을 보장하고 있는 것에 반해 기존의 연구들은 담보별 분석 또는 단일 담보 위주로 보험료 차등화 방식이 논의되어 왔다. 일반적으로 실손의료보험은 가입자들이 하나 이상의 담보를 보장받기 때문에 다중 담보를 포괄한 보험료율 산정 방식에 대한 논의가 반영될 필요가 있다. 이러한 맥락에서 본 연구는 실손의료보험의 사전 요율변수 및 과거 보험사고 이력을 고려한 경험적 요율산정 방식을 적용한 실증분석에 관한 연구이며 기존의 단일 담보를 고려했던 연구에서 더 나아가 다중 담보를 하나의 모델에서 함께 고려해본 연구이다.
+선행연구는 크게 두가지 갈래로 나누어 볼 수 있다. 먼저, 실손의료보험의 지속적인 성장과 함께 보험사의 손해율 또한 꾸준히 상승하면서 이에 대한 연구가 많이 이루어졌다. 특히 역선택 및 도덕적 해이가 실손의료보험의 손해율 상승에 미치는 영향과 경험적 요율산정 도입에 대한 연구들이 이루어 졌다. 김대환, 이봉주(2013)는 실손의료보험에서 역선택 및 도덕적 해이를 확인하고자 한국의료패널 데이터를 이용하여 건강리스크가 높은 사람들이 실손의료보험에 가입할 가능성이 현저하게 증가하는 역선택이 존재함을 증명하였다. 김대환(2016)의 후속 연구에서는 실손의료보험의 유지 및 해약에 대한 선택권이 전적으로 계약자에게 달려있을 경우 가입시점에 역선택뿐만 아니라 사후적인 역선택 역시 존재하고 있음을 발견하였다.
+두번째로 실손의료보험의 보험료 차등화 및 경험적 요율산정에 대한 연구들이 이루어졌다. 정성희, 이정택(2016)은 국내 실손의료보험에서 일부 가입자의 의료이용 집중이 모든 가입자의 보험료 부담으로 전가되는 문제점을 지적하며 형평성 문제에 대한 대안으로 보험사고 및 보험금 청구 실적에 따른 갱신 보험료 차등화 방안의 검토 필요성을 제기하였다. 이항석, 이가은, 이경아(2017)는 실손의료보험의 현행 요율변수인 성별, 연령, 상해급수(위험급수)에 계약자의 과거 실적변수를 요율산정 시 추가 도입하는 것을 제안하였다. 일반화 선형 모형(GLM)을 이용하여 과거실적 변수가 현행 요율변수보다 더 높은 설명력을 가진다는 것을 확인하였다. 조재린, 정성희(2018)는 역선택과 도덕적 해이, 갱신보험료의 과도한 상승으로 인해 현행 실손의료보험의 지속가능성 저하 문제를 제기하였다. Oh, Shi, Ahn(2019)은 보험청구 자료를 이용하여 할인할증제도에 청구 건의 빈도와 심도 간의 종속성을 반영할 수 있는 모델에 대해서 제안하고, 실증분석을 진행하였다. 마지막으로 이항석, 백혜연, 이민하(2018)는 개별 담보에 대해 과거 경험 데이터를 사용하여 계약자 등급별 장기 포트폴리오 및 최적 상대도를 산출하였다. 이 때 담보마다 개별적인 모형을 생성하여 분석하므로 계약자의 과거 보험사고 이력을 바탕으로 경험적 요율산정 방식을 소개하였다.
+
+Although the loss rate (Incurred Losses/ Earned premium) of PHI is on the decline every year, discussions on ways to improve PHI need to be actively conducted as it continues to grow. However, while PHI covers various coverage such as outpatient and inpatient for injuries and diseases, previous studies have discussed the rates differentiation methods through analysis by coverage or focusing on single coverage. In general, since policyholders are guaranteed one or more coverages in PHI, discussions on how to calculate insurance premiums covering multiple coverages need to be reflected. In this context, this study is an empirical analysis that applies the experience rate making   to consider the pre-rate variables and experience information about the policyholder from the past, and further considers multiple coverages in one model. Prior studies can be divided into two main branches. First, along with the continuous growth of PHI, the loss ratio of insurance companies has also steadily increased, and many studies have been conducted on this. In particular, studies about the effect of adverse selection and moral hazard on the increase in the loss rate of PHI and the introduction of empirical rate making have been conducted. Kim Dae-hwan and Lee Bong-ju (2013) proved that there are adverse selection in which people with high health risks are significantly more likely to be policyholders in PHI using the Korean Medical Panel data. In a follow-up study by Kim Dae-hwan (2016), it was found that if the option for maintenance and cancellation of PHI is entirely up to the policyholder, not only adverse selection at the time of purchase but also posterior adverse selection exists.
+   Second, studies were conducted on the rates differentiation method and empirical rate making of PHI. Jung Sung-hee and Lee Jung-taek (2016) raised the need to consider ways to differentiate renewal premiums according to history of insurance accidents and insurance claims, pointing out the problem that the concentration of medical use of some policyholders in domestic private health insurance is passed on to the burden of insurance premiums for all policyholders. Lee Hang-seok, Lee Ga-eun, and Lee Kyung-ah (2017) proposed to additionally introduce policyholder's past experience variables to the current rate variables of PHI such as gender, age, and injury (risk series). Using the generalized linear model (GLM), it was confirmed that the past experience variable had higher explanatory power than the current rate variables. Cho Jae-rin and Jung Sung-hee (2018) raised the issue of reducing the sustainability of the current PHI due to adverse selection, moral hazard, and excessive increase in renewal premiums. Oh, Shi, and Ahn (2019) proposed a model that could reflect the dependence between the frequency and severity of claims in the Bonus-Malus systems using insurance claim data and conducted an empirical analysis. Finally, Lee Hang-seok, Baek Hye-yeon, and Lee Min-ha (2018) calculated the long-term portfolio and optimal relativity by policyholder grade using past experience data for individual coverage. At this time, an individual model was created and analyzed for each coverage, so the empirical rate making method was introduced based on the policyholder's past experience history.
+
+
+## 3. theoretical frameworks:
+
+1. 본 연구에서 사용한 모형은 일반화 혼합선형모형(Generalized Linear Mixed Model, GLMM)으로 GLM의 확장된 모형들 중 하나이다. 일반화 혼합선형모형(이하 GLMM)에서는 GLM에서 설명변수의 계수들을 모두 고정 효과(fixed effect)로 보고 있는 것에 반해 임의 효과(random effect)를 고려하고 있다. 다음의 식은 GLMM을 나타낸 것이다.
+
+$g(μ)=ln(μ)= x'\beta+ z'\gamma ,\gamma  \sim {\sf N}(0, G)$
+
+위의 식에서 X_1= x_1,… ,X_p= x_p들은 피보험자의 특성을 나타내는 개인의 사전적 관찰 정보들인 설명변수들로 생각할 수 있고, 이들의 계수는 군집(보험증권들 또는 피보험자들)에 따라 다른 값이 아닌 고정 효과로 간주하게 된다. 또한 설명변수 z의 계수인 모수 벡터 γ는 공분산 행렬 G를 갖는다고 가정하고, 본 연구는 GLMM을 이용하여 계약자의 사전적 관찰 정보들(설명변수 x_i들)과 비관찰 정보들(설명변수 z)을 모두 활용하여 실손의료보험에서 다중 담보를 반영한 보험료율 산정 방식에 대해 논의한다. 독립 변수 간의 상호 작용이 종속 변수에 영향을 주는 교호작용을 고려하여 y를 보험사고 청구 건수로 가정할 때 교호작용을 고려하여 
+
+y~성+연령+위험급수+담보+성:담보+연령:담보+위험급수:담보
+
+로 식을 설정하였다.
+
+
+1. The model used in this study is a generalized linear mixed model (GLMM), which is one of the extended models of GLM. The generalized mixed linear model (referred to as GLMM) considers random effects while all the coefficients of explanatory variables in GLM are viewed as fixed effects. The following equation represents GLMM. 
+
+$g(μ)=ln(μ)= x'\beta+ z'\gamma ,\gamma  \sim {\sf N}(0, G)$
+
+In the above equation, X_1= x_1,… ,X_p= x_p can be considered as explanatory variables, which are individual prior observation information representing the characteristics of the insured, and their coefficients are considered fixed effects, not different values, depending on the cluster (insurance policies or insured). In addition, assuming that the parameter vector γ, the coefficient of the explanatory variable z, has a covariance matrix G, this study discusses the method of rate making reflecting multiple coverage in PHI using both the policyholder's prior observation information (explanatory variable x_i) and non-observation information (explanatory variable z) through GLMM. In consideration of the interaction effect in which the interaction between independent variables affects the dependent variable, we assume y as the number of insurance claims considering the interaction effect. The equation was set as
+
+y~gender + age + risk level + coverage + gender:coverage + age:coverage + risk level:coverage.
+
+
+2. 계약자의 등급 간 이동은 마코프 체인(Markov chain)으로 나타낼 수 있다. 경험적 요율산정 방법 하에서 당해 연도의 보험료는 과거 전체의 실적이 아닌 직전연도의 보험금 청구 건수에 따라 결정되기도 하는데 이때 마코프 체인을 사용하게 된다. 계약자의 등급 간 전이 과정이 장기간 지속될 경우 각 등급별 계약자의 분포는 결국 안정적(정상상태, steady state)으로 구성된다.
+
+2. The movement between the policyholder's grades can be expressed as a Markov chain. Under the empirical rate making method, insurance premiums for the current year may be determined based on the number of insurance claims for the previous year, not the entire past performance, and Markov chain is used at this time. If the transfer process between the policyholder's grades persists for a long time, the distribution of policyholders for each grade eventually consists of a stable (normal state).
+
+3. 경험적 요율산정의 효율성이라는 것은 예측력에 대한 정확도로 표현할 수 있는데, 이것은 다시 정리해보면 실제로 피보험자가 납입했던 보험료와 해당 피보험자에 대한 실제 기대손실의 차이가 거의 나지 않도록 하여 예측력에 대한 정확도를 높인다는 것을 의미한다. 따라서 최적 상대도 r는 실적변수에 의한 실제 상대도 보험료와 사전 요율변수에 의한 상대도 보험료의 평균 제곱 오차(MSE)를 최소화함으로서 구할 수 있다.
+
+The efficiency of the empirical rate making can be expressed as the accuracy of the predictive power, which means that there is little difference between the insurance premium actually paid by the insured and the actual expected loss for the insured. Therefore, the optimal relativity r can be obtained by minimizing the mean square error (MSE) of the actual relativity premium by past  experience  variable and the relativity premium by the pre-rate variable.
+
+## 4. analysis
+
+ 
+분석에 사용한 국내 보험사의 실손의료보험 가입 및 보상 데이터 중 질병 통원과 질병입원을 모두 보장받는 피보험자를 분석 대상으로 설정하였다. <Table 2>는 피보험자들을 사전 요율변수(성, 위험급수, 연령대)별로 나누어 계약자 분포와 담보(질병통원, 질병입원)별 평균 빈도 등과 같은 기초 통계 결과를 정리하였다.
+
+Among the PHI data of domestic insurance companies used for the analysis, insured people who are guaranteed out both outpatient and inpatient of disease were set as targets for analysis. <Table 2> summarizes basic statistical results such as policyholder distribution by dividing the insured by pre-rate variable (gender, risk class, age group) and average frequency by coverage (disease outpatient, disease inpatient).
+
+ 
+<Table 3>은 실적 데이터를 활용하여 피보험자들의 과거 보험사고 이력이 포아송 분포를 따른다고 가정하여 GLMM 분석을 한 결과이다. <Table 3>을 보면 피보험자의 비관찰 정보에 대한 위험은 $\theta \sim {\sf LN}(0, 1.223^2)$을 따르는 것을 알 수 있다. 
+
+<Table 3> is the result of GLMM analysis assuming that the insured's past insurance accident history follows the Poisson distribution using data. Looking at <Table 3>, it can be seen that the risk of non-observation information of the insured follows $\theta \sim {\sf LN}(0, 1.223^2)$.
+
+ 
+GLMM의 결과를 살펴보면, 성별의 효과의 방향(-)은 질병통원과 질병입원 모두 동일하지만, 평균 빈도의 상대도에서는 차이가 발생하고 있다. 즉, 다른 변수 값이 동일할 때 여성의 평균 빈도는 질병통원의 경우 남성에 비해 약 2배(1.97배), 질병입원의 경우 남성에 비해 약 1.4배(1.43배) 높을 가능성이 있다. 질병통원의 경우 위험급수 1급이 가장 발생가능성이 높게 나타났으나 질병입원의 경우에는 위험급수 1급이 가장 발생가능성이 낮은 것으로 나타났다. 
+
+Looking at the results of GLMM, the direction (-) of the effect of gender is the same for both disease outpatient and disease inpatient, but there is a difference in the relativity of the average frequency. In other words, when other variable values are the same, the average frequency of women is likely to be about twice (1.97 times) higher than that of men in case of disease outpatient and about 1.4 times (1.43 times) higher than that of men in case of disease inpatient. In the case of disease outpatient, the risk grade 1 was the most likely to occur, but in the case of disease inpatient, the risk grade 1 was the least likely to occur.
+ 
+ 
+위험집단별로 정상상태에 도달했을 때 극한 분포인 계약자 포트폴리오를 제시하였다. 동일한 위험집단 내에서 이러한 계약자 분포(계약자 포트폴리오)를 가중치로 하여 상대도들의 기댓값을 산출한 결과가 Table 6의 가장 마지막 열인 E(r)이다.
+
+A portfolio of policyholders that becomes an extreme distribution when normal states are reached for each risk group was presented. The result of calculating the expected values of the relativity by using this policyholder distribution (policyholder portfolio) as a weight within the same risk group is E(r), the last column of <Table 6>.
+
+ 
+<Table 7>은 전체 피보험자를 성별로 나누어 비교한 것으로 남성이 여성에 비해 상대도가 더 높은 것으로 나타났다. 남성의 경우 기본 보험료에 최대 3.48배를 보험료로 납입해야 하며, 여성은 2.66배를 납입하게 된다. 남성의 경우 최고 등급과 최저 등급 간 상대도 차이가 3.10이나, 여성의 경우에는 2.39로 그 격차가 더 적은 것으로 나타났다.
+
+<Table 7> compared the total insured by gender, and it was found that men had a higher relativity than women. Men must pay up to 3.48 times the basic premium, and women will pay 2.66 times. In the case of men, the difference in relativity between the highest and lowest grades was 3.10, but in the case of women, the difference was 2.39, indicating that the gap was smaller.
+
+ 
+<Table 8>은 직업의 위험 노출 정도인 위험급수에 따라 그룹을 나눌 경우의 결과를 비교한 것이다. 동일 등급 내에서는 위험급수가 높아질수록 상대도의 크기가 점점 더 커지는 경향을 보이며, 특히 보험사고(청구) 빈도가 적은 등급(6등급)일 때 보다 보험사고(청구) 빈도가 높은 등급(1등급)으로 갈수록 위험급수별 상대도의 격차가 커지는 것으로 나타났다.
+
+<Table 8> is a comparison of the results of dividing the group according to the risk level, which is the degree of occupational risk exposure. Within the same grade, the size of the relativity tends to increase as the risk class increases, in particular, it was found that the gap in the relativity of each risk class increased as the grade (1) with low frequency of insurance accidents (claims) increased compared to the grade (6) with high frequency of insurance accidents (claims).
+
+ 
+<Table 9>는 연령대에 따른 상대도 분석 결과이다. 연령대가 증가할수록 상대도는 낮아지는 경향이 있다. 그러나 이러한 표를 해석할 때 주의해야 할 사항은 위험집단이 다를 경우 상대도의 절대 값을 바로 비교해서는 안 된다는 점이다. 기본 보험료라는 것 자체가 위험집단별로 차이가 있기 때문에 동일 위험집단 내의 상대도들만 절대 값의 대소 관계를 의미 있게 해석할 수 있음을 주의할 필요가 있다.
+
+<Table 9> is the result of analysis of relativity according to age group. As the age group increases, the relativity tends to decrease. However, one thing to note when interpreting these tables is that if the risk group is different, the absolute value of the relativity should not be compared immediately. Since basic insurance premiums themselves differ by risk group, it is important to note that only relativity within the same risk group can meaningfully interpret the size relationship of absolute values.
+ 
+<Table 10>은 모든 피보험자에게 적용할 수 있는 하나의 상대도를 구한 결과이다. 만약에 전체 피보험자에게 동일한 기본 보험료를 적용한다고 가정한다면, 상대도를 기준으로 1~3등급이 보험료 할증 그룹(상대도 1 이상), 4~6등급이 보험료 할인 그룹(상대도 1 미만)으로 볼 수 있다. 가장 고위험 등급인 1등급의 상대도를 기준으로 보면 상대도의 격차가 적게는 47%(=1.00-0.53)에서 최대89%(=1.00-0.11) 차이가 나는 것으로 나타났다.
+
+<Table 10> is the result of obtaining one relativity applicable to all insured people. Assuming that the same basic premium is applied to all insured people, grades 1 to 3 can be viewed as premium surcharge groups (relativity 1 or higher) and grades 4 to 6 as premium discount groups (relativity less than 1). Based on the relativity of grade 1, which is the most high-risk grade, there was a difference of up to 89% (=1.00-0.11) from 47% (=1.00-0.53) with a small gap in relativity.
+
+
+## 5. results:
+
+국내에서는 2017년 4월부터 신실손의료보험상품을 판매하여 2년간 보험금 미수령시 차년도 보험료의 10%를 할인받을 수 있게 되었다. 이와 같이 실손의료보험 가입자가 증가함에 따라 자동차보험과 같이 할인할증제도 적용 등에 대한 관심과 요구도 함께 증가하고 있다. 해외 국가의 보험사들을 참고해보면 실손의료보험의 보험료 산정 방식에 있어 계약자들의 위험 특성을 고려하는 방식 들이 주로 논의되고 있다. 그러나 특히 민영의료보험의 경우 보험료 차등화 방법 적용 시 적용 대상과 적용 방법에 대한 선정은 매우 신중을 기할 필요가 있다. 본 연구는 실손의료보험에서 계약자의 과거 보험사고 이력을 고려한 경험적 요율산정 방식 하에서 개별 담보별 모형들을 사용하기보다 다중 담보들을 통합 적으로 한 모형 안에서 고려하여 피보험자들에게 공정한 보험료를 산정하는 방법을 제안하는데 의의를 두고 있다. 현행 실손의료보험 보험료 산출 체계에서는 계약자별 리스크 특성의 차이를 충분히 반영하고 있지 못하기 때문에 보험사의 리스크 관리에 어려움이 많고 보험료 책정에 대한 형평성 논란이 꾸준히 제시되고 있는 실정이다. 따라서 계약자별로 각자 위험 수준에 상응하는 보험료를 산 출하는 방법에 대한 연구가 필요한 것이다. 본 연구에서는 그러한 연구의 필요 성을 시작으로 계약자의 비관찰 위험특성을 설명할 수 있는 경험 데이터를 이용하여 요율산정 방식을 제안해 보았다. 본 연구의 한계점 및 향후 연구 계획에 대해 설명하면 다음과 같다. 먼저 이 연구에서는 실제로 실손의료보험에서 수많은 담보들을 보장하고 있는 현실을 고려하여 우선 GLMM에서 질병 담보 내에서 입원과 통원이라는 두 개의 담보를 복합적으로 고려하기는 했지만 추가적으로 둘 이상의 다양한 담보들을 포함할 수 있는 모형에 대해서는 고려하지 못하였다. 특히 추후에는 질병과 상해 모두를 포괄하여 분석할 수 있는 모형에 대한 고민이 필요하다고 본다. 분석과 제도 설계의 복잡성은 훨씬 커지겠지만 담보별 차이가 분명히 존재하기 때문에 GLMM 등에서 추가적으로 많은 담보들을 동시에 반영할 수 있는 연구의 필요 성은 충분하다고 생각한다. 또 다른 한계점은 과잉형벌화(overpenalization) 또는 이중 계산(double counting)이 발생할 수 있다는 점이다. 피보험자는 사 전적 요율변수에 의해 위험집단이 구분되는데 이러한 위험집단 내에서 본 연구 와 같이 등급별로 보험료를 차등화하게 된다면 고위험군에 더 높은 보험료를 이 중으로 부과하게 되는 문제점도 발생할 수 있다. 따라서 이러한 한계점을 극복하기 위한 보험료 산정 방식에 대한 연구 역시 필요하다고 본다. 본 연구가 이러 한 한계점에도 불구하고 공정한 요율산정 방식에 대한 활발한 논의가 진행될 수 있는 시발점으로서 실손의료보험과 보험 산업의 발전에 도움이 될 수 있기를 희망한다.
+
+
+In Korea, new private health insurance have been sold since April 2017, allowing a 10% discount on insurance premium for the next year if benefits is not received for two years. As the number of policyholders to private health insurance increases, both interest and demand for the application of Bonus-Malus systems such as auto insurance are also increasing. Referring to insurance companies in overseas countries, methods of considering policyholders’ risk characteristics are mainly discussed in the method of rate making for PHI. However, in the case of PHI, it is necessary to be very careful when applying the rates differentiation methods. This study is meaningful in proposing a method of fair rate making to insured people by considering models to integrate multiple coverages rather than using individual models by coverage in the empirical rate making method considering the policyholder's past insurance accident history. Under the current rate making systems of PHI, it is difficult for insurance companies to manage risks and controversy over equity in rate making has been steadily presented since it does not fully reflect differences in risk characteristics by policyholders. Therefore, it is necessary to study how to calculate premiums corresponding to each risk level for each policyholder. Starting with the necessity of such a study, this study proposed a rate making method using experience data that can explain the non-observation risk characteristics of policyholders. The limitations of this study and future research plans are as follows. First of all, considering the reality that PHI actually covers numerous coverages, a model that may include two or more various coverages was additionally not considered although this study considered two coverage: hospitalization and outpatient within disease coverage in GLMM. In particular, it is necessary to consider a model that can be analyzed comprehensively for both diseases and injuries in the future. Although the complexity of analysis and system design will be much greater, there is a sufficient need for research that can reflect additional coverages at the same time in GLMM and others because there is a clear difference between coverages. Another limitation is that overpenalization or double counting may occur. Insured persons are classified by pre-rate variables, and if insurance premiums are differentiated by level as in this study within these risk groups, there may be a problem of double charging higher premiums to high-risk groups. Therefore, it is also necessary to study the method of calculating insurance premiums to overcome these limitations. Despite these limitations, it is hoped that this study will help the development of PHI and insurance industries as a starting point for active discussions on fair rate making methods.
+
+
+## 6. references:
+
+Kim, Daehwan, and Lee, Bongjoo. “An Analysis on Adverse Selection in Fee-For-Service Health Insurance.” Korean Insurance Journal 96 (2013): 25-50.
+
+Kim, Daehwan. “Empirical Analysis of Maintaining and Canceling Behaviors of the Indemnity Private Health Insurance and Its Implications.” Korean Insurance Journal 108.0 (2016): 29-54. 
+
+You, Changhoon, and Kim, Jeong dong. “A Study on the Determinants of Purchasing and Surrendering Private Health Insurance.” The Journal of Risk Management 22.2 (2011): 189-222.
+
+Lee, Hangsuck, Lee, Gaeun and Lee, Kyoungah. “A Ratemaking of the Korean Private Health Insurance using GLM.” The Journal of Risk Management 28.4 (2017): 37-71.
+
+Lee, Hangsuck, Lee, Minha and Baek, Hyeyoun. “An Empirical Analysis of Bonus-Malus System in Private Health Insurance.” Korean Insurance Journal 116 (2018): 33-66.
+
+Chung, Sung Hee, and Lee, Jung-Taek. “Case and Implication of Application of Premium Differentiation System for Private Health Insurance.” KiRi Ageing Review 1 (2016): 9-12.
+
+Cho, Jaerin, and Chung, Sung Hee. “A Study on the Improvement of Private Health Insurance from a Actuarial Perspective.” KiRi Research Report 2018.6 (2018).
+
+Financial Supervisory Service. “Current Status of Loss Ratio in Private Health Insurance, etc. in the first half of 2018.” Press Release, Financial Supervisory Service, 2018.
+
+Altman, Daniel, David M. Cutler, and Richard J. Zeckhauser. “Adverse selection and adverse retention.” The American Economic Review 88.2 (1998): 122-126. 
+
+Christiansen, Marcus C., et al. “Who is changing health insurance coverage? Empirical evidence on policyholder dynamics.” Journal of Risk and Insurance 83.2 (2016): 269-300. 
+
+De Jong, Piet, and Gillian Z. Heller. Generalized linear models for insurance data. Cambridge University Press, 2008. 
+
+Denuit, Michel, et al. Actuarial modelling of claim counts: Risk classification, credibility and bonus-malus systems. John Wiley & Sons, 2007. 
+
+Faraway, Julian J. Extending the linear model with R: generalized linear, mixed effects and nonparametric regression models, Second edition. Chapman and Hall/CRC: Florida, 2016. 
+
+Goldburd, Mark, Anand Khare, and Dan Tevet. “Generalized linear models for insurance rating.” Casualty Actuarial Society, CAS Monographs Series 5 (2016). 
+
+Oh, Rosy, Peng Shi, and Jae Youn Ahn. “Implementation of frequencyseverity association in bms ratemaking.” arXiv preprint arXiv:1903.05851 (2019). 
+
+Tsai, Tsung-han, and Jeff Gill. “Interactions in generalized linear models: theoretical issues and an application to personal vote-earning attributes.” Social Sciences 2.2 (2013): 91-113.
