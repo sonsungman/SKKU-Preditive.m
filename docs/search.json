@@ -12,7 +12,7 @@
       "title": "Lecture : Applied Statistics",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-10-22T13:24:56+09:00"
+      "last_modified": "2021-10-30T22:40:52+09:00"
     },
     {
       "path": "index2.html",
@@ -26,21 +26,21 @@
       "title": "Product and Analysis",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-10-22T13:22:04+09:00"
+      "last_modified": "2021-10-30T22:41:43+09:00"
     },
     {
       "path": "index4.html",
       "title": "2021 Papers Projects",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-10-22T13:22:42+09:00"
+      "last_modified": "2021-10-30T22:42:07+09:00"
     },
     {
       "path": "index5.html",
       "title": "All Project Presentation",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-10-22T13:24:26+09:00"
+      "last_modified": "2021-10-30T22:42:26+09:00"
     }
   ],
   "collections": ["posts/posts.json", "posts2/posts2.json", "posts3/posts3.json", "posts4/posts4.json", "posts5/posts5.json"]
