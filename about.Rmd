@@ -17,13 +17,11 @@ output:
 
  - 2012~2020 Bachelor : Math in Soongsil University
  
- - 2020~ Being in the master's course : Actuarial Science in Sungkyunkwan University
+ - 2020~ 2022.02 Master's course : Actuarial Science in Sungkyunkwan University
  
 ## Goal
 
- - FIAK
- - ASA
- - CFA
+ - FSA, GI
  
 ## Interest
 
