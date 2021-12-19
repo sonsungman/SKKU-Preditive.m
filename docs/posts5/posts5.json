@@ -13,7 +13,7 @@
     "categories": [],
     "contents": "\r\n지난 9월 24일 Lee-Chater 모델을 활용한 논문을 발표하였다. 동료 대학원생분과 함께 했는데 그분은 앞서 연구목적과 선행연구를 발표하시고 나는 Lee-Chater 모델에 대해 발표하였다. 1차 발표는 이렇게 마무리 되었고 2차 발표때에 실제 논문상 통계청 데이터를 활용하여 Lee-Chater 모델에 모수를 추정하고 책임준비금 산출까지 진행해 볼 계획이다.\r\nLee-Charter Model\r\nLee-Chater 모델을 1992년에 Lee와 Chater라는 두 분께서 발표하신 사망률에 관한 모형이다. 모델은 아래와 같다.\r\n\\[\r\n    ln(\\hat{\\mu_{x}}(t)) = \\alpha_{x} + \\beta_{x}k_{t} + \\epsilon_{x}(t)\r\n\\]\r\n\\(\\hat{\\mu_{x}}(t)\\) : t 해 x세의 사력의 관측치.\r\n\\(\\alpha_{x}\\) : 연령별 모수로 \\(ln(\\hat{\\mu_{x}}(t))\\)의 t에 대한 평균.\r\n\\(\\beta_{x}\\) : 또 다른 연령별 모수로 사망률 지수 \\(k_{t}\\)의 변화에 대한 연령별 민감도 지표.\r\n\\(k_{t}\\) : 사망률 지수로서 시간의 흐름에 따른 사망률의 변동 추세를 나타낸 것.\r\n\\(\\epsilon_{x}(t)\\) : 평균이 0이고 분산이 \\(\\sigma^{2}_{\\epsilon}\\)인 정규분포를 따르는 오차항.\r\n사망률의 개선은 사망률 지수\\(k_{t}\\)가 시간의 경과에 따라 감소하는 것으로 확인.\r\n전통적인 LC모형의 모수 추정\r\nLC모형에서 모수는 일반적인 최소제곱법 (OLS)을 이용하여 추정. \\[\r\n  \\sum_{x, t} (ln(\\hat{\\mu_{x}}(t))-\\alpha_{x} - \\beta_{x}k_{t})^{2}\r\n\\] 을 최소화하는 모수로 추정하되 \\(\\hat{\\alpha}_{x}\\)는 \\(ln(\\hat{\\mu_{x}}(t))\\)의 t에 대한 평균이고, \\(\\hat{\\beta}_{x}\\)와 \\(\\hat{k}_{t}\\)는 행렬 \\(ln(\\hat{\\mu_{x}}(t))-\\alpha_{x}\\)를 특이값 분해 후 각 행렬의 첫 번째 벡터들로부터 추정.\r\n또한 \\(\\hat{\\beta}_{x}\\)와 \\(\\hat{k}_{t}\\)의 유일해를 찾기 위한 조건으로 다음의 제약식이 부과.\r\n\\[\r\n  \\sum_{t} k_{t} = 0, 그리고 \\sum_{x} \\beta_{x} = 1\r\n\\] 이후 사망률 지수 \\(\\hat{k}_{t}\\)를 모델링하기에 앞서 사망자수의 관측치와 기대사망자수가 일치하도록 \\(\\hat{k}_{t}\\)를 다시 보정하는 절차 수행.\r\n\\[\r\n  \\sum_{x} D_{x,t} = \\sum_{x} E_{x,t} exp(\\hat{\\alpha}_{x} + \\hat{\\beta}_{x}\\hat{\\hat{k}_{t}})\r\n\\] \\(D_{x,t}\\)가 t해 x세의 사망자수를 그리고 \\(E_{x,t}\\)가 t해 x세의 생존자수를 나타낼 때, 위 식이 성립하도록 사망률 지수의 추정치 \\(\\hat{K}_{t}\\)를 조정하는 것.\r\n조정한 후, 사망률 지수는 ARIMA 시계열 모형으로 적합, 이로부터 사망률 지수의 미래 예측치를 추정.\r\n포아송 로그-이중선형 모형\r\n전통적 LC모형에서 특이값 분해를 통한 OLS 추정의 가장 큰 문제점 중 하나는 오차항의 등분산성 가정이다. 이는 매우 비현실적 가정으로 실제 관측된 사력의 로그변환값이 고연령에서 큰 변동을 나타내기 때문 이것의 이유는 고연령에서의 실제 사망자수가 너무 작기 때문에 발생.\r\nAlho(2000)는 사망자수를 포아송 분포로 모델링함으로써 이 문제를 개선하고자 함.\r\n\\[\r\n  D_{x,t} \\sim {\\sf Poisson}(E_{x,t}\\mu_{x,t}) 단,\\mu_{x,t} = exp(\\alpha_{x}+\\beta_{x}k_{t}) \r\n\\]\r\n모수는 아래의 로그우도함수를 최대화하도록 추정됨. \\[\r\n  L(\\alpha, \\beta, k) = \\sum_{x,t} {D_{x,t}(\\alpha_{x}+\\beta_{x}k_{t}) - E_{x,t}exp(\\alpha_{x}+\\beta_{x}k_{t})}\r\n\\]\r\n제약식의 경우 전통적 모델과 동일.\r\n전통적 LC모형과 달리 사망률 지수의 보정 작업을 필요로 하지 않음.ARIMA 모형에 기반한 사망률 지수 \\(k_{t}\\)의 예측을 통해 미래 사망률을 예측하는 절차 동일.\r\n논문의 구성\r\nLC모델을 활용하여 통계청 자룔를 바탕으로 추정한 미래 사력에 곰베르츠 법칙을 적용해 경험생명표를 만든다. 기존에 우리가 익히 알고 있는 국민경험생명표와 비교하여 추정 사력을 바탕으로 작성한 경험생명표 각각을 가지고 종신연금 혹은 종신 보험 상품의 책임준비금을 구한다. 순보식으로 간단하게 구할 수 있으며 이를 바탕으로 사망률 개선이 발생할 때에 책임준비금의 적립액 차이를 확인할 수 있다.\r\n\r\n\r\n\r\nFigure 1: 논문 및 ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 2: 논문 및 ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 3: 논문 및 ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 4: 논문 및 ppt 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-28T17:55:47+09:00",
+    "last_modified": "2021-12-19T20:11:14+09:00",
     "input_file": {}
   },
   {
@@ -30,7 +30,7 @@
     "categories": [],
     "contents": "\r\nIFRS17 관련 사례 발표\r\n17의 사례연구(IE)에서 후속측정에 관한 Example 2를 맡아 발표하게 되었다. 후속측정 예제의 경우 문단 40, 44,48, 101, 적용지침(B)96~97 까지 적용되며 2A와 2B로 나누어 지게 되는데 각각 미래현금흐름의 긍정적, 부정적 변화에 따라 보험부채와 보험계약마진이 어떤식으로 변화하는지를 예제를 통해 알아본다.\r\n\r\n\r\n\r\nFigure 1: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 2: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 3: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 4: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 5: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 6: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 7: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 8: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 9: ppt 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-27T19:22:20+09:00",
+    "last_modified": "2021-12-19T20:11:14+09:00",
     "input_file": {}
   },
   {
@@ -47,7 +47,7 @@
     "categories": [],
     "contents": "\r\n내가 지금 업로드하고 있는 홈페이지를 R을 활용한 제작을 배울 수 있게 된 수업이 석사3학기 응용통계학 수업이었다. 머신러닝 모델과 딥러닝 모델을 학습하고 마지막 발표로서 케라스를 활용한 딥러닝 모델에 대한 간단한 발표를 이 수업 마지막에 했던 것으로 기억이 난다.\r\n\r\n\r\n\r\nFigure 1: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 2: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 3: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 4: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 5: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 6: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 7: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 8: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 9: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 10: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 11: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 12: 발표 자료\r\n\r\n\r\n\r\n\r\nFigure 13: 발표 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-29T13:31:37+09:00",
+    "last_modified": "2021-12-19T20:11:14+09:00",
     "input_file": {}
   },
   {
@@ -64,7 +64,7 @@
     "categories": [],
     "contents": "\r\n석사학위논문주제로 잡은 지급준비금의 예측분포 추정을 통한 위험조정금액 산출애 있어 하나의 기법인 MCMC기법을 활용한 산출의 결과를 발표한 내용이다.\r\n\r\n\r\n\r\nFigure 1: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 2: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 3: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 4: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 5: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 6: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 7: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 8: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 9: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 10: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 11: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 12: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 13: ppt 자료\r\n\r\n\r\n\r\n\r\nFigure 14: ppt 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-27T21:48:09+09:00",
+    "last_modified": "2021-12-19T20:11:14+09:00",
     "input_file": {}
   },
   {
@@ -81,7 +81,7 @@
     "categories": [],
     "contents": "\r\n2학기 금융투자론\r\n20년도 2학기 금융공학 수업에서 기말과제는 바시첵 모델링과 주가 모델링이 중심이었다. 엑셀파일을 작성하여 제출하였다. 수업에서 따로 엑셀 VBA를 깊이 있게 교육하거나 모델링 실습을 진행하지 않았다. 이론적인 부분만 식을 중심으로 수업에서 다루었다. 한국보험계리사회에서 진행한 보증리스크관리, 이론 및 실습 수업에서 엑셀 VBA를 활용한 전체적인 내용을 알 수 있었다. 계리사회 강의를 통해 이자율, 주가 모델링을 실습하였고 이를 바탕으로 수업 기말과제를 제출하였다.\r\n\r\n\r\n\r\nFigure 1: 제출 엑셀 파일 & 보증리스크관리 수업 자료\r\n\r\n\r\n\r\n\r\nFigure 2: 제출 엑셀 파일 & 보증리스크관리 수업 자료\r\n\r\n\r\n\r\n\r\nFigure 3: 제출 엑셀 파일 & 보증리스크관리 수업 자료\r\n\r\n\r\n\r\n\r\nFigure 4: 제출 엑셀 파일 & 보증리스크관리 수업 자료\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-29T15:07:50+09:00",
+    "last_modified": "2021-12-19T20:11:13+09:00",
     "input_file": {}
   },
   {
@@ -98,7 +98,7 @@
     "categories": [],
     "contents": "\r\n2020년 2학기 2\r\n20년도 2학기 보험수학 마지막 과제는 논문 분석 및 발표였다. 내가 맡게된 논문은 Hull-White 모형을 이용하여 해지율 시나리오 산출에 관한 논문이 었다. 엑셀 작성과 관련하여 본인이 모두 재산출하였다.\r\n\r\n\r\n\r\nFigure 1: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 2: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 3: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 4: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 5: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 6: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 7: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 8: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 9: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\nFigure 10: 논문 및 관련 엑셀 파일\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2021-09-27T17:39:00+09:00",
+    "last_modified": "2021-12-19T20:11:14+09:00",
     "input_file": {}
   }
 ]
